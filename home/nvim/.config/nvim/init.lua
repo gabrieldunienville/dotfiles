@@ -102,7 +102,7 @@ vim.g.have_nerd_font = true
 vim.opt.number = true
 -- You can also add relative line numbers, to help with jumping.
 --  Experiment for yourself to see if you like it!
--- vim.opt.relativenumber = true
+vim.opt.relativenumber = true
 
 -- Enable mouse mode, can be useful for resizing splits for example!
 vim.opt.mouse = 'a'
@@ -219,8 +219,14 @@ vim.opt.rtp:prepend(lazypath)
 -- Remaps
 
 -- Move lines
-vim.keymap.set('v', 'J', ":m '>+1<CR>gv=gv")
-vim.keymap.set('v', 'K', ":m '<-2<CR>gv=gv")
+vim.keymap.set('v', '<A-j>', ":m '>+1<CR>gv=gv")
+vim.keymap.set('v', '<A-k>', ":m '<-2<CR>gv=gv")
+
+vim.keymap.set('n', '<A-j>', ':m .+1<CR>==')
+vim.keymap.set('n', '<A-k>', ':m .-2<CR>==')
+
+-- Leader combos
+-- vim.keymap.set('n', '<leader>w', ':w')
 
 -- [[ Configure and install plugins ]]
 --
@@ -296,12 +302,14 @@ require('lazy').setup({
         ['<leader>s'] = { name = '[S]earch', _ = 'which_key_ignore' },
         ['<leader>w'] = { name = '[W]orkspace', _ = 'which_key_ignore' },
         ['<leader>t'] = { name = '[T]oggle', _ = 'which_key_ignore' },
-        ['<leader>h'] = { name = 'Git [H]unk', _ = 'which_key_ignore' },
+        -- ['<leader>h'] = { name = 'Git [H]unk', _ = 'which_key_ignore' },
+        ['<leader>u'] = { name = '[U]nit test', _ = 'which_key_ignore' },
+        ['<leader>h'] = { name = '[H]arpoon', _ = 'which_key_ignore' },
       }
       -- visual mode
-      require('which-key').register({
-        ['<leader>h'] = { 'Git [H]unk' },
-      }, { mode = 'v' })
+      -- require('which-key').register({
+      --   ['<leader>h'] = { 'Git [H]unk' },
+      -- }, { mode = 'v' })
     end,
   },
 
@@ -383,11 +391,14 @@ require('lazy').setup({
       local builtin = require 'telescope.builtin'
       vim.keymap.set('n', '<leader>sh', builtin.help_tags, { desc = '[S]earch [H]elp' })
       vim.keymap.set('n', '<leader>sk', builtin.keymaps, { desc = '[S]earch [K]eymaps' })
-      vim.keymap.set('n', '<leader>sf', builtin.find_files, { desc = '[S]earch [F]iles' })
+      vim.keymap.set('n', '<leader>sf', function()
+        builtin.find_files { hidden = true }
+      end, { desc = '[S]earch [F]iles' })
       vim.keymap.set('n', '<leader>ss', builtin.builtin, { desc = '[S]earch [S]elect Telescope' })
       vim.keymap.set('n', '<leader>sw', builtin.grep_string, { desc = '[S]earch current [W]ord' })
       vim.keymap.set('n', '<leader>sg', builtin.live_grep, { desc = '[S]earch by [G]rep' })
       vim.keymap.set('n', '<leader>sd', builtin.diagnostics, { desc = '[S]earch [D]iagnostics' })
+
       vim.keymap.set('n', '<leader>sr', builtin.resume, { desc = '[S]earch [R]esume' })
       vim.keymap.set('n', '<leader>s.', builtin.oldfiles, { desc = '[S]earch Recent Files ("." for repeat)' })
       vim.keymap.set('n', '<leader><leader>', builtin.buffers, { desc = '[ ] Find existing buffers' })
@@ -749,7 +760,7 @@ require('lazy').setup({
           -- Accept ([y]es) the completion.
           --  This will auto-import if your LSP supports it.
           --  This will expand snippets if the LSP sent a snippet.
-          ['<C-y>'] = cmp.mapping.confirm { select = true },
+          ['<C-y>'] = cmp.mapping.confirm { select = true, behavior = cmp.ConfirmBehavior.Insert },
 
           -- If you prefer more traditional completion keymaps,
           -- you can uncomment the following lines
@@ -946,30 +957,37 @@ require('lazy').setup({
 
   {
     'jpalardy/vim-slime',
+    -- https://github.com/jpalardy/vim-slime/blob/main/assets/doc/advanced.md
     init = function()
       -- these two should be set before the plugin loads
-      -- vim.g.slime_target = 'neovim'
       vim.g.slime_target = 'tmux'
       vim.g.slime_no_mappings = true
     end,
     config = function()
-      -- vim.g.slime_input_pid = false
-      -- vim.g.slime_suggest_default = true
-      -- vim.g.slime_menu_config = false
       vim.g.slime_neovim_ignore_unlisted = false
-      -- options not set here are g:slime_neovim_menu_order, g:slime_neovim_menu_delimiter, and g:slime_get_jobid
-      -- see the documentation above to learn about those options
-
-      vim.g.slime_default_config = { socket_name = 'default', target_pane = ':.1' }
+      vim.g.slime_default_config = { socket_name = 'default', target_pane = ':.2' }
       vim.g.slime_dont_ask_default = true
+      vim.g.slime_preserve_curpos = 0
 
-      -- called MotionSend but works with textobjects as well
-      vim.keymap.set('n', 'gz', '<Plug>SlimeMotionSend', { remap = true, silent = false })
-      -- vim.keymap.set('n', 'gzz', '<Plug>SlimeLineSend', { remap = true, silent = false })
-      vim.keymap.set('n', '<M-E>', '<Plug>SlimeLineSend', { remap = true, silent = false })
-      vim.keymap.set('n', '<M-W>', '<Plug>SlimeParagraphSend', { remap = true, silent = false })
-      vim.keymap.set('x', '<M-E>', '<Plug>SlimeRegionSend', { remap = true, silent = false })
-      vim.keymap.set('n', 'gzc', '<Plug>SlimeConfig', { remap = true, silent = false })
+      -- Set this so we can execute a whole code block as one cell in the REPL
+      --    Note from docs: If your target supports bracketed-paste, that's a better option than g:slime_python_ipython
+      --    See https://github.com/jpalardy/vim-slime/blob/main/ftplugin/python/README.md
+      vim.g.slime_bracketed_paste = 1
+
+      -- Send line
+      vim.keymap.set('n', '<A-e>', '<Plug>SlimeLineSend', { remap = true, silent = false })
+
+      -- Send visual block
+      vim.keymap.set('x', '<A-e>', '<Plug>SlimeRegionSend', { remap = true, silent = false })
+
+      -- Send paragraph
+      vim.keymap.set('n', '<A-w>', '<Plug>SlimeParagraphSend', { remap = true, silent = false })
+
+      -- Send entire file
+      vim.keymap.set('n', '<A-q>', ':%SlimeSend<CR>', { remap = true, silent = false })
+
+      -- Send cell
+      vim.keymap.set('n', '<A-r>', '<Plug>SlimeSendCell', { remap = true, silent = false })
     end,
   },
 
@@ -1009,7 +1027,7 @@ require('lazy').setup({
             dap = { justMyCode = false },
             -- Command line arguments for runner
             -- Can also be a function to return dynamic values
-            args = { '--log-level', 'DEBUG' },
+            args = { '--log-level', 'DEBUG', '-s' },
             -- Runner to use. Will use pytest if available by default.
             -- Can be a function to return dynamic value.
             runner = 'pytest',
@@ -1019,21 +1037,137 @@ require('lazy').setup({
             -- If not provided, the path will be inferred by checking for
             -- virtual envs in the local directory and for Pipenev/Poetry configs
             -- python = ".venv/bin/python",
+            -- python = 'poetry run -m python',
             -- Returns if a given file path is a test file.
             -- NB: This function is called a lot so don't perform any heavy tasks within it.
             -- is_test_file = function(file_path)
             --   ...
             -- end,
             -- !!EXPERIMENTAL!! Enable shelling out to `pytest` to discover test
-            -- instances for files containing a parametrize mark (default: false)
+            -- instances for fil
             pytest_discover_instances = true,
           },
         },
       }
+
+      vim.keymap.set('n', '<leader>uc', function()
+        require('neotest').run.run()
+      end, { desc = '[U]nit test run [C]losest' })
+
+      vim.keymap.set('n', '<leader>ul', function()
+        require('neotest').run.run_last()
+      end, { desc = '[U]nit test run [L]ast' })
+
+      vim.keymap.set('n', '<leader>us', function()
+        require('neotest').summary.toggle()
+      end, { desc = '[U]nit test toggle [S]ummary' })
+
+      vim.keymap.set('n', '<leader>uo', function()
+        require('neotest').output.open { enter = true }
+      end, { desc = '[U]nit test open [O]utput popup' })
     end,
   },
 
   { 'kmonad/kmonad-vim' },
+
+  {
+    'nvim-neo-tree/neo-tree.nvim',
+    branch = 'v3.x',
+    dependencies = {
+      'nvim-lua/plenary.nvim',
+      'nvim-tree/nvim-web-devicons', -- not strictly required, but recommended
+      'MunifTanjim/nui.nvim',
+      -- "3rd/image.nvim", -- Optional image support in preview window: See `# Preview Mode` for more information
+    },
+    config = function()
+      require('neo-tree').setup {
+        filesystem = {
+          filtered_items = {
+            hide_hidden = false,
+          },
+        },
+      }
+      -- vim.keymap.set('n','<A-w>', '<Plug>SlimeParagraphSend', { remap = true, silent = false })
+      vim.keymap.set('n', '<leader>x', '<Cmd>Neotree toggle reveal<CR>', { desc = 'E[X]plore File Tree' })
+    end,
+  },
+  {
+    'rmagatti/auto-session',
+    config = function()
+      require('auto-session').setup {
+        log_level = 'info',
+        auto_session_suppress_dirs = { '~/', '~/Projects', '~/Downloads', '/' },
+      }
+      vim.o.sessionoptions = 'blank,buffers,curdir,folds,help,tabpages,winsize,winpos,terminal,localoptions'
+    end,
+  },
+  {
+    'ThePrimeagen/harpoon',
+    branch = 'harpoon2',
+    dependencies = { 'nvim-lua/plenary.nvim', 'nvim-telescope/telescope.nvim' },
+    config = function()
+      local harpoon = require 'harpoon'
+
+      harpoon:setup()
+
+      vim.keymap.set('n', '<leader>ha', function()
+        harpoon:list():add()
+      end, { desc = '[H]arpoon [A]dd' })
+
+      vim.keymap.set('n', '<leader>hc', function()
+        harpoon:list():clear()
+      end, { desc = '[H]arpoon [C]lear' })
+
+      vim.keymap.set('n', '<leader>hl', function()
+        harpoon.ui:toggle_quick_menu(harpoon:list())
+      end, { desc = '[H]arpoon Show [L]ist' })
+
+      vim.keymap.set('n', '<M-a>', function()
+        harpoon:list():select(1)
+      end)
+      vim.keymap.set('n', '<M-s>', function()
+        harpoon:list():select(2)
+      end)
+      vim.keymap.set('n', '<M-d>', function()
+        harpoon:list():select(3)
+      end)
+      vim.keymap.set('n', '<M-f>', function()
+        harpoon:list():select(4)
+      end)
+
+      -- Toggle previous & next buffers stored within Harpoon list
+      vim.keymap.set('n', '<C-S-P>', function()
+        harpoon:list():prev()
+      end)
+      vim.keymap.set('n', '<C-S-N>', function()
+        harpoon:list():next()
+      end)
+
+      -- basic telescope configuration
+      local conf = require('telescope.config').values
+      local function toggle_telescope(harpoon_files)
+        local file_paths = {}
+        for _, item in ipairs(harpoon_files.items) do
+          table.insert(file_paths, item.value)
+        end
+
+        require('telescope.pickers')
+          .new({}, {
+            prompt_title = 'Harpoon',
+            finder = require('telescope.finders').new_table {
+              results = file_paths,
+            },
+            previewer = conf.file_previewer {},
+            sorter = conf.generic_sorter {},
+          })
+          :find()
+      end
+
+      vim.keymap.set('n', '<leader>sj', function()
+        toggle_telescope(harpoon:list())
+      end, { desc = '[S]earch Harpoon' })
+    end,
+  },
 
   -- The following two comments only work if you have downloaded the kickstart repo, not just copy pasted the
   -- init.lua. If you want these files, they are in the repository, so you can just download them and
@@ -1044,7 +1178,7 @@ require('lazy').setup({
   --  Here are some example plugins that I've included in the Kickstart repository.
   --  Uncomment any of the lines below to enable them (you will need to restart nvim).
   --
-  -- require 'kickstart.plugins.debug',
+  require 'kickstart.plugins.debug',
   -- require 'kickstart.plugins.indent_line',
   -- require 'kickstart.plugins.lint',
   -- require 'kickstart.plugins.autopairs',
