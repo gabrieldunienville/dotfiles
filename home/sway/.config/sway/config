@@ -33,7 +33,8 @@ gaps outer 2
 default_border pixel 2
 
 # Set the Wallpaper:
-output * bg $HOME/.config/sway/wallpaper.jpg fill
+# output * bg $HOME/.config/sway/wallpaper.jpg fill
+output * bg $HOME/wallpapers/a_moon_over_a_mountain.png fill
 
 #====================================#
 # Activate the panel                 #
@@ -221,7 +222,7 @@ include /etc/sway/config-vars.d/*
     # You can send windows there and get them back later.
 
     # Move the currently focused window to the scratchpad
-    bindsym $mod+Shift+minus move scratchpad
+    bindsym $mod+Shift+p move scratchpad
 
     # Show the next scratchpad window or hide the focused scratchpad window.
     # If there are multiple scratchpad windows, this command cycles through them.
@@ -308,5 +309,13 @@ bindsym ctrl+$mod+f exec pcmanfm
 
 # Open the application launcher (alternate version):
 bindsym $mod+d exec $menu
+
+input "type:touchpad" {
+    dwt enabled
+    tap enabled
+    middle_emulation enabled
+    pointer_accel 0.8 # set mouse sensitivity (between -1 and 1)
+    natural_scroll enabled
+}
 
 include /etc/sway/config.d/*

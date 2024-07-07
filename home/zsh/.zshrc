@@ -116,3 +116,10 @@ export PATH="$PATH:/home/gabriel/.local/bin"
 # export PYENV_ROOT="$HOME/.pyenv"
 # [[ -d $PYENV_ROOT/bin ]] && export PATH="$PYENV_ROOT/bin:$PATH"
 # eval "$(pyenv init -)"
+
+# export MOZ_ENABLE_WAYLAND=1
+
+export XDG_CURRENT_DESKTOP="${XDG_CURRENT_DESKTOP:-sway}"
+export MOZ_ENABLE_WAYLAND=1
+
+export DAGSTER_HOME=~/dagster_home
