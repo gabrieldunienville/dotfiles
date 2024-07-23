@@ -296,7 +296,7 @@ set $menu wofi --show drun  -i | xargs swaymsg exec --
 bindsym $mod+shift+b exec firefox
 
 # Open a file manager:
-bindsym ctrl+$mod+f exec pcmanfm
+# bindsym ctrl+$mod+f exec pcmanfm
 
 # Open a terminal emulator:
 # set $term alacritty
@@ -310,7 +310,19 @@ bindsym ctrl+$mod+f exec pcmanfm
 # Open the application launcher (alternate version):
 bindsym $mod+d exec $menu
 
+# https://github.com/flameshot-org$(xdg-user-dir PICTURES)//flameshot/blob/master/docs/Sway%20and%20wlroots%20support.md
+
+bindsym Print exec grim -g "$(slurp)"
+# bindsym $mod+t exec flameshot gui
+
+exec systemctl --user import-environment DISPLAY WAYLAND_DISPLAY SWAYSOCK
+exec hash dbus-update-activation-environment 2>/dev/null && \
+     dbus-update-activation-environment --systemd DISPLAY WAYLAND_DISPLAY SWAYSOCK
+
+for_window [app_id="flameshot"] border pixel 0, floating enable, fullscreen disable, move absolute position 0 0
+
 input "type:touchpad" {
+    events disabled
     dwt enabled
     tap enabled
     middle_emulation enabled
