@@ -10,18 +10,23 @@ return {
           -- Automatically jump forward to textobj, similar to targets.vim
           lookahead = true,
 
+          include_surrounding_whitespace = false,
+
           keymaps = {
             -- You can use the capture groups defined in textobjects.scm
-            ['ap'] = '@parameter.outer',
-            ['ip'] = '@parameter.inner',
+            ['aa'] = '@parameter.outer',
+            ['ia'] = '@parameter.inner',
             ['af'] = '@function.outer',
             ['if'] = '@function.inner',
-            ['ac'] = '@class.outer',
-            ['ax'] = '@statement.outer',
+            ['as'] = '@statement.outer',
+            -- ['is'] = '@statement.inner',  no capture group for this
+            ['al'] = '@assignment.lhs',
+            ['ar'] = '@assignment.rhs',
 
             -- You can optionally set descriptions to the mappings (used in the desc parameter of
             -- nvim_buf_set_keymap) which plugins like which-key display
             ['ic'] = { query = '@class.inner', desc = 'Select inner part of a class region' },
+            ['ac'] = '@class.outer',
 
             -- You can also use captures from other query groups like `locals.scm`
             -- ['as'] = { query = '@scope', query_group = 'locals', desc = 'Select language scope' },
@@ -58,6 +63,7 @@ return {
 
             -- Gabe's custom
             [']a'] = '@parameter.inner',
+            [']l'] = '@assignment.lhs',
             [']r'] = '@assignment.rhs',
             --
             -- You can use regex matching (i.e. lua pattern) and/or pass a list in a "query" key to group multiple queires.
@@ -80,6 +86,10 @@ return {
           goto_previous_start = {
             ['[m'] = '@function.outer',
             ['[['] = '@class.outer',
+            -- Gabe's custom
+            ['[a'] = '@parameter.inner',
+            ['[l'] = '@assignment.lhs',
+            ['[r'] = '@assignment.rhs',
           },
           goto_previous_end = {
             ['[M'] = '@function.outer',
