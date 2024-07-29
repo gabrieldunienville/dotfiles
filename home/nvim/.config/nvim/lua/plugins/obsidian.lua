@@ -28,7 +28,7 @@ return {
       workspaces = {
         {
           name = 'language_lads',
-          path = '~/language-lads/vault',
+          path = '~/language-lads-obsidian',
         },
       },
 
@@ -112,6 +112,16 @@ return {
       --   return tostring(os.time()) .. '-' .. suffix
       -- end,
 
+      -- -- Optional, customize how note IDs are generated given an optional title.
+      -- -- -@param title string|?
+      -- ---@return string
+      note_id_func = function(title)
+        -- Create note IDs in a Zettelkasten format with a timestamp and a suffix.
+        -- In this case a note with the title 'My new note' will be given an ID that looks
+        -- like '1657296016-my-new-note', and therefore the file name '1657296016-my-new-note.md'
+        return title
+      end,
+
       -- Optional, customize how note file names are generated given the ID, target directory, and title.
       ---@param spec { id: string, dir: obsidian.Path, title: string|? }
       ---@return string|obsidian.Path The full path to the new note.
@@ -183,11 +193,10 @@ return {
       -- -- Optional, by default when you use `:ObsidianFollowLink` on a link to an external
       -- -- URL it will be ignored but you can customize this behavior here.
       -- ---@param url string
-      -- follow_url_func = function(url)
-      --   -- Open the URL in the default web browser.
-      --   -- vim.fn.jobstart { 'open', url } -- Mac OS
-      --   vim.fn.jobstart({"xdg-open", url})  -- linux
-      -- end,
+      follow_url_func = function(url)
+        -- Open the URL in the default web browser.
+        vim.fn.jobstart({"xdg-open", url})  -- linux
+      end,
 
       -- Optional, set to true if you use the Obsidian Advanced URI plugin.
       -- https://github.com/Vinzent03/obsidian-advanced-uri
