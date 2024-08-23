@@ -1,5 +1,6 @@
 return {
   'zbirenbaum/copilot.lua',
+  enabled = true,
   cmd = 'Copilot',
   event = 'InsertEnter',
   config = function()
@@ -20,8 +21,8 @@ return {
         },
       },
       suggestion = {
-        enabled = false,
-        auto_trigger = false,
+        enabled = true,
+        auto_trigger = true,
         hide_during_completion = true,
         debounce = 75,
         keymap = {
@@ -42,6 +43,7 @@ return {
         hgcommit = false,
         svn = false,
         cvs = false,
+        svelte = true,
         ['.'] = false,
       },
       copilot_node_command = 'node', -- Node.js version must be > 18.x

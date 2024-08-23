@@ -40,18 +40,69 @@ return {
 
     'rcarriga/cmp-dap',
 
-    {
-      'zbirenbaum/copilot-cmp',
-      config = function()
-        require('copilot_cmp').setup {}
-      end,
-    },
+    -- {
+    --   'zbirenbaum/copilot-cmp',
+    --   config = function()
+    --     require('copilot_cmp').setup {}
+    --   end,
+    -- },
   },
   config = function()
     -- See `:help cmp`
     local cmp = require 'cmp'
     local luasnip = require 'luasnip'
     luasnip.config.setup {}
+
+    -- Define the console.log snippet
+    local s = luasnip.snippet
+    local t = luasnip.text_node
+    local i = luasnip.insert_node
+
+    local console_log = s('clog', {
+      t 'console.log(',
+      i(1, ''),
+      t ')',
+      i(0),
+    })
+
+    -- Add the snippet to JavaScript and TypeScript
+    luasnip.add_snippets('javascript', { console_log })
+    luasnip.add_snippets('typescript', { console_log })
+
+    -- Create a custom source for nvim-cmp
+    local clog_source = {}
+
+    clog_source.new = function()
+      return setmetatable({}, { __index = clog_source })
+    end
+
+    clog_source.get_trigger_characters = function()
+      return { 'c' }
+    end
+
+    clog_source.get_keyword_pattern = function()
+      return [[\k\+]]
+    end
+
+    clog_source.complete = function(self, params, callback)
+      local items = {}
+      if params.context.cursor_before_line:match 'c[lo][og]?$' then
+        table.insert(items, {
+          label = 'clog',
+          kind = cmp.lsp.CompletionItemKind.Snippet,
+          data = { snippet = console_log },
+        })
+      end
+      callback { items = items }
+    end
+
+    clog_source.execute = function(self, completion_item, callback)
+      luasnip.snip_expand(completion_item.data.snippet)
+      callback(completion_item)
+    end
+
+    -- Register the custom source with nvim-cmp
+    cmp.register_source('console_log', clog_source.new())
 
     cmp.setup {
       snippet = {
@@ -119,7 +170,8 @@ return {
         --    https://github.com/L3MON4D3/LuaSnip?tab=readme-ov-file#keymaps
       },
       sources = {
-        { name = 'copilot' },
+        -- { name = 'copilot' },
+        { name = 'console_log' },
         { name = 'nvim_lsp' },
         { name = 'luasnip' },
         { name = 'path' },
