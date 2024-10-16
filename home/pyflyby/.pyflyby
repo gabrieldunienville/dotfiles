@@ -16,6 +16,11 @@ from copy import deepcopy
 
 from uuid import uuid4, UUID
 
+from typing import (
+	Self,
+	ClassVar
+)
+
 from datetime import datetime, timedelta
 import pytz
 
@@ -24,3 +29,5 @@ from toolz import (
 	keymap,
 	itemmap
 )
+
+from pyperclip import copy as cp

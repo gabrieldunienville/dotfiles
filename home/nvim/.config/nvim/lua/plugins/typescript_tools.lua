@@ -4,5 +4,23 @@ return {
     'nvim-lua/plenary.nvim',
     'neovim/nvim-lspconfig',
   },
-  opts = {},
+  config = function()
+    require('typescript-tools').setup {
+      filetypes = {
+        'javascript',
+        'typescript',
+        -- 'svelte',
+      },
+      settings = {
+        -- Svelte-specific settings
+        -- svelte = {
+        --   plugin = {
+        --     typescript = {
+        --       enabled = true,
+        --     },
+        --   },
+        -- },
+      },
+    }
+  end,
 }

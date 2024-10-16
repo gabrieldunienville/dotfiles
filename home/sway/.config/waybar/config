@@ -72,13 +72,14 @@
         "on-click-right": "bash ~/.config/rofi/wifi_menu/rofi_wifi_menu",
     },
 
-    "custom/brightness": {
-        "format": "{}",
-        //"signal": 8,
-        "interval": "once",
-        "exec": "brightnessctl g",
-        //"on-click": "pavucontrol",
-    },
+    // Needs work to get brightness working (percentage not absolute value)
+    // "custom/brightness": {
+    //     "format": "{}",
+    //     //"signal": 8,
+    //     "interval": "once",
+    //     "exec": "brightnessctl g",
+    //     //"on-click": "pavucontrol",
+    // },
 
     "custom/audio": {
         "format": "{}",

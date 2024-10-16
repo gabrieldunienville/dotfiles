@@ -38,7 +38,7 @@ return {
           pytest_discover_instances = true,
         },
       },
-      log_level = 0,
+      -- log_level = 0,
     }
 
     vim.keymap.set('n', '<leader>uc', function()
@@ -57,5 +57,9 @@ return {
     vim.keymap.set('n', '<leader>uo', function()
       require('neotest').output.open { enter = true }
     end, { desc = '[U]nit test open [O]utput popup' })
+
+    vim.keymap.set('n', '<leader>up', function()
+      require('neotest').output_panel.open()
+    end, { desc = '[U]nit test open Output [P]anel' })
   end,
 }

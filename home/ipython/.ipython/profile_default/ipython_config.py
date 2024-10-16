@@ -1036,12 +1036,13 @@ def pretty_list(obj: list, p: RepresentationPrinter, cycle: bool):
 
 #  See also: BaseFormatter.type_printers
 # c.PlainTextFormatter.type_printers = {
-    # dict: pretty_dict,
-    # list: pretty_list,
+# dict: pretty_dict,
+# list: pretty_list,
 # }
 
 # Note: for some reason the above only works when ipython auto prints an expression result, it doesn't work when calling pprint. The following also works for the remapping of print = Ipython.lib.pprint
 from IPython.lib.pretty import for_type
+
 for_type(dict, pretty_dict)
 for_type(list, pretty_list)
 

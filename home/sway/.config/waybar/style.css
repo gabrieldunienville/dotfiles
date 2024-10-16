@@ -1,6 +1,6 @@
 * {
     font-family: Roboto, Helvetica, Arial, sans-serif;
-    font-size: 18px;
+    font-size: 20px;
     min-height: 0;
     padding-bottom: 2px;
     padding-top: 2px;
@@ -8,13 +8,13 @@
 
 #battery {
     background: transparent;
-    color: #000000;
+    color: #ffffff;
     opacity: 0.7;
     padding: 2px 8px;
 }
 
 #battery.charging, #battery.plugged {
-    color: #000000;
+    color: #ffffff;
     padding: 2px 8px;
 }
 
@@ -30,14 +30,14 @@
 
 #clock {
     background: transparent;
-    color: #000000;
+    color: #ffffff;
     margin-right: 4px;
     padding: 2px 8px;
 }
 
 #network {
     background: transparent;
-    color: #000000;
+    color: #ffffff;
     opacity: 0.7;
     padding: 2px 8px;
 }
@@ -49,7 +49,7 @@
 
 #tray {
     background: transparent;
-    color: #000000;
+    color: #ffffff;
     margin-left: 18px;
 }
 
@@ -102,14 +102,14 @@ window#waybar {
 /* Custom Stuff */
 #custom-audio {
     background: transparent;
-    color: #000000;
+    color: #ffffff;
     opacity: 0.7;
     padding: 2px 8px;
 }
 
 #custom-hostname {
     background: transparent;
-    color: #000000;
+    color: #ffffff;
     padding: 2px 8px;
     opacity: 0.7;
 }

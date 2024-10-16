@@ -30,6 +30,10 @@ return {
           name = 'language_lads',
           path = '~/language-lads-obsidian',
         },
+        {
+          name = 'personal_notes',
+          path = '~/personal-notes',
+        },
       },
 
       -- Optional, if you keep notes in a specific subdirectory of your vault.

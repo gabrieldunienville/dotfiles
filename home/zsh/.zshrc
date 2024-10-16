@@ -123,3 +123,13 @@ export XDG_CURRENT_DESKTOP="${XDG_CURRENT_DESKTOP:-sway}"
 export MOZ_ENABLE_WAYLAND=1
 
 export DAGSTER_HOME=~/dagster_home
+
+# Start the SSH agent if it's not already running
+if [ -z "$SSH_AUTH_SOCK" ]; then
+    eval $(ssh-agent -s)
+    # Add keys to the agent
+    ssh-add ~/.ssh/id_rsa
+fi
+
+alias dc="docker compose"
+alias xo="xdg-open"

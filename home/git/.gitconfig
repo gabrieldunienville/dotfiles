@@ -1,3 +1,7 @@
 [user]
 	email = gabe.dunienville@gmail.com
 	name = Gabriel Dunienville
+[core]
+	editor = nvim
+[push]
+	autoSetupRemote = true
