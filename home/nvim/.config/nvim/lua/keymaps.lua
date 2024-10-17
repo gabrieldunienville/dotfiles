@@ -1,6 +1,9 @@
 -- Stop highlighting the search matches but keep search context so can resume if needed
 vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>')
 
+-- Save
+vim.keymap.set('n', '<C-s>', '<cmd>wa<CR>', { desc = 'Save all files' })
+
 -- Diagnostic keymaps
 vim.keymap.set('n', '<M-i>', vim.diagnostic.goto_prev, { desc = 'Go to previous [D]iagnostic message' })
 vim.keymap.set('n', '<M-u>', vim.diagnostic.goto_next, { desc = 'Go to next [D]iagnostic message' })
