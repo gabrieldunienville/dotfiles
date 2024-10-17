@@ -116,6 +116,14 @@ return {
     local capabilities = vim.lsp.protocol.make_client_capabilities()
     capabilities = vim.tbl_deep_extend('force', capabilities, require('cmp_nvim_lsp').default_capabilities())
 
+    capabilities.textDocument.completion.completionItem.snippetSupport = true
+
+
+    -- capabilities.workspace.didChangeWatchedFiles.dynamicRegistration = true
+
+    -- https://github.com/sveltejs/language-tools/issues/2008#issuecomment-2148860446
+    capabilities.workspace.didChangeWatchedFiles = false
+
     --  Add any additional override configuration in the following tables. Available keys are:
     --  - cmd (table): Override the default command used to start the server
     --  - filetypes (table): Override the default list of associated filetypes for the server
@@ -128,7 +136,7 @@ return {
         enabled = true,
         settings = {
           python = {},
-        }
+        },
         -- settings = {
         --   python = {
         --     analysis = {
@@ -160,7 +168,6 @@ return {
           },
         },
       },
-      svelte = {},
       lua_ls = {
         settings = {
           Lua = {
@@ -171,7 +178,66 @@ return {
           },
         },
       },
-      tailwindcss = {},
+      svelte = {
+        enabled = true,
+        -- Add filetypes for the server to run and share info between files
+        -- capabilities = {
+        --   workspace = {
+        --     didChangeWatchedFiles = {
+        --       dynamicRegistration = true,
+        --     },
+        --   },
+        -- },
+        capabilities = capabilities,
+        -- filetypes = {
+        --   'typescript',
+        --   'javascript',
+        --   'svelte',
+        --   'html',
+        --   'css',
+        -- },
+        on_attach = function(client, bufnr)
+          vim.api.nvim_create_autocmd('BufWritePost', {
+            pattern = { '*.js', '*.ts' },
+            callback = function(ctx)
+              -- Here use ctx.match instead of ctx.file
+              -- print('onDidChangeTsOrJsFile', ctx.match)
+              client.notify('$/onDidChangeTsOrJsFile', { uri = ctx.match })
+            end,
+          })
+        end,
+      },
+      -- Note: This is typescript-language-server which is a proxy to the actual tsserver
+      tsserver = {
+        enabled = true,
+        capabilities = capabilities,
+        -- on_attach = on_attach,
+        filetypes = {
+          'javascript',
+          'javascriptreact',
+          'javascript.jsx',
+          'typescript',
+          'typescriptreact',
+          'typescript.tsx',
+          -- 'svelte',
+        },
+        commands = {
+          OrganiseImports = {
+            function()
+              local params = {
+                command = '_typescript.organizeImports',
+                arguments = { vim.api.nvim_buf_get_name(0) },
+                title = '',
+              }
+              vim.lsp.buf.execute_command(params)
+            end,
+            description = 'Organise Imports',
+          },
+        },
+      },
+      tailwindcss = {
+        enabled = true,
+      },
       bashls = {
         -- settings = {
         --   filetypes = { "sh", "make" }
