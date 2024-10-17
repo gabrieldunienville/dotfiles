@@ -1,11 +1,12 @@
 return {
   'rmagatti/auto-session',
   config = function()
+    vim.o.sessionoptions = 'blank,buffers,curdir,folds,help,tabpages,winsize,winpos,terminal,localoptions'
     require('auto-session').setup {
+      -- lazy = true,
       log_level = 'info',
-      auto_session_suppress_dirs = { '~/', '~/Downloads', '/' },
+      suppressed_dirs = { '~/', '~/Downloads', '/' },
       auto_clean_after_session_restore = true,
     }
-    vim.o.sessionoptions = 'blank,buffers,curdir,folds,help,tabpages,winsize,winpos,terminal,localoptions'
   end,
 }
