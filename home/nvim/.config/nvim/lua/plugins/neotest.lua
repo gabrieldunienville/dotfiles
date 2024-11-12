@@ -9,6 +9,14 @@ return {
   },
   config = function()
     require('neotest').setup {
+      output = {
+        enable = true,
+        open_on_run = false,
+      },
+      output_panel = {
+        enabled = true,
+        open = 'vsplit',
+      },
       adapters = {
         require 'neotest-python' {
           -- Extra arguments for nvim-dap configuration

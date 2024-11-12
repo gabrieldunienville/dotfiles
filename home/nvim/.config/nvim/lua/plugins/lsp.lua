@@ -118,7 +118,6 @@ return {
 
     capabilities.textDocument.completion.completionItem.snippetSupport = true
 
-
     -- capabilities.workspace.didChangeWatchedFiles.dynamicRegistration = true
 
     -- https://github.com/sveltejs/language-tools/issues/2008#issuecomment-2148860446
@@ -180,35 +179,21 @@ return {
       },
       svelte = {
         enabled = true,
-        -- Add filetypes for the server to run and share info between files
-        -- capabilities = {
-        --   workspace = {
-        --     didChangeWatchedFiles = {
-        --       dynamicRegistration = true,
-        --     },
-        --   },
-        -- },
         capabilities = capabilities,
-        -- filetypes = {
-        --   'typescript',
-        --   'javascript',
-        --   'svelte',
-        --   'html',
-        --   'css',
-        -- },
         on_attach = function(client, bufnr)
           vim.api.nvim_create_autocmd('BufWritePost', {
             pattern = { '*.js', '*.ts' },
             callback = function(ctx)
-              -- Here use ctx.match instead of ctx.file
               -- print('onDidChangeTsOrJsFile', ctx.match)
+              -- Here use ctx.match instead of ctx.file
               client.notify('$/onDidChangeTsOrJsFile', { uri = ctx.match })
             end,
           })
         end,
       },
       -- Note: This is typescript-language-server which is a proxy to the actual tsserver
-      tsserver = {
+      -- tsserver = {
+      ts_ls = {
         enabled = true,
         capabilities = capabilities,
         -- on_attach = on_attach,

@@ -133,3 +133,66 @@ fi
 
 alias dc="docker compose"
 alias xo="xdg-open"
+
+function project_context_prompt() {
+    if [[ -n $PROJECT_CONTEXT ]]; then
+        if [[ $PROJECT_CONTEXT == "dev" ]]; then
+            local color="%{$fg_bold[yellow]%}"
+        elif [[ $PROJECT_CONTEXT == "prod" ]]; then
+            local color="%{$fg_bold[red]%}"
+        elif [[ $PROJECT_CONTEXT == "test" ]]; then
+            local color="%{$fg_bold[green]%}"
+        else
+            local color=""
+        fi
+        echo "$color${PROJECT_CONTEXT}%{$reset_color%} "
+    fi
+}
+
+function git_prompt() {
+    local branch=$(git symbolic-ref --short HEAD 2>/dev/null)
+    if [[ -n $branch ]]; then
+        echo "%{$fg_bold[blue]%}⎇ ${branch}%{$reset_color%} "
+    fi
+}
+
+function status_arrow() {
+    echo "%(?.%{$fg_bold[green]%}.%{$fg_bold[red]%})➜%{$reset_color%} "
+}
+
+function cwd_prompt() {
+	echo "%{$fg_bold[cyan]%}%2~%{$reset_color%} "
+}
+
+PROMPT='$(status_arrow)$(cwd_prompt)$(git_prompt)$(project_context_prompt)'
+
+eval "$(direnv hook zsh)"
+
+
+function senv() {
+    local new_env=$1
+    # declare -a ALLOWED_CONTEXTS=(test dev prod)
+
+    # ALLOWED_CONTEXTS=(test dev prod)
+
+    # if [ -z "$new_env" ]; then
+    #     echo "Usage: switch_env <environment>"
+    #     echo "Allowed environments: ${ALLOWED_CONTEXTS[@]}"
+    #     return 1
+    # fi
+    #
+    # if [[ ! " ${allowed_envs[@]} " =~ " ${new_env} " ]]; then
+    #     echo "Invalid environment: $new_env"
+    #     echo "Allowed environments: ${ALLOWED_CONTEXTS[@]}"
+    #     return 1
+    # fi
+
+    # echo "export PROJECT_CONTEXT=$new_env" > .envrc
+    # echo "export COMPOSE_FILE=\"docker-compose.yml:docker-compose.${new_env}.yml\"" >> .envrc
+
+    export PROJECT_CONTEXT=$new_env
+
+    direnv reload
+
+    echo "Switched to $new_env environment"
+}
