@@ -15,6 +15,18 @@ return {
     -- `neodev` configures Lua LSP for your Neovim config, runtime and plugins
     -- used for completion, annotations and signatures of Neovim apis
     { 'folke/neodev.nvim', opts = {} },
+    {
+      {
+        'antosha417/nvim-lsp-file-operations',
+        dependencies = {
+          'nvim-lua/plenary.nvim',
+          "nvim-neo-tree/neo-tree.nvim",
+        },
+        config = function()
+          require('lsp-file-operations').setup()
+        end,
+      },
+    },
   },
   config = function()
     --  This function gets run when an LSP attaches to a particular buffer.
@@ -134,7 +146,17 @@ return {
       pyright = {
         enabled = true,
         settings = {
-          python = {},
+          python = {
+            analysis = {
+              diagnosticSeverityOverrides = {
+                reportInvalidSyntax = 'none',
+                -- or if that specific one doesn't work, try:
+                reportGeneralTypeIssues = 'none',
+                reportWaitNotInAsync = 'information',
+                reportAsyncNotInAsync = 'information',
+              },
+            },
+          },
         },
         -- settings = {
         --   python = {

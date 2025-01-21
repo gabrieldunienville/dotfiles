@@ -78,3 +78,7 @@ vim.opt.hlsearch = true
 -- Set background to transparent
 vim.api.nvim_set_hl(0, 'Normal', { bg = 'none' })
 vim.api.nvim_set_hl(0, 'NormalFloat', { bg = 'none' })
+
+-- Enable spell checking
+vim.opt.spell = true
+vim.opt.spelllang = "en_au"

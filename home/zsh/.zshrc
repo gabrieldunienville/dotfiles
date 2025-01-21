@@ -131,21 +131,20 @@ if [ -z "$SSH_AUTH_SOCK" ]; then
     ssh-add ~/.ssh/id_rsa
 fi
 
-alias dc="docker compose"
 alias xo="xdg-open"
 
 function project_context_prompt() {
-    if [[ -n $PROJECT_CONTEXT ]]; then
-        if [[ $PROJECT_CONTEXT == "dev" ]]; then
+    if [[ -n $ENVIRONMENT ]]; then
+        if [[ $ENVIRONMENT == "dev" ]]; then
             local color="%{$fg_bold[yellow]%}"
-        elif [[ $PROJECT_CONTEXT == "prod" ]]; then
+        elif [[ $ENVIRONMENT == "prod" ]]; then
             local color="%{$fg_bold[red]%}"
-        elif [[ $PROJECT_CONTEXT == "test" ]]; then
+        elif [[ $ENVIRONMENT == "test" ]]; then
             local color="%{$fg_bold[green]%}"
         else
             local color=""
         fi
-        echo "$color${PROJECT_CONTEXT}%{$reset_color%} "
+        echo "$color${ENVIRONMENT}%{$reset_color%} "
     fi
 }
 
@@ -168,7 +167,10 @@ PROMPT='$(status_arrow)$(cwd_prompt)$(git_prompt)$(project_context_prompt)'
 
 eval "$(direnv hook zsh)"
 
-
+# ----------------------------
+# Docker compose
+# ----------------------------
+#
 function senv() {
     local new_env=$1
     # declare -a ALLOWED_CONTEXTS=(test dev prod)
@@ -187,12 +189,28 @@ function senv() {
     #     return 1
     # fi
 
-    # echo "export PROJECT_CONTEXT=$new_env" > .envrc
+    # echo "export ENVIRONMENT=$new_env" > .envrc
     # echo "export COMPOSE_FILE=\"docker-compose.yml:docker-compose.${new_env}.yml\"" >> .envrc
 
-    export PROJECT_CONTEXT=$new_env
+    export ENVIRONMENT=$new_env
 
     direnv reload
 
     echo "Switched to $new_env environment"
+}
+alias dc="docker compose"
+
+# Docker compose shell (interactive) for a running container
+function dcsi() {
+    local service=$1
+    # docker compose exec -it $service sh
+    docker compose exec -it $service /bin/bash
+}
+
+# Docker compose shell (exec) for a running container
+function dcse() {
+    local service=$1
+    local cmd="${@:2}" 
+    docker compose exec $service sh -c "${@:2}"
+    # docker compose exec $service /bin/bash -c "${@:2}"
 }
