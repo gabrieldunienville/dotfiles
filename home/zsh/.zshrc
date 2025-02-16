@@ -214,3 +214,13 @@ function dcse() {
     docker compose exec $service sh -c "${@:2}"
     # docker compose exec $service /bin/bash -c "${@:2}"
 }
+
+eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+
+# alias supabase="npx supabase"
+
+export ANDROID_HOME=$HOME/Android/Sdk
+export PATH=$PATH:$ANDROID_HOME/emulator
+export PATH=$PATH:$ANDROID_HOME/platform-tools
+
+ulimit -n 10240

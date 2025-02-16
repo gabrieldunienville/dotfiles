@@ -79,6 +79,29 @@ vim.opt.hlsearch = true
 vim.api.nvim_set_hl(0, 'Normal', { bg = 'none' })
 vim.api.nvim_set_hl(0, 'NormalFloat', { bg = 'none' })
 
--- Enable spell checking
-vim.opt.spell = true
+-- For now just :set spell in markdown
+vim.opt.spell = false
+
+-- vim.opt.spell = true
+
 vim.opt.spelllang = "en_au"
+
+-- vim.api.nvim_create_autocmd("FileType", {
+--   pattern = { "markdown", "text", "gitcommit" },
+--   callback = function()
+--     vim.opt_local.spell = true
+--   end,
+-- })
+
+
+-- vim.opt.foldmethod = "manual"
+-- vim.api.nvim_create_autocmd({"BufEnter", "BufAdd", "BufNew", "BufNewFile", "BufWinEnter"}, {
+--     group = vim.api.nvim_create_augroup("TS_FOLD_WORKAROUND", {}),
+--     callback = function()
+--         vim.opt.foldmethod = "expr"
+--         vim.opt.foldexpr = "nvim_treesitter#foldexpr()"
+--     end
+-- })
+--
+-- -- Optional: start with all folds open
+-- vim.opt.foldlevel = 99

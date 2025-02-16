@@ -5,6 +5,7 @@ local wezterm = require("wezterm")
 local config = wezterm.config_builder()
 
 config.font = wezterm.font("JetBrains Mono")
+config.font_size = 16.0
 
 -- config.color_scheme = 'Batman'
 -- config.color_scheme = 'AdventureTime'
@@ -44,50 +45,48 @@ config.automatically_reload_config = true
 -- 	}))
 -- end)
 
-
 local wallpaper_names = {
-    'a_aerial_view_of_a_snowy_mountain_range_01.jpg',
-    'a_car_parked_in_a_dark_alley.jpg',
-    'a_drawing_of_an_astronaut_in_space_suit.jpg',
-    'aerial_view_of_a_city_at_night_01.jpg',
-    'a_foggy_mountain_with_trees.jpg',
-    'a_house_in_a_field_with_trees.jpg',
-    'a_house_in_the_snow.png',
-    'a_moon_over_a_mountain.png',
-    'a_mountain_landscape_with_trees_and_a_building_on_top.png',
-    'a_mountain_with_snow_on_it.jpg',
-    'an_astronaut_in_space_with_a_glowing_planet.png',
-    'an_astronaut_in_space_with_a_satellite.png',
-    'a_path_in_a_forest.jpg',
-    'a_path_through_a_forest.jpg',
-    'a_road_with_trees_and_a_mountain_in_the_background.png',
-    'a_road_with_trees_on_either_side_of_it.jpg',
-    'a_rocky_beach_with_trees_and_water.jpg',
-    'a_room_with_a_desk_and_a_chair_and_a_skull_on_the_wall.jpg',
-    'a_snowy_mountain_tops.jpg',
-    'a_wooden_building_on_a_hill_with_trees_in_the_background.jpg',
+	"a_aerial_view_of_a_snowy_mountain_range_01.jpg",
+	"a_car_parked_in_a_dark_alley.jpg",
+	"a_drawing_of_an_astronaut_in_space_suit.jpg",
+	"aerial_view_of_a_city_at_night_01.jpg",
+	"a_foggy_mountain_with_trees.jpg",
+	"a_house_in_a_field_with_trees.jpg",
+	"a_house_in_the_snow.png",
+	"a_moon_over_a_mountain.png",
+	"a_mountain_landscape_with_trees_and_a_building_on_top.png",
+	"a_mountain_with_snow_on_it.jpg",
+	"an_astronaut_in_space_with_a_glowing_planet.png",
+	"an_astronaut_in_space_with_a_satellite.png",
+	"a_path_in_a_forest.jpg",
+	"a_path_through_a_forest.jpg",
+	"a_road_with_trees_and_a_mountain_in_the_background.png",
+	"a_road_with_trees_on_either_side_of_it.jpg",
+	"a_rocky_beach_with_trees_and_water.jpg",
+	"a_room_with_a_desk_and_a_chair_and_a_skull_on_the_wall.jpg",
+	"a_snowy_mountain_tops.jpg",
+	"a_wooden_building_on_a_hill_with_trees_in_the_background.jpg",
 }
-
 
 if not wezterm.GLOBAL.wallpapers then
 	wezterm.GLOBAL.bg_idx = 1
 end
 
 local function cycle_background(window)
-    wezterm.GLOBAL.bg_idx = (wezterm.GLOBAL.bg_idx % #wallpaper_names) + 1
-    local full_path = wezterm.home_dir .. "/wallpapers/" .. wallpaper_names[wezterm.GLOBAL.bg_idx]
+	wezterm.GLOBAL.bg_idx = (wezterm.GLOBAL.bg_idx % #wallpaper_names) + 1
+	local full_path = wezterm.home_dir .. "/wallpapers/" .. wallpaper_names[wezterm.GLOBAL.bg_idx]
 
-    window:set_config_overrides({
-        window_background_image = full_path,
-    })
+	window:set_config_overrides({
+		window_background_image = full_path,
+	})
 end
 
 local function adjust_hue(window, delta)
-    local bg = window:get_config_overrides().window_background_image_hsb
-    bg.hue = bg.hue + delta
-    window:set_config_overrides({
-        window_background_image_hsb = bg,
-    })
+	local bg = window:get_config_overrides().window_background_image_hsb
+	bg.hue = bg.hue + delta
+	window:set_config_overrides({
+		window_background_image_hsb = bg,
+	})
 end
 
 config.keys = {
@@ -116,5 +115,12 @@ config.keys = {
 		end),
 	},
 }
+
+config.window_decorations = "TITLE | RESIZE"
+
+-- Set the window title to show the current working directory
+wezterm.on("format-window-title", function(tab, pane, tabs, pane_config, window_config)
+	return pane.current_working_dir
+end)
 
 return config

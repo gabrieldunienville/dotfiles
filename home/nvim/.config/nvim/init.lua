@@ -102,7 +102,58 @@ vim.opt.rtp:prepend(lazypath)
 --
 require('lazy').setup({
 
-  { import = 'plugins' },
+  -- Core syntax and language
+  { import = 'plugins.treesitter', enabled = true },
+  { import = 'plugins.lsp', enabled = true },
+  { import = 'plugins.cmp', enabled = true },
+  { import = 'plugins.typescript_tools', enabled = false },
+  { import = 'plugins.tailwind_tools', enabled = false },
+  { import = 'plugins.indent_line', enabled = false }, -- 2
+  { import = 'plugins.autopairs', enabled = false }, -- disable to test performance
+  { import = 'plugins.ts_autotag', enabled = true }, -- disable to test performance
+
+  -- UI and Navigation
+  { import = 'plugins.arial', enabled = true }, -- disable to test performance
+  { import = 'plugins.neotree', enabled = true },
+  { import = 'plugins.telescope', enabled = true }, -- 3
+  { import = 'plugins.trouble', enabled = false }, -- 2
+  { import = 'plugins.lualine', enabled = true },
+  { import = 'plugins.harpoon', enabled = true },
+
+  -- Git
+  { import = 'plugins.git', enabled = true }, -- 3
+
+  -- Testing and Debug
+  { import = 'plugins.neotest', enabled = false }, -- 2
+  { import = 'plugins.dap', enabled = true },
+
+  -- Completion and AI
+  { import = 'plugins.copilot', enabled = true },
+  { import = 'plugins.copilot_chat', enabled = false },
+
+  -- Language specific
+  { import = 'plugins.ansible', enabled = false }, -- 2
+  { import = 'plugins.obsidian', enabled = true },
+  { import = 'plugins.markdown', enabled = true },
+  { import = 'plugins.venv_selector', enabled = true },
+
+  -- Utilities
+  { import = 'plugins.slime', enabled = true }, -- 2
+  { import = 'plugins.auto_session', enabled = false },
+  { import = 'plugins.which_key', enabled = true },
+  { import = 'plugins.yank_assassin', enabled = true },
+  { import = 'plugins.vim_sleuth', enabled = false }, -- 2
+  { import = 'plugins.tmux_navigator', enabled = true },
+
+  -- UI Enhancements
+  { import = 'plugins.todo_comments', enabled = false }, -- 2
+  { import = 'plugins.mini', enabled = true },
+  { import = 'plugins.comment', enabled = true },
+  { import = 'plugins.conform', enabled = true },
+  { import = 'plugins.treesj', enabled = true },
+  { import = 'plugins.neogen', enabled = false }, -- 2
+  { import = 'plugins.catppuccin', enabled = true },
+  { import = 'plugins.cyberdream', enabled = false }, -- 2
 }, {
   ui = {
     -- If you are using a Nerd Font: set icons to an empty table which will use the

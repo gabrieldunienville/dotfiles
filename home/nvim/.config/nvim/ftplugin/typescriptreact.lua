@@ -1,4 +1,4 @@
-local size = 2
+local size = 4
 vim.bo.tabstop = size -- size of a hard tabstop (ts).
 vim.bo.shiftwidth = size -- size of an indentation (sw).
 vim.bo.expandtab = true -- always uses spaces instead of tab characters (et)

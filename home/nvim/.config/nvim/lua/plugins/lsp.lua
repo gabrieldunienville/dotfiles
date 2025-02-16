@@ -214,7 +214,6 @@ return {
         end,
       },
       -- Note: This is typescript-language-server which is a proxy to the actual tsserver
-      -- tsserver = {
       ts_ls = {
         enabled = true,
         capabilities = capabilities,
@@ -243,7 +242,7 @@ return {
         },
       },
       tailwindcss = {
-        enabled = true,
+        enabled = false,
       },
       bashls = {
         -- settings = {

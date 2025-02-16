@@ -41,7 +41,9 @@ return { -- Autoformat
       javascript = { 'prettierd' },
       typescript = { 'prettierd' },
       svelte = { 'prettierd' },
+      typescriptreact = { 'prettierd' },
       yaml = { 'prettierd' },
+      json = { 'jq' },
     },
     formatters = {
       autoflake = {

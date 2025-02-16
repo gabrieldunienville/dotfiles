@@ -18,6 +18,7 @@ return {
       'svelte',
       'javascript',
       'typescript',
+      'tsx',
       'scss',
       'css',
       'dap_repl',
@@ -33,8 +34,8 @@ return {
       additional_vim_regex_highlighting = { 'ruby' },
     },
     indent = { enable = true, disable = {
-        'ruby',
-        'xml'
+      'ruby',
+      'xml',
     } },
   },
   config = function(_, opts)
