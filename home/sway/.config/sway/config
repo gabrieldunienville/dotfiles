@@ -338,9 +338,19 @@ bindsym $mod+d exec $menu
 
 # https://github.com/flameshot-org$(xdg-user-dir PICTURES)//flameshot/blob/master/docs/Sway%20and%20wlroots%20support.md
 
+#=============================================#
+# Bindings for custom scripts
+#=============================================#
+
 bindsym Control+Print exec grim -g "$(slurp)"
 bindsym Print exec grim -g "$(slurp)" - | wl-copy -t image/png
 # bindsym $mod+t exec flameshot gui
+
+# Add binding for code block wrapper
+# bindsym $mod+g exec ~/custom-scripts/paste-code-snippet.sh
+bindsym $mod+g exec ~/custom-scripts/paste-code-snippet.sh | swaymsg type --raw --
+
+#=============================================#
 
 exec systemctl --user import-environment DISPLAY WAYLAND_DISPLAY SWAYSOCK
 exec hash dbus-update-activation-environment 2>/dev/null && \
