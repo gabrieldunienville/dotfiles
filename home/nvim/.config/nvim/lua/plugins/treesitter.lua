@@ -23,6 +23,8 @@ return {
       'css',
       'dap_repl',
       'dockerfile',
+      'xml',
+      'terraform',
     },
     -- Autoinstall languages that are not installed
     auto_install = true,

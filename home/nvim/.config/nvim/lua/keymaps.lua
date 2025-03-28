@@ -51,3 +51,4 @@ vim.keymap.set('n', '<leader>yp', insertFullPath, { noremap = true, silent = tru
 
 -- vim.keymap.set('n', '<leader>yp', ':let @" = expand("%")<cr>')
 
+vim.keymap.set('n', '<leader>lf', 'mmF"if<Esc>`mli{}<Left>')

@@ -242,7 +242,7 @@ return {
         },
       },
       tailwindcss = {
-        enabled = false,
+        enabled = true,
       },
       bashls = {
         -- settings = {

@@ -42,10 +42,20 @@ return { -- Autoformat
       typescript = { 'prettierd' },
       svelte = { 'prettierd' },
       typescriptreact = { 'prettierd' },
+      htmldjango = { 'prettierd' },
+      html = { 'prettierd' },
       yaml = { 'prettierd' },
       json = { 'jq' },
     },
     formatters = {
+      prettierd = {
+        -- The default configuration for prettierd, extended for Jinja
+        env = {
+          PRETTIER_PLUGINS = 'prettier-plugin-jinja-template',
+          -- You can also set this if your plugins are in a specific location
+          -- PRETTIER_PLUGIN_PATH = "/path/to/node_modules"
+        },
+      },
       autoflake = {
         -- This can be a string or a function that returns a string.
         -- When defining a new formatter, this is the only field that is required
