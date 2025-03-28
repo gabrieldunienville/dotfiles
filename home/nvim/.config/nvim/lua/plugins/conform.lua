@@ -46,6 +46,7 @@ return { -- Autoformat
       html = { 'prettierd' },
       yaml = { 'prettierd' },
       json = { 'jq' },
+      -- ['jinja.html'] = { 'prettierd' },
     },
     formatters = {
       prettierd = {
