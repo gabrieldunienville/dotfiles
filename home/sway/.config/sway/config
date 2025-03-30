@@ -69,8 +69,14 @@ include /etc/sway/config-vars.d/*
 # Example configuration:
 #
 # output HDMI-A-1 resolution 1920x1080 position 1920,0
+
+# eDP-1: 1920x1080
+# HDMI-A-1: 3840x2160
+# DP-3: 1920x1080
+
 output eDP-1 position 0,0
 output DP-3 position 0,1080
+
 #
 # You can get the names of your outputs by running: swaymsg -t get_outputs
 
@@ -219,6 +225,9 @@ output DP-3 position 0,1080
 #
 # Layout stuff:
 #
+
+    workspace_layout tabbed
+
     # You can "split" the current object of your focus with
     # $mod+b or $mod+v, for horizontal and vertical splits
     # respectively.
@@ -297,6 +306,11 @@ bindsym $mod+r mode "resize"
 #     }
 # }
 
+input * {
+    xkb_layout "us"
+    xkb_variant "altgr-intl"
+    xkb_options "lv3:ralt_switch"
+}
 
 #===============================#
 # Keyboard Shortcuts (Hardware) #
@@ -357,6 +371,8 @@ exec hash dbus-update-activation-environment 2>/dev/null && \
      dbus-update-activation-environment --systemd DISPLAY WAYLAND_DISPLAY SWAYSOCK
 
 for_window [app_id="flameshot"] border pixel 0, floating enable, fullscreen disable, move absolute position 0 0
+
+for_window [title="Emulator" window_type="utility"] move scratchpad
 
 input "type:touchpad" {
     events enabled
