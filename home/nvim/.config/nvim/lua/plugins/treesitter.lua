@@ -3,6 +3,7 @@ return {
   build = ':TSUpdate',
   dependencies = {
     'LiadOz/nvim-dap-repl-highlights',
+    'nvim-treesitter/playground',
   },
   opts = {
     ensure_installed = {
@@ -25,98 +26,128 @@ return {
       'dockerfile',
       'xml',
       'terraform',
-      -- We'll handle jinja separately
+      'jinja',
+      'htmldjango',
     },
+    -- Autoinstall languages that are not installed
     auto_install = true,
     highlight = {
       enable = true,
+      -- Some languages depend on vim's regex highlighting system (such as Ruby) for indent rules.
+      --  If you are experiencing weird indenting issues, add the language to
+      --  the list of additional_vim_regex_highlighting and disabled languages for indent.
       additional_vim_regex_highlighting = { 'ruby' },
+    },
+    incremental_selection = {
+      enable = true,
     },
     indent = {
       enable = true,
       disable = {
         'ruby',
         'xml',
-        'jinja', -- Using 'jinja' as the parser name
       },
+    },
+    injection = {
+      enable = true,
     },
   },
   config = function(_, opts)
     require('nvim-dap-repl-highlights').setup()
 
-    -- Register the cathaysia/tree-sitter-jinja parser
-    local parser_config = require('nvim-treesitter.parsers').get_parser_configs()
-    parser_config.jinja = {
-      install_info = {
-        url = 'https://github.com/cathaysia/tree-sitter-jinja',
-        files = { 'tree-sitter-jinja/src/parser.c' },
-        branch = 'master',
-        generate_requires_npm = false,
-        requires_generate_from_grammar = false,
-      },
-      filetype = 'jinja.html',
-    }
+    -- [[ Configure Treesitter ]] See `:help nvim-treesitter`
 
-    -- Set up proper filetype detection for Jinja templates
-    vim.filetype.add {
-      extension = {
-        jinja = 'jinja.html',
-        jinja2 = 'jinja.html',
-        j2 = 'jinja.html',
-      },
-      pattern = {
-        ['.*%.jinja%.html'] = 'jinja.html',
-        ['.*%.html%.jinja'] = 'jinja.html',
-        ['.*%.j2%.html'] = 'jinja.html',
-        ['.*%.html%.j2'] = 'jinja.html',
-        ['.*%.xml%.j2'] = 'jinja.xml',
-      },
-    }
+    -- Prefer git instead of curl in order to improve connectivity in some environments
+    require('nvim-treesitter.install').prefer_git = true
 
-    -- For Neovim's filetype detection mechanism
-    vim.api.nvim_create_autocmd({ 'BufRead', 'BufNewFile' }, {
-      pattern = { '*.jinja.html', '*.html.jinja', '*.j2.html', '*.html.j2' },
+    ---@diagnostic disable-next-line: missing-fields
+    require('nvim-treesitter.configs').setup(opts)
+    --
+
+    -- vim.treesitter.language.register('html', 'jinja.html')
+    vim.treesitter.language.register('htmldjango', 'jinja.html')
+    -- vim.treesitter.language.register('jinja', 'jinja.html')
+
+    -- Add explicit parser registrations
+    -- local parser_config = require('nvim-treesitter.parsers').get_parser_configs()
+    -- parser_config.jinja.used_by = { 'html' }
+
+    -- ---- Enable syntax highlighting for Jinja files
+    -- vim.api.nvim_create_autocmd({ 'BufEnter', 'BufWinEnter' }, {
+    --   pattern = { '*.jinja', '*.jinja.html', '*.html.jinja' },
+    --   callback = function()
+    --     vim.cmd 'syntax on'
+    --   end,
+    -- })
+
+    -- There are additional nvim-treesitter modules that you can use to interact
+    -- with nvim-treesitter. You should go explore a few and see what interests you:
+    --
+    --    - Incremental selection: Included, see `:help nvim-treesitter-incremental-selection-mod`
+    --    - Show your current context: https://github.com/nvim-treesitter/nvim-treesitter-contexss
+    --    - Treesitter + textobjects: https://github.com/nvim-treesitter/nvim-treesitter-textobjects
+
+    vim.api.nvim_create_user_command('CheckInjections', function()
+      -- Check both jinja and jinja.html injections
+      local query_string = vim.treesitter.query.get('jinja', 'injections')
+      if query_string then
+        print 'Jinja injections query found:'
+        print(vim.inspect(query_string))
+      else
+        print 'No jinja injections query found!'
+      end
+
+      -- local jinja_html_query = vim.treesitter.query.get('jinja.html', 'injections')
+      -- if jinja_html_query then
+      --   print '\nJinja.html injections query found:'
+      --   print(vim.inspect(jinja_html_query))
+      -- else
+      --   print '\nNo jinja.html injections query found!'
+      -- end
+    end, {})
+
+    vim.api.nvim_create_autocmd('FileType', {
+      pattern = 'jinja.html',
       callback = function()
-        vim.bo.filetype = 'jinja.html'
+        -- Directly set the injection query for jinja
+        -- This completely overrides any queries from runtime directories
+        vim.treesitter.query.set(
+          'jinja',
+          'injections',
+          [[
+      ;; Inject HTML into all words nodes
+      (words) @injection.content
+      (#set! injection.language "html")
+      
+      ;; Also try to capture content between HTML tags directly
+      ((words) @injection.content
+       (#match? @injection.content "<.*>")
+       (#set! injection.language "html"))
+    ]]
+        )
+
+        -- Make sure highlighting is enabled for this buffer
+        local ft = vim.bo.filetype
+        local lang = vim.treesitter.language.get_lang(ft)
+        if lang then
+          -- Start the parser for this buffer
+          vim.treesitter.start(0, lang)
+        end
+
+        -- Optionally, enable traditional syntax highlighting as a fallback
+        vim.cmd 'syntax enable'
       end,
-      group = vim.api.nvim_create_augroup('JinjaFiletypeSetup', { clear = true }),
     })
 
-    -- Configure Treesitter
-    require('nvim-treesitter.install').prefer_git = true
-    require('nvim-treesitter.configs').setup(opts)
-
-    -- Register parser association with filetypes
-    local ft_to_parser = require('nvim-treesitter.parsers').filetype_to_parsername
-    ft_to_parser.jinja = 'jinja'
-    ft_to_parser['jinja.html'] = 'jinja'
-
-    -- Install the Jinja parser
-    vim.defer_fn(function()
-      vim.cmd 'TSInstall jinja'
-    end, 1000)
-
-    -- Create a command to help diagnose issues if needed
-    vim.api.nvim_create_user_command('DebugJinja', function()
-      print('Current filetype: ' .. vim.bo.filetype)
-      local parser_name = require('nvim-treesitter.parsers').get_parser_from_ft(vim.bo.filetype)
-      print('Parser for current filetype: ' .. (parser_name or 'none'))
-      print('Is jinja installed: ' .. tostring(vim.fn.executable 'tree-sitter-jinja' == 1))
-
-      -- Get info about active parsers for this buffer
-      local has_ts, ts_info = pcall(function()
-        local buf = vim.api.nvim_get_current_buf()
-        return vim.treesitter.highlighter.active[buf]
-      end)
-
-      if has_ts and ts_info then
-        print 'Tree-sitter is active for this buffer'
-        for lang, _ in pairs(ts_info.trees) do
-          print('Active language: ' .. lang)
-        end
-      else
-        print 'Tree-sitter is not active for this buffer'
-      end
-    end, {})
+    vim.treesitter.query.set(
+      'python',
+      'injections',
+      [[
+  ;; Identify SQL queries in string literals
+  ((string) @injection.content
+   (#match? @injection.content "SELECT|INSERT|UPDATE|DELETE|CREATE|ALTER")
+   (#set! injection.language "sql"))
+]]
+    )
   end,
 }

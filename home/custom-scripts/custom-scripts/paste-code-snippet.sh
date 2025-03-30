@@ -46,7 +46,7 @@ normalize_indent() {
 
 # Normalize indentation and wrap in triple backticks
 normalized_content=$(normalize_indent "$clipboard_content")
-wrapped_content="$(printf "\`\`\`\n%s\n\`\`\`\n\n" "$normalized_content")"
+wrapped_content="$(printf "\`\`\`\n%s\n\`\`\`\n" "$normalized_content")"
 
 # Put wrapped content in clipboard
 echo -n "$wrapped_content" | wl-copy

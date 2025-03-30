@@ -154,6 +154,7 @@ require('lazy').setup({
   { import = 'plugins.neogen', enabled = false }, -- 2
   { import = 'plugins.catppuccin', enabled = true },
   { import = 'plugins.cyberdream', enabled = false }, -- 2
+  { import = 'plugins.neoscroll', enabled = true },
 }, {
   ui = {
     -- If you are using a Nerd Font: set icons to an empty table which will use the

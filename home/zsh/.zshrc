@@ -194,7 +194,7 @@ function senv() {
 
     export ENVIRONMENT=$new_env
 
-    direnv reload
+    direnv reloa.s
 
     echo "Switched to $new_env environment"
 }
@@ -224,3 +224,10 @@ export PATH=$PATH:$ANDROID_HOME/emulator
 export PATH=$PATH:$ANDROID_HOME/platform-tools
 
 ulimit -n 10240
+export PATH=$PATH:$HOME/.maestro/bin
+
+# Copy last command to clipboard
+alias cl="fc -ln -1 | wl-copy"
+
+# Run ipython
+alias ipy="uv run ipython"

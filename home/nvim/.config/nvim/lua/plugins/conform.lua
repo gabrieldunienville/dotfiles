@@ -45,6 +45,7 @@ return { -- Autoformat
       htmldjango = { 'prettierd' },
       html = { 'prettierd' },
       yaml = { 'prettierd' },
+      xml = { 'prettierd' },
       json = { 'jq' },
       -- ['jinja.html'] = { 'prettierd' },
     },
