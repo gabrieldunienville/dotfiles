@@ -366,9 +366,22 @@ bindsym $mod+g exec ~/custom-scripts/paste-code-snippet.sh | swaymsg type --raw 
 
 #=============================================#
 
-exec systemctl --user import-environment DISPLAY WAYLAND_DISPLAY SWAYSOCK
+# Set environment variables for Wayland and xdg-desktop-portal
+exec systemctl --user import-environment DISPLAY WAYLAND_DISPLAY SWAYSOCK XDG_CURRENT_DESKTOP=sway
 exec hash dbus-update-activation-environment 2>/dev/null && \
-     dbus-update-activation-environment --systemd DISPLAY WAYLAND_DISPLAY SWAYSOCK
+     dbus-update-activation-environment --systemd DISPLAY WAYLAND_DISPLAY SWAYSOCK XDG_CURRENT_DESKTOP=sway
+
+# Explicitly set XDG_CURRENT_DESKTOP
+exec export XDG_CURRENT_DESKTOP=sway
+
+# Make sure xdg-desktop-portal has all necessary info
+exec dbus-update-activation-environment --systemd --all
+
+# Start portal service directly
+exec systemctl --user start xdg-desktop-portal-wlr
+
+# For screen sharing with pipewire
+exec systemctl --user start pipewire.socket
 
 for_window [app_id="flameshot"] border pixel 0, floating enable, fullscreen disable, move absolute position 0 0
 
