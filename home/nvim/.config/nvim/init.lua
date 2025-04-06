@@ -130,6 +130,8 @@ require('lazy').setup({
   -- Completion and AI
   { import = 'plugins.copilot', enabled = true },
   { import = 'plugins.copilot_chat', enabled = false },
+  { import = 'plugins.parrot', enabled = true },
+  { import = 'plugins.luasnip', enabled = true },
 
   -- Language specific
   { import = 'plugins.ansible', enabled = false }, -- 2

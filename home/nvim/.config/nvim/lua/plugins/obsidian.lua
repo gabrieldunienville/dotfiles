@@ -34,10 +34,14 @@ return {
           name = 'personal_notes',
           path = '~/personal-notes',
         },
+        {
+          name = 'bellus',
+          path = '~/bellus-obsidian',
+        },
       },
 
       -- Optional, if you keep notes in a specific subdirectory of your vault.
-      -- notes_subdir = 'notes',
+      notes_subdir = 'notes',
 
       -- Optional, set the log level for obsidian.nvim. This is an integer corresponding to one of the log
       -- levels defined by "vim.log.levels.*".
@@ -88,42 +92,36 @@ return {
           end,
           opts = { buffer = true, expr = true },
         },
+        -- ['<leader>ob'] = {
+        --   action = function()
+        --     return require('obsidian').get_client().create_note()
+        --   end,
       },
 
       -- Where to put new notes. Valid options are
       --  * "current_dir" - put new notes in same directory as the current buffer.
       --  * "notes_subdir" - put new notes in the default notes subdirectory.
-      -- new_notes_location = 'notes_subdir',
-      new_notes_location = 'current_dir',
+      new_notes_location = 'notes_subdir',
+      -- new_notes_location = 'current_dir',
 
-      -- -- Optional, customize how note IDs are generated given an optional title.
-      -- -- -@param title string|?
-      -- ---@return string
-      -- note_id_func = function(title)
-      --   -- Create note IDs in a Zettelkasten format with a timestamp and a suffix.
-      --   -- In this case a note with the title 'My new note' will be given an ID that looks
-      --   -- like '1657296016-my-new-note', and therefore the file name '1657296016-my-new-note.md'
-      --   local suffix = ''
-      --   if title ~= nil then
-      --     -- If title is given, transform it into valid file name.
-      --     suffix = title:gsub(' ', '-'):gsub('[^A-Za-z0-9-]', ''):lower()
-      --   else
-      --     -- If title is nil, just add 4 random uppercase letters to the suffix.
-      --     for _ = 1, 4 do
-      --       suffix = suffix .. string.char(math.random(65, 90))
-      --     end
-      --   end
-      --   return tostring(os.time()) .. '-' .. suffix
-      -- end,
-
-      -- -- Optional, customize how note IDs are generated given an optional title.
-      -- -- -@param title string|?
-      -- ---@return string
+      -- Optional, customize how note IDs are generated given an optional title.
+      -- -@param title string|?
+      ---@return string
       note_id_func = function(title)
         -- Create note IDs in a Zettelkasten format with a timestamp and a suffix.
         -- In this case a note with the title 'My new note' will be given an ID that looks
         -- like '1657296016-my-new-note', and therefore the file name '1657296016-my-new-note.md'
-        return title
+        local suffix = ''
+        if title ~= nil then
+          -- If title is given, transform it into valid file name.
+          suffix = title:gsub(' ', '-'):gsub('[^A-Za-z0-9-]', ''):lower()
+        else
+          -- If title is nil, just add 4 random uppercase letters to the suffix.
+          for _ = 1, 4 do
+            suffix = suffix .. string.char(math.random(65, 90))
+          end
+        end
+        return tostring(os.time()) .. '-' .. suffix
       end,
 
       -- Optional, customize how note file names are generated given the ID, target directory, and title.
@@ -199,7 +197,7 @@ return {
       -- ---@param url string
       follow_url_func = function(url)
         -- Open the URL in the default web browser.
-        vim.fn.jobstart({"xdg-open", url})  -- linux
+        vim.fn.jobstart { 'xdg-open', url } -- linux
       end,
 
       -- Optional, set to true if you use the Obsidian Advanced URI plugin.
@@ -267,7 +265,8 @@ return {
       -- Optional, configure additional syntax highlighting / extmarks.
       -- This requires you have `conceallevel` set to 1 or 2. See `:help conceallevel` for more details.
       ui = {
-        enable = true, -- set to false to disable all additional syntax features
+        -- enable = true, -- set to false to disable all additional syntax features
+        enable = false, -- Allow render-markdown.nvim to handle UI
         update_debounce = 200, -- update delay after a text change (in milliseconds)
         max_file_length = 5000, -- disable UI features for files with more than this many lines
         -- Define how various check-boxes are displayed
@@ -327,5 +326,6 @@ return {
       --   end,
       -- },
     }
+    vim.keymap.set('n', '<leader>on', ':ObsidianNew', { desc = 'Create new obsidian note' })
   end,
 }

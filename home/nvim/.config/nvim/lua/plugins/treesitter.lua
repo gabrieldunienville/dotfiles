@@ -66,6 +66,7 @@ return {
 
     -- vim.treesitter.language.register('html', 'jinja.html')
     vim.treesitter.language.register('htmldjango', 'jinja.html')
+    vim.treesitter.language.register('htmldjango', 'jinja.xml')
     -- vim.treesitter.language.register('jinja', 'jinja.html')
 
     -- Add explicit parser registrations

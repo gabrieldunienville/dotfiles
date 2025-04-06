@@ -231,3 +231,8 @@ alias cl="fc -ln -1 | wl-copy"
 
 # Run ipython
 alias ipy="uv run ipython"
+
+# Common secrets like anthropic API key
+if [ -f "$HOME/.secrets" ]; then
+    source "$HOME/.secrets"
+fi

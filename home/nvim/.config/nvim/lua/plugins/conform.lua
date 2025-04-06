@@ -46,17 +46,20 @@ return { -- Autoformat
       html = { 'prettierd' },
       yaml = { 'prettierd' },
       xml = { 'prettierd' },
+      markdown = { 'prettierd' },
       json = { 'jq' },
+      prompt = { 'prettierd' },
       -- ['jinja.html'] = { 'prettierd' },
+      -- ['jinja.xml'] = { 'prettierd' },
     },
     formatters = {
       prettierd = {
         -- The default configuration for prettierd, extended for Jinja
-        env = {
-          PRETTIER_PLUGINS = 'prettier-plugin-jinja-template',
-          -- You can also set this if your plugins are in a specific location
-          -- PRETTIER_PLUGIN_PATH = "/path/to/node_modules"
-        },
+        -- env = {
+        --   PRETTIER_PLUGINS = 'prettier-plugin-jinja-template',
+        --   -- You can also set this if your plugins are in a specific location
+        --   -- PRETTIER_PLUGIN_PATH = "/path/to/node_modules"
+        -- },
       },
       autoflake = {
         -- This can be a string or a function that returns a string.
