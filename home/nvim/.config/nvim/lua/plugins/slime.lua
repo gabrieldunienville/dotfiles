@@ -14,7 +14,7 @@ return {
     vim.g.slime_default_config = { socket_name = 'default', target_pane = ':.2' }
     vim.g.slime_dont_ask_default = true
     vim.g.slime_preserve_curpos = 0
-    vim.g.slime_cell_delimiter = "^#%%"
+    vim.g.slime_cell_delimiter = "^#\\s--"
 
     -- Set this so we can execute a whole code block as one cell in the REPL
     --    Note from docs: If your target supports bracketed-paste, that's a better option than g:slime_python_ipython
