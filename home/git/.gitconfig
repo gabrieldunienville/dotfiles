@@ -7,3 +7,31 @@
 	autoSetupRemote = true
 [init]
 	defaultBranch = main
+[gui]
+	editor = nvim
+[guitool "Edit (meld) directory"]
+	cmd = meld .
+	noconsole = yes
+[guitool "Edit (meld) file"]
+	cmd = meld $FILENAME
+	needsfile = yes
+	noconsole = yes
+[merge]
+	tool = meld
+[alias]
+	co = checkout
+	br = "!git branch --sort=-committerdate | head -n 10"
+	cbr = "!git br | fzf | xargs git checkout"
+	st = status
+	ru = remote update
+	d = "!f() { git diff --color ${1:+\"$@\"} ${2:+\"$@\"} | sed -r \"s/^([^-+ ]*)[-+ ]/\\1/\" | less -r; };f"
+	rc = rebase --continue
+	mt = mergetool
+	wip = commit -am "WIP"
+	rs = rebase --skip
+	ss = stash list -p -G
+	ls = ls-tree -r --name-only
+	s = log -p --all -S
+	theirs = "!f() { git checkout --theirs $1 && git add $1; };f"
+	glog = log --decorate --graph --name-only
+	cm = commit -m

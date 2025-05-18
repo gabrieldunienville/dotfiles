@@ -10,6 +10,9 @@ return {
           api_key = os.getenv 'ANTHROPIC_API_KEY',
         },
       },
+      chat_user_prefix = '🗨: User',
+      llm_prefix = '🦜: ',
+      chat_free_cursor = true,
       hooks = {
         CodeConsultant = function(prt, params)
           local chat_prompt = [[
@@ -58,6 +61,9 @@ return {
     }
 
     -- Key bindings
-    vim.keymap.set('v', '<leader>ka', ":<C-u>'<,'>PrtChatNew<cr>", { desc = 'ChatNew' })
+    vim.keymap.set('v', '<leader>ka', ":<C-u>'<,'>PrtChatNew<cr>", { desc = 'ChatNew using selection' })
+    vim.keymap.set('n', '<leader>ka', ':PrtChatNew<cr>', { desc = 'ChatNew' })
+    vim.keymap.set('n', '<leader>kf', ':PrtChatFinder<cr>', { desc = 'ChatFinder' })
+    vim.keymap.set('v', '<leader>kp', ":<C-u>'<,'>PrtChatPaste<cr>", { desc = 'ChatPaste' })
   end,
 }

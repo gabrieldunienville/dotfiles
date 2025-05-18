@@ -105,3 +105,7 @@ vim.opt.spelllang = "en_au"
 --
 -- -- Optional: start with all folds open
 -- vim.opt.foldlevel = 99
+--
+
+-- Set the fill character for diffview
+vim.opt.fillchars:append { diff = "╱" }

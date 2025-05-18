@@ -44,10 +44,16 @@ vim.keymap.set('t', '<Esc><Esc>', '<C-\\><C-n>', { desc = 'Exit terminal mode' }
 
 -- Copy path
 local function insertFullPath()
-  local filepath = vim.fn.expand('%')
+  local filepath = vim.fn.expand '%'
   vim.fn.setreg('+', filepath) -- write to clippoard
 end
+
+local function insertFileName()
+  local filename = vim.fn.expand '%:t' -- the ":t" gets only the tail (filename) part
+  vim.fn.setreg('+', filename) -- write to clipboard
+end
 vim.keymap.set('n', '<leader>yp', insertFullPath, { noremap = true, silent = true })
+vim.keymap.set('n', '<leader>yf', insertFileName, { noremap = true, silent = true })
 
 -- vim.keymap.set('n', '<leader>yp', ':let @" = expand("%")<cr>')
 
@@ -57,5 +63,23 @@ vim.keymap.set('n', '<leader>lf', 'mmF"if<Esc>`mli{}<Left>')
 -- Spell checking
 vim.keymap.set('n', ')', ']s', { desc = 'Next spelling error' })
 vim.keymap.set('n', '(', '[s', { desc = 'Previous spelling error' })
+vim.keymap.set('n', '<leader>is', 'z=', { desc = 'Show spelling suggestions' })
+vim.keymap.set('n', '<leader>ia', 'zg', { desc = 'Add word to dictionary' })
+vim.keymap.set('n', '<leader>iu', 'zug', { desc = 'Undo add word to dictionary' })
+vim.keymap.set('n', '<leader>io', '<cmd>set spell<CR>', { desc = 'Turn on spell checking' })
 
+-- Find and replace
+vim.keymap.set('v', '<C-r>', '"sy:%s/<C-r>s/<C-r>s/g<Left><Left>', { desc = 'Find and Replace' })
+-- vim.keymap.set('n', '<C-r>', ':%s/<C-r>s/<C-r>s/g<Left><Left>', { desc = 'Find and Replace' })
+vim.keymap.set('v', '<C-t>', '"sy/<C-r>s<CR>', { desc = 'Find' })
 
+-- Notes
+--  Repeat last substitution on current line: &
+--  Repeat last substitution on current line with same flags: :&&
+--  Repeat last substitution on entire buffer: g&
+--  Repeat last substitution on entire buffer with same flags: :%&&
+
+-- Git
+vim.keymap.set('n', '<leader>gs', function()
+  require('diffview.config').actions.toggle_stage_entry()
+end, { desc = 'Refresh git diff view' })

@@ -54,6 +54,11 @@ return {
       require('neotest').run.run()
     end, { desc = '[U]nit test run [C]losest' })
 
+    vim.keymap.set('n', '<leader>ud', function()
+      vim.cmd 'wa'
+      require('neotest').run.run({strategy = 'dap'})
+    end, { desc = '[U]nit test run with [D]AP' })
+
     vim.keymap.set('n', '<leader>ul', function()
       require('neotest').run.run_last()
     end, { desc = '[U]nit test run [L]ast' })

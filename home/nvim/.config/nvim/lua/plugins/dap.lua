@@ -89,41 +89,34 @@ return {
           elements = {
             {
               id = 'scopes',
-              size = 0.4,
-              -- size = 0.25,
+              size = 0.25,
             },
-            -- {
-            --   id = 'breakpoints',
-            --   size = 0.25,
-            -- },
+            {
+              id = 'breakpoints',
+              size = 0.25,
+            },
             {
               id = 'stacks',
-              size = 0.3,
+              size = 0.25,
             },
             {
               id = 'watches',
-              size = 0.3,
+              size = 0.25,
             },
           },
-          position = 'left',
+          position = 'right',
           size = 60,
-          -- size = 40,
         },
         {
-          elements = {
-            {
-              id = 'repl',
-              size = 1,
-              -- size = 0.5,
-            },
-            -- {
-            --   id = 'console',
-            --   size = 0.5,
-            -- },
-          },
+          elements = { {
+            id = 'repl',
+            size = 0.5,
+          }, {
+            id = 'console',
+            size = 0.5,
+          } },
           position = 'bottom',
-          size = 20,
-          -- size = 10,
+          size = 25,
         },
       },
       mappings = {
@@ -154,7 +147,11 @@ return {
     --     -- See https://github.com/leoluz/nvim-dap-go/blob/main/README.md#configuring
     --     detached = vim.fn.has 'win32' == 0,
     --   },
-    require('dap-python').setup 'python'
+    require('dap-python').setup 'uv'
+    -- require('dap-python').setup('uv', {
+    --   justMyCode = false,
+    -- })
+
 
     -- dap.configurations
     -- ------------------
@@ -173,6 +170,7 @@ return {
       request = 'launch',
       name = 'Launch current file',
       program = '${file}',
+      justMyCode = false,
     })
 
     table.insert(dap.configurations.python, {

@@ -102,6 +102,10 @@ source $ZSH/oh-my-zsh.sh
 
 #export DAGSTER_HOME=~"/dagster_home"
 
+export HISTSIZE=1000000000
+export SAVEHIST=$HISTSIZE
+setopt EXTENDED_HISTORY
+
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
@@ -192,9 +196,10 @@ function senv() {
     # echo "export ENVIRONMENT=$new_env" > .envrc
     # echo "export COMPOSE_FILE=\"docker-compose.yml:docker-compose.${new_env}.yml\"" >> .envrc
 
+    tmux set-environment ENVIRONMENT $new_env
     export ENVIRONMENT=$new_env
 
-    direnv reloa.s
+    direnv reload
 
     echo "Switched to $new_env environment"
 }
@@ -236,3 +241,9 @@ alias ipy="uv run ipython"
 if [ -f "$HOME/.secrets" ]; then
     source "$HOME/.secrets"
 fi
+
+# AsyncAPI CLI Autocomplete
+
+ASYNCAPI_AC_ZSH_SETUP_PATH=/home/gabriel/.cache/@asyncapi/cli/autocomplete/zsh_setup && test -f $ASYNCAPI_AC_ZSH_SETUP_PATH && source $ASYNCAPI_AC_ZSH_SETUP_PATH; # asyncapi autocomplete setup
+
+

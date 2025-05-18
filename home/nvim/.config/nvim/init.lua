@@ -119,12 +119,13 @@ require('lazy').setup({
   { import = 'plugins.trouble', enabled = false }, -- 2
   { import = 'plugins.lualine', enabled = true },
   { import = 'plugins.harpoon', enabled = true },
+  { import = 'plugins.spectre', enabled = true },
 
   -- Git
   { import = 'plugins.git', enabled = true }, -- 3
 
   -- Testing and Debug
-  { import = 'plugins.neotest', enabled = false }, -- 2
+  { import = 'plugins.neotest', enabled = true }, -- 2
   { import = 'plugins.dap', enabled = true },
 
   -- Completion and AI
@@ -148,7 +149,7 @@ require('lazy').setup({
   { import = 'plugins.tmux_navigator', enabled = true },
 
   -- UI Enhancements
-  { import = 'plugins.todo_comments', enabled = false }, -- 2
+  { import = 'plugins.todo_comments', enabled = true }, -- 2
   { import = 'plugins.mini', enabled = true },
   { import = 'plugins.comment', enabled = true },
   { import = 'plugins.conform', enabled = true },
@@ -179,5 +180,6 @@ require('lazy').setup({
   },
 })
 
+require 'user_commands.ipython_run_imports'
 require 'user_commands.pyflyby_autoimport'
 require 'user_commands.slime_custom'

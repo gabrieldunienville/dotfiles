@@ -8,7 +8,7 @@ return {
       -- Only one of these is needed, not both.
       'nvim-telescope/telescope.nvim', -- optional
     },
-    config = true,
+    -- config = true,
   },
   -- {
   --   'lewis6991/gitsigns.nvim',

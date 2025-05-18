@@ -23,7 +23,7 @@ return {
       'scss',
       'css',
       'dap_repl',
-      'dockerfile',
+      -- 'dockerfile',
       'xml',
       'terraform',
       'jinja',
@@ -31,6 +31,9 @@ return {
     },
     -- Autoinstall languages that are not installed
     auto_install = true,
+    ignore_install = {
+      'dockerfile',  -- Broken
+    },
     highlight = {
       enable = true,
       -- Some languages depend on vim's regex highlighting system (such as Ruby) for indent rules.
@@ -46,6 +49,7 @@ return {
       disable = {
         'ruby',
         'xml',
+        'python',  -- Let the builtin python indent config handle this
       },
     },
     injection = {

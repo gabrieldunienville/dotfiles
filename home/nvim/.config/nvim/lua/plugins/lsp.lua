@@ -20,7 +20,7 @@ return {
         'antosha417/nvim-lsp-file-operations',
         dependencies = {
           'nvim-lua/plenary.nvim',
-          "nvim-neo-tree/neo-tree.nvim",
+          'nvim-neo-tree/neo-tree.nvim',
         },
         config = function()
           require('lsp-file-operations').setup()
@@ -133,7 +133,7 @@ return {
     -- capabilities.workspace.didChangeWatchedFiles.dynamicRegistration = true
 
     -- https://github.com/sveltejs/language-tools/issues/2008#issuecomment-2148860446
-    capabilities.workspace.didChangeWatchedFiles = false
+    -- capabilities.workspace.didChangeWatchedFiles = false
 
     --  Add any additional override configuration in the following tables. Available keys are:
     --  - cmd (table): Override the default command used to start the server
@@ -143,21 +143,36 @@ return {
     --        For example, to see the options for `lua_ls`, you could go to: https://luals.github.io/wiki/settings/
     local servers = {
       -- See `:help lspconfig-all` for a list of all the pre-configured LSPs
+      ruff = {
+        enabled = true,
+      },
       pyright = {
         enabled = true,
         settings = {
+          pyright = {
+            -- Using Ruff's import organizer
+            disableOrganizeImports = true,
+          },
           python = {
             analysis = {
-              diagnosticSeverityOverrides = {
-                reportInvalidSyntax = 'none',
-                -- or if that specific one doesn't work, try:
-                reportGeneralTypeIssues = 'none',
-                reportWaitNotInAsync = 'information',
-                reportAsyncNotInAsync = 'information',
-              },
+              -- Ignore all files for analysis to exclusively use Ruff for linting
+              -- ignore = { '*' },
             },
           },
         },
+        -- settings = {
+        --   python = {
+        --     analysis = {
+        --       diagnosticSeverityOverrides = {
+        --         reportInvalidSyntax = 'none',
+        --         -- or if that specific one doesn't work, try:
+        --         reportGeneralTypeIssues = 'none',
+        --         reportWaitNotInAsync = 'information',
+        --         reportAsyncNotInAsync = 'information',
+        --       },
+        --     },
+        --   },
+        -- },
         -- settings = {
         --   python = {
         --     analysis = {
@@ -173,6 +188,21 @@ return {
       },
       basedpyright = {
         enabled = false,
+        settings = {
+          basedpyright = {
+            -- Using Ruff's import organizer
+            disableOrganizeImports = true,
+            analysis = {
+              autoSearchPaths = true,
+              useLibraryCodeForTypes = true,
+              diagnosticMode = 'openFilesOnly',
+              typeCheckingMode = 'strict',
+            },
+          },
+          python = {
+            analysis = {},
+          },
+        },
       },
       pylsp = {
         enabled = false,
@@ -251,6 +281,45 @@ return {
         filetypes = { 'sh', 'make' },
       },
       ansiblels = {},
+      lemminx = {
+        settings = {
+          xml = {
+            uri = 'file:///home/gabriel/bellus-backend/data/schema/assess_performance/response.xsd',
+            --       format = {
+            --         enabled = false,
+            --         splitAttributes = true,
+            --         joinCDATALines = false,
+            --         formatComments = true,
+            --         joinCommentLines = false,
+            --       },
+            --       validation = {
+            --         enabled = true,
+            --         schema = true,
+            --       },
+          },
+        },
+      },
+      yamlls = {
+        settings = {
+          yaml = {
+            schemas = {
+              -- ['https://raw.githubusercontent.com/asyncapi/spec-json-schemas/master/schemas/3.0.0.json'] = '/*asyncapi*.{yaml,yml}',
+              ['https://raw.githubusercontent.com/asyncapi/spec-json-schemas/master/schemas/3.0.0-without-$id.json'] = '/*asyncapi*.{yaml,yml}',
+            },
+            validate = true,
+          },
+        },
+        -- settings = {
+        --   yaml = {
+        --     schemaStore = {
+        --       -- Enable the schema store
+        --       enable = true,
+        --       -- Automatically pull schemas from SchemaStore
+        --       url = 'https://www.schemastore.org/api/json/catalog.json',
+        --     },
+        --   },
+        -- },
+      },
     }
 
     -- Ensure the servers and tools above are installed

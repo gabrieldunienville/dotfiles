@@ -13,3 +13,14 @@ vim.api.nvim_create_autocmd({ 'BufRead', 'BufNewFile' }, {
   pattern = '.envrc',
   command = 'set filetype=sh',
 })
+
+
+-- Temp
+ -- vim.api.nvim_create_autocmd("BufEnter", {
+ --   callback = function()
+ --     local bufnr = vim.api.nvim_get_current_buf()
+ --     local filetype = vim.bo[bufnr].filetype
+ --     local formatters = require("conform").list_formatters_for_buffer(bufnr)
+ --     print("File type: " .. filetype .. ", Available formatters: " .. vim.inspect(formatters))
+ --   end
+ -- })

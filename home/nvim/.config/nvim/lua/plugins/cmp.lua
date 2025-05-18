@@ -177,6 +177,7 @@ return {
         { name = 'path' },
         { name = 'buffer' },
         { name = 'nvim_lsp_signature_help' },
+        { name = 'parrot' },
       },
       formatting = {
         format = require('lspkind').cmp_format {

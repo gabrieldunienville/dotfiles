@@ -5,5 +5,7 @@ vim.filetype.add {
   pattern = {
     ['.*%.jinja%.html'] = 'jinja.html',
     ['.*%.jinja%.xml'] = 'jinja.xml',
+    [".envrc"] = "sh",
+    ["%.envrc%..*"] = "sh",
   },
 }

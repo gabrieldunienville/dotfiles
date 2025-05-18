@@ -15,7 +15,7 @@ return { -- Autoformat
     },
   },
   opts = {
-    notify_on_error = false,
+    notify_on_error = true,
     -- format_on_save = function(bufnr)
     --   -- Disable "format_on_save lsp_fallback" for languages that don't
     --   -- have a well standardized coding style. You can add additional
@@ -33,7 +33,8 @@ return { -- Autoformat
       lua = { 'stylua' },
       -- Conform can also run multiple formatters sequentially
       -- python = { 'isort', 'black', 'autoflake' },
-      python = { 'isort', 'black' },
+      -- python = { 'isort', 'black' },
+      python = { 'ruff_format' },
       --
       -- You can use a sub-list to tell conform to run *until* a formatter
       -- is found.
@@ -48,7 +49,9 @@ return { -- Autoformat
       xml = { 'prettierd' },
       markdown = { 'prettierd' },
       json = { 'jq' },
+      jsonc = { 'prettierd' },
       prompt = { 'prettierd' },
+      xsd = { 'prettierd' },
       -- ['jinja.html'] = { 'prettierd' },
       -- ['jinja.xml'] = { 'prettierd' },
     },
