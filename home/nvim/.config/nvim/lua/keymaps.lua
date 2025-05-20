@@ -83,3 +83,11 @@ vim.keymap.set('v', '<C-t>', '"sy/<C-r>s<CR>', { desc = 'Find' })
 vim.keymap.set('n', '<leader>gs', function()
   require('diffview.config').actions.toggle_stage_entry()
 end, { desc = 'Refresh git diff view' })
+vim.keymap.set('n', '<leader>gd', '<cmd>DiffviewOpen<CR>', { desc = 'Open git diff view' })
+
+-- Obsidian
+vim.keymap.set('n', '<leader>on', '<cmd>Obsidian new<CR>', { desc = 'Create new note' })
+vim.keymap.set('n', '<leader>od', '<cmd>Obsidian today<CR>', { desc = 'Create daily note for today' })
+vim.keymap.set('n', '<leader>oy', '<cmd>Obsidian yesterday<CR>', { desc = 'Create daily note for yesterday' })
+vim.keymap.set('n', '<leader>ot', '<cmd>Obsidian tags<CR>', { desc = 'View tags' })
+vim.keymap.set('n', '<leader>ol', '<cmd>Obsidian dailies<CR>', { desc = 'List dailies' })

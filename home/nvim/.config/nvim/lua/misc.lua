@@ -24,3 +24,7 @@ vim.api.nvim_create_autocmd({ 'BufRead', 'BufNewFile' }, {
  --     print("File type: " .. filetype .. ", Available formatters: " .. vim.inspect(formatters))
  --   end
  -- })
+--
+
+-- Turn off built in markdown plugin as it interferes
+vim.g.markdown_recommended_style = 0  -- Disables the built-in style settings
