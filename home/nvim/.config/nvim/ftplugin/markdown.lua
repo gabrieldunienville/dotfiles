@@ -5,4 +5,4 @@ vim.bo.expandtab = true -- always uses spaces instead of tab characters (et)
 vim.bo.softtabstop = size -- number of spaces a <Tab> counts for. When 0, feature is off (sts).
 
 vim.opt_local.spell = true
-vim.opt_local.spelllang = "en_us"
+vim.opt_local.spelllang = "en_au"

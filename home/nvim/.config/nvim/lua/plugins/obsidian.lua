@@ -336,6 +336,29 @@ return {
         enabled = true,
         format = '{{properties}} properties {{backlinks}} backlinks {{words}} words {{chars}} chars',
       },
+      search_opts = {
+        exclude = {
+          'drawings',
+        },
+      },
     }
+    local client = require('obsidian').get_client()
+
+    -- Modify the _prepare_search_opts method to always include your exclusions
+    local original_prepare_search_opts = client._prepare_search_opts
+    client._prepare_search_opts = function(self, opts, additional_opts)
+      local search_opts = original_prepare_search_opts(self, opts, additional_opts)
+
+      -- Add your exclusions
+      local exclude_patterns = {
+        'drawings/*',
+      }
+
+      for _, pattern in ipairs(exclude_patterns) do
+        search_opts:add_exclude(pattern)
+      end
+
+      return search_opts
+    end
   end,
 }

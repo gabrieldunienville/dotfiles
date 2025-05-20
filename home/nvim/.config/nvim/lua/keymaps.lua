@@ -91,3 +91,8 @@ vim.keymap.set('n', '<leader>od', '<cmd>Obsidian today<CR>', { desc = 'Create da
 vim.keymap.set('n', '<leader>oy', '<cmd>Obsidian yesterday<CR>', { desc = 'Create daily note for yesterday' })
 vim.keymap.set('n', '<leader>ot', '<cmd>Obsidian tags<CR>', { desc = 'View tags' })
 vim.keymap.set('n', '<leader>ol', '<cmd>Obsidian dailies<CR>', { desc = 'List dailies' })
+vim.keymap.set('n', '<leader>ob', '<cmd>Obsidian backlinks<CR>', { desc = 'List dailies' })
+
+-- Navigation
+vim.keymap.set('n', '<M-h>', '<cmd>OpenPrevFile<CR>', { desc = 'Open prevous file' })
+vim.keymap.set('n', '<M-l>', '<cmd>OpenNextFile<CR>', { desc = 'Open next file' })
