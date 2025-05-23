@@ -79,6 +79,9 @@ vim.keymap.set('v', '<C-t>', '"sy/<C-r>s<CR>', { desc = 'Find' })
 --  Repeat last substitution on entire buffer: g&
 --  Repeat last substitution on entire buffer with same flags: :%&&
 
+-- LSP
+vim.keymap.set('n', 'gd', vim.lsp.buf.definition, { desc = 'Go to definition'})
+
 -- Git
 vim.keymap.set('n', '<leader>gs', function()
   require('diffview.config').actions.toggle_stage_entry()

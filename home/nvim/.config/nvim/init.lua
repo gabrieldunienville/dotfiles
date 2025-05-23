@@ -90,22 +90,19 @@ if not vim.loop.fs_stat(lazypath) then
 end ---@diagnostic disable-next-line: undefined-field
 vim.opt.rtp:prepend(lazypath)
 
--- [[ Configure and install plugins ]]
---
---  To check the current status of your plugins, run
---    :Lazy
---
---  You can press `?` in this menu for help. Use `:q` to close the window
---
---  To update plugins you can run
---    :Lazy update
---
+vim.lsp.enable {
+  'basedpyright',
+  'lua_ls',
+}
+
 require('lazy').setup({
 
   -- Core syntax and language
   { import = 'plugins.treesitter', enabled = true },
-  { import = 'plugins.lsp', enabled = true },
-  { import = 'plugins.cmp', enabled = true },
+  -- { import = 'plugins.lsp', enabled = true },
+  -- { import = 'plugins.cmp', enabled = true },
+  { import = 'plugins.blink', enabled = true },
+  { import = 'plugins.mason', enabled = true },
   { import = 'plugins.typescript_tools', enabled = false },
   { import = 'plugins.tailwind_tools', enabled = false },
   { import = 'plugins.indent_line', enabled = false }, -- 2
@@ -131,8 +128,7 @@ require('lazy').setup({
   { import = 'plugins.dap', enabled = true },
 
   -- Completion and AI
-  { import = 'plugins.copilot', enabled = true },
-  { import = 'plugins.copilot_chat', enabled = false },
+  -- { import = 'plugins.copilot', enabled = true },
   { import = 'plugins.parrot', enabled = true },
   { import = 'plugins.luasnip', enabled = true },
   { import = 'plugins.mcphub', enabled = true },
