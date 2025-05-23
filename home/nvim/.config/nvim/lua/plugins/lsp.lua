@@ -186,39 +186,39 @@ return {
         --   },
         -- },
       },
-      basedpyright = {
-        enabled = false,
-        settings = {
-          basedpyright = {
-            -- Using Ruff's import organizer
-            disableOrganizeImports = true,
-            analysis = {
-              autoSearchPaths = true,
-              useLibraryCodeForTypes = true,
-              diagnosticMode = 'openFilesOnly',
-              typeCheckingMode = 'strict',
-            },
-          },
-          python = {
-            analysis = {},
-          },
-        },
-      },
-      pylsp = {
-        enabled = false,
-        settings = {
-          pylsp = {
-            plugins = {
-              rope_completion = {
-                enabled = true,
-              },
-              rope_autoimport = {
-                enabled = true,
-              },
-            },
-          },
-        },
-      },
+      -- basedpyright = {
+      --   enabled = false,
+      --   settings = {
+      --     basedpyright = {
+      --       -- Using Ruff's import organizer
+      --       disableOrganizeImports = true,
+      --       analysis = {
+      --         autoSearchPaths = true,
+      --         useLibraryCodeForTypes = true,
+      --         diagnosticMode = 'openFilesOnly',
+      --         typeCheckingMode = 'strict',
+      --       },
+      --     },
+      --     python = {
+      --       analysis = {},
+      --     },
+      --   },
+      -- },
+      -- pylsp = {
+      --   enabled = false,
+      --   settings = {
+      --     pylsp = {
+      --       plugins = {
+      --         rope_completion = {
+      --           enabled = true,
+      --         },
+      --         rope_autoimport = {
+      --           enabled = true,
+      --         },
+      --       },
+      --     },
+      --   },
+      -- },
       lua_ls = {
         settings = {
           Lua = {
@@ -332,9 +332,11 @@ return {
       -- log_level = vim.log.levels.DEBUG,
     }
 
-    -- You can add other tools here that you want Mason to install
-    -- for you, so that they are available from within Neovim.
-    local ensure_installed = vim.tbl_keys(servers or {})
+    local ensure_installed = vim.tbl_filter(function(server_name)
+      local server = servers[server_name] or {}
+      return server.enabled ~= false
+    end, vim.tbl_keys(servers or {}))
+
     vim.list_extend(ensure_installed, {
       'stylua', -- Used to format Lua code
       'prettierd',

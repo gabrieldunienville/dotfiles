@@ -1,8 +1,8 @@
 return {
   'obsidian-nvim/obsidian.nvim',
   version = '*', -- recommended, use latest release instead of latest commit
-  lazy = true,
-  ft = 'markdown',
+  lazy = false,
+  -- ft = 'markdown',
   dependencies = {
     -- Required.
     'nvim-lua/plenary.nvim',
@@ -10,7 +10,6 @@ return {
     'nvim-telescope/telescope.nvim',
     'nvim-treesitter/nvim-treesitter',
   },
-
   config = function()
     require('obsidian').setup {
       -- A list of workspace names, paths, and configuration overrides.

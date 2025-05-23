@@ -113,13 +113,15 @@ require('lazy').setup({
   { import = 'plugins.ts_autotag', enabled = true }, -- disable to test performance
 
   -- UI and Navigation
-  { import = 'plugins.arial', enabled = true }, -- disable to test performance
+  { import = 'plugins.arial', enabled = false },
   { import = 'plugins.neotree', enabled = true },
   { import = 'plugins.telescope', enabled = true }, -- 3
   { import = 'plugins.trouble', enabled = false }, -- 2
   { import = 'plugins.lualine', enabled = true },
   { import = 'plugins.harpoon', enabled = true },
   { import = 'plugins.spectre', enabled = true },
+  { import = 'plugins.detour', enabled = true },
+  { import = 'plugins.floating_help', enabled = false },
 
   -- Git
   { import = 'plugins.git', enabled = true }, -- 3
@@ -133,6 +135,8 @@ require('lazy').setup({
   { import = 'plugins.copilot_chat', enabled = false },
   { import = 'plugins.parrot', enabled = true },
   { import = 'plugins.luasnip', enabled = true },
+  { import = 'plugins.mcphub', enabled = true },
+  { import = 'plugins.avante', enabled = true },
 
   -- Language specific
   { import = 'plugins.ansible', enabled = false }, -- 2

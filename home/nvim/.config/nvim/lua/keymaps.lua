@@ -63,7 +63,7 @@ vim.keymap.set('n', '<leader>lf', 'mmF"if<Esc>`mli{}<Left>')
 -- Spell checking
 vim.keymap.set('n', ')', ']s', { desc = 'Next spelling error' })
 vim.keymap.set('n', '(', '[s', { desc = 'Previous spelling error' })
-vim.keymap.set('n', '<leader>is', 'z=', { desc = 'Show spelling suggestions' })
+vim.keymap.set('n', '<leader>if', 'z=', { desc = 'Show spelling fixed' })
 vim.keymap.set('n', '<leader>ia', 'zg', { desc = 'Add word to dictionary' })
 vim.keymap.set('n', '<leader>iu', 'zug', { desc = 'Undo add word to dictionary' })
 vim.keymap.set('n', '<leader>io', '<cmd>set spell<CR>', { desc = 'Turn on spell checking' })

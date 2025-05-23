@@ -39,17 +39,6 @@ return {
       -- api.nvim_set_current_win(winid)
     end
 
-    -- Telescope is a fuzzy finder that comes with a lot of different things that
-    -- it can fuzzy find! It's more than just a "file finder", it can search
-    -- many different aspects of Neovim, your workspace, LSP, and more!
-    --
-    -- The easiest way to use Telescope, is to start by doing something like:
-    --  :Telescope help_tags
-    --
-    -- After running this command, a window will open up and you're able to
-    -- type in the prompt window. You'll see a list of `help_tags` options and
-    -- a corresponding preview of the help.
-    --
     -- Two important keymaps to use while in Telescope are:
     --  - Insert mode: <c-/>
     --  - Normal mode: ?
@@ -57,6 +46,9 @@ return {
     -- This opens a window that shows you all of the keymaps for the current
     -- Telescope picker. This is really useful to discover what Telescope can
     -- do as well as how to actually do it!
+
+    local actions = require 'telescope.actions'
+    local action_state = require 'telescope.actions.state' -- Add this line
 
     -- [[ Configure Telescope ]]
     -- See `:help telescope` and `:help telescope.setup()`
@@ -79,6 +71,75 @@ return {
       pickers = {
         oldfiles = {
           cwd_only = true,
+        },
+        help_tags = {
+          attach_mappings = function(_, map)
+            local function help_in_detour(prompt_bufnr)
+              local selection = action_state.get_selected_entry()
+              local help_tag = selection.value
+              actions.close(prompt_bufnr)
+
+              local popup_id = require('detour').Detour()
+              if popup_id then
+                vim.wo[popup_id].signcolumn = 'no'
+
+                -- Load help content FIRST
+                local help_buf = nil
+                for _, buf in ipairs(vim.api.nvim_list_bufs()) do
+                  if vim.api.nvim_buf_is_loaded(buf) then
+                    local buf_name = vim.api.nvim_buf_get_name(buf)
+                    if buf_name:match('/' .. help_tag .. '%.txt$') then
+                      help_buf = buf
+                      break
+                    end
+                  end
+                end
+
+                if not help_buf then
+                  local success = pcall(function()
+                    vim.cmd('silent help ' .. help_tag)
+                    help_buf = vim.api.nvim_get_current_buf()
+                    local current_win = vim.api.nvim_get_current_win()
+                    if current_win ~= popup_id then
+                      vim.api.nvim_win_close(current_win, false)
+                    end
+                  end)
+
+                  if not success then
+                    vim.cmd('help ' .. help_tag)
+                    return
+                  end
+                end
+
+                -- Set the help buffer in detour window
+                vim.api.nvim_win_set_buf(popup_id, help_buf)
+                vim.api.nvim_set_current_win(popup_id)
+
+                -- NOW resize and center the window
+                vim.schedule(function()
+                  local max_width = 90
+                  local screen_width = vim.o.columns
+                  local screen_height = vim.o.lines
+                  local desired_width = math.min(max_width, math.floor(screen_width * 0.75))
+
+                  local current_config = vim.api.nvim_win_get_config(popup_id)
+                  if current_config.relative ~= '' then -- Make sure it's still a floating window
+                    local new_config = vim.tbl_extend('force', current_config, {
+                      width = desired_width,
+                      col = math.floor((screen_width - desired_width) / 2),
+                    })
+                    vim.api.nvim_win_set_config(popup_id, new_config)
+                  end
+                end)
+              else
+                vim.cmd('help ' .. help_tag)
+              end
+            end
+
+            map('i', '<CR>', help_in_detour)
+            map('n', '<CR>', help_in_detour)
+            return true
+          end,
         },
       },
       extensions = {
