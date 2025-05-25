@@ -79,8 +79,13 @@ vim.keymap.set('v', '<C-t>', '"sy/<C-r>s<CR>', { desc = 'Find' })
 --  Repeat last substitution on entire buffer: g&
 --  Repeat last substitution on entire buffer with same flags: :%&&
 
+-- Command line completion (Doesn't work)
+-- vim.keymap.set('c', '<Down>', '<C-n>', { desc = 'Next completion' })
+-- vim.keymap.set('c', '<Up>', '<C-p>', { desc = 'Previous completion' })
+
 -- LSP
-vim.keymap.set('n', 'gd', vim.lsp.buf.definition, { desc = 'Go to definition'})
+vim.keymap.set('n', 'gd', vim.lsp.buf.definition, { desc = 'Go to definition' })
+vim.keymap.set('i', '<M-k>', vim.lsp.buf.signature_help)
 
 -- Git
 vim.keymap.set('n', '<leader>gs', function()
@@ -99,3 +104,6 @@ vim.keymap.set('n', '<leader>ob', '<cmd>Obsidian backlinks<CR>', { desc = 'List 
 -- Navigation
 vim.keymap.set('n', '<M-h>', '<cmd>OpenPrevFile<CR>', { desc = 'Open prevous file' })
 vim.keymap.set('n', '<M-l>', '<cmd>OpenNextFile<CR>', { desc = 'Open next file' })
+
+-- Code companion
+vim.keymap.set({ 'n', 'v' }, '<leader>a', '<cmd>CodeCompanionChat Toggle<cr>', { noremap = true, silent = true })

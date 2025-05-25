@@ -95,9 +95,13 @@ return {
       },
       system_prompt = function()
         local hub = require('mcphub').get_hub_instance()
-        local default_system_prompt = hub and hub:get_active_servers_prompt() or ''
-        local full_prompt = default_system_prompt .. '\n\n' .. getSystemPrompt()
-        return full_prompt
+        local active_servers_prompt = hub and hub:get_active_servers_prompt() or ''
+        local custom_prompt = getSystemPrompt()
+        if custom_prompt == nil then
+          return active_servers_prompt
+        else
+          return active_servers_prompt .. '\n\n' .. getSystemPrompt()
+        end
       end,
       -- Using function prevents requiring mcphub before it's loaded
       custom_tools = function()

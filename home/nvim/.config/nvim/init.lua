@@ -91,7 +91,9 @@ end ---@diagnostic disable-next-line: undefined-field
 vim.opt.rtp:prepend(lazypath)
 
 vim.lsp.enable {
-  'basedpyright',
+  'ruff',
+  -- 'basedpyright',
+  'pyright',
   'lua_ls',
 }
 
@@ -110,7 +112,7 @@ require('lazy').setup({
   { import = 'plugins.ts_autotag', enabled = true }, -- disable to test performance
 
   -- UI and Navigation
-  { import = 'plugins.arial', enabled = false },
+  { import = 'plugins.aerial', enabled = true },
   { import = 'plugins.neotree', enabled = true },
   { import = 'plugins.telescope', enabled = true }, -- 3
   { import = 'plugins.trouble', enabled = false }, -- 2
@@ -132,7 +134,8 @@ require('lazy').setup({
   { import = 'plugins.parrot', enabled = true },
   { import = 'plugins.luasnip', enabled = true },
   { import = 'plugins.mcphub', enabled = true },
-  { import = 'plugins.avante', enabled = true },
+  { import = 'plugins.avante', enabled = false },
+  { import = 'plugins.codecompanion', enabled = true },
 
   -- Language specific
   { import = 'plugins.ansible', enabled = false }, -- 2

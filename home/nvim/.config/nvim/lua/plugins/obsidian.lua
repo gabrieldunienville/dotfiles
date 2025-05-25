@@ -57,11 +57,8 @@ return {
 
       -- Optional, completion of wiki links, local markdown links, and tags using nvim-cmp.
       completion = {
-        -- Enables completion using nvim_cmp
-        nvim_cmp = true,
-        -- Enables completion using blink.cmp
-        blink = false,
-        -- Trigger completion at 2 chars.
+        nvim_cmp = false,
+        blink = true,
         min_chars = 2,
       },
 
