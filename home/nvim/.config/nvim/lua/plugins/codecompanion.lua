@@ -57,7 +57,7 @@ return {
                 local content = file:read '*all'
                 file:close()
                 table.insert(prompt_parts, content)
-                vim.notify('Successfully read: ' .. file_path, vim.log.levels.INFO)
+                -- vim.notify('Successfully read: ' .. file_path, vim.log.levels.INFO)
               else
                 vim.notify('Warning: Could not open file ' .. file_path, vim.log.levels.WARN)
               end
