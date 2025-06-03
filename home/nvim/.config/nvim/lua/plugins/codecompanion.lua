@@ -31,6 +31,9 @@ return {
             },
           },
         },
+        diff = {
+          provider = 'mini_diff',
+        },
         inline = {
           adapter = 'anthropic',
         },
@@ -129,6 +132,43 @@ return {
             return default_prompt .. '\n\n' .. custom_prompt
           end
         end,
+      },
+      prompt_library = {
+        ['Clarify Writing'] = {
+          strategy = 'chat',
+          description = 'Structure my writing for better clarity',
+          opts = {
+            -- mapping = '<LocalLeader>ce',
+            modes = { 'v' },
+            is_slash_cmd = true,
+            auto_submit = false,
+            short_name = 'clarify',
+            stop_context_insertion = true, -- Otherwise text will be duplicated as a code block
+          },
+          prompts = {
+            {
+              role = 'system',
+              content = function(context)
+                return [[
+                  You are a senior product manager who is an expert in clear, consise writing. You write in a way that can be understood by the product, marketing and engineering teams alike.
+
+                  I will give you a passage of text. You will reccomend any changes to this text you think will improve clarity, readablity and style. 
+
+                  The text may be a scattered assortment of notes that are really lacking structure. In this case, you make take more liberties in making edits to shape a clear, structured message, including removing duplicate or redundant information. ]]
+              end,
+            },
+            {
+              role = 'user',
+              content = function(context)
+                local text = require('codecompanion.helpers.actions').get_code(context.start_line, context.end_line)
+                return 'Here is the text:\n\n' .. text .. '\n\n'
+              end,
+              -- opts = {
+              --   contains_code = true,
+              -- },
+            },
+          },
+        },
       },
       extensions = {
         mcphub = {

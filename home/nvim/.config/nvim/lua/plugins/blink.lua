@@ -22,10 +22,11 @@ return {
     --
     -- See :h blink-cmp-config-keymap for defining your own keymap
     keymap = {
-      preset = 'enter',
-      ['<Up>'] = { 'select_prev', 'fallback' },
-      ['<Down>'] = { 'select_next', 'fallback' },
-      ['<Tab>'] = { 'accept', 'fallback' },
+      preset = 'super-tab',
+      ['<CR>'] = { 'fallback' }, -- Enter does NOT accept completion
+      -- ['<Up>'] = { 'select_prev', 'fallback' },
+      -- ['<Down>'] = { 'select_next', 'fallback' },
+      -- ['<Tab>'] = { 'accept', 'fallback' },
       -- ['<Escape>'] = { 'cancel', 'fallback' },
     },
 

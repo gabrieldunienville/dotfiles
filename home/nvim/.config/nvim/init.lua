@@ -125,12 +125,15 @@ require('lazy').setup({
   -- Git
   { import = 'plugins.git', enabled = true }, -- 3
 
+  -- Neovim Dev
+  { import = 'plugins.lazydev', enabled = true },
+
   -- Testing and Debug
   { import = 'plugins.neotest', enabled = true }, -- 2
   { import = 'plugins.dap', enabled = true },
 
   -- Completion and AI
-  -- { import = 'plugins.copilot', enabled = true },
+  { import = 'plugins.copilot', enabled = true },
   { import = 'plugins.parrot', enabled = true },
   { import = 'plugins.luasnip', enabled = true },
   { import = 'plugins.mcphub', enabled = true },
