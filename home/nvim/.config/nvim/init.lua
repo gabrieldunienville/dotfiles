@@ -121,6 +121,7 @@ require('lazy').setup({
   { import = 'plugins.spectre', enabled = true },
   { import = 'plugins.detour', enabled = true },
   { import = 'plugins.floating_help', enabled = false },
+  { import = 'plugins.snacks', enabled = true },
 
   -- Git
   { import = 'plugins.git', enabled = true }, -- 3

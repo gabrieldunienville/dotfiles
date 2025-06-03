@@ -12,11 +12,31 @@ return {
       completion = {
         callSnippet = 'Replace',
       },
-      diagnostics = { disable = { 'missing-fields' } },
-      -- Not sure if needed
-      -- runtime = {
-      --   version = 'LuaJIT',
+      diagnostics = {
+        disable = {
+          'missing-fields',
+        },
+        globals = {
+          'vim',
+        },
+      },
+      runtime = {
+        version = 'LuaJIT',
+      },
+      -- workspace = {
+      --   -- This is crucial for finding plugin type definitions
+      --   library = vim.api.nvim_get_runtime_file('', true),
+      --   checkThirdParty = false,
       -- },
+      workspace = {
+        library = {
+          vim.env.VIMRUNTIME,
+          vim.fn.stdpath 'data' .. '/lazy',
+        },
+        checkThirdParty = false,
+        maxPreload = 100000,
+        preloadFileSize = 10000,
+      },
     },
   },
 }
