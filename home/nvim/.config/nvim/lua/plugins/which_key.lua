@@ -2,21 +2,11 @@ return {
   'folke/which-key.nvim',
   event = 'VimEnter',
   config = function()
-    require('which-key').setup()
-
-    require('which-key').register {
-      -- ['<leader>c'] = { name = '[C]ode', _ = 'which_key_ignore' },
-      ['<leader>c'] = { name = '[C]omment', _ = 'which_key_ignore' },
-      ['<leader>d'] = { name = '[D]ocument', _ = 'which_key_ignore' },
-      ['<leader>r'] = { name = '[R]ename', _ = 'which_key_ignore' },
-      ['<leader>s'] = { name = '[S]earch', _ = 'which_key_ignore' },
-      ['<leader>w'] = { name = '[W]orkspace', _ = 'which_key_ignore' },
-      -- ['<leader>t'] = { name = '[T]oggle', _ = 'which_key_ignore' },
-      ['<leader>u'] = { name = '[U]nit test', _ = 'which_key_ignore' },
-      ['<leader>h'] = { name = '[H]arpoon', _ = 'which_key_ignore' },
-      ['<leader>j'] = { name = '[J]oin-Split', _ = 'which_key_ignore' },
-      ['<leader>t'] = { name = 'File [T]ree', _ = 'which_key_ignore' },
-      ['<leader>g'] = { name = '[G]enerate docs', _ = 'which_key_ignore' },
+    require('which-key').setup {
+      preset = 'modern',
+      debug = vim.uv.cwd():find 'which%-key',
+      win = {},
+      spec = {},
     }
   end,
 }

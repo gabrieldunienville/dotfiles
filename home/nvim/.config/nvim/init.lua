@@ -165,7 +165,7 @@ require('lazy').setup({
   { import = 'plugins.catppuccin', enabled = true },
   { import = 'plugins.cyberdream', enabled = false }, -- 2
   { import = 'plugins.neoscroll', enabled = false },
-  { import = 'plugins.notify', enabled = true },
+  { import = 'plugins.notify', enabled = false },
 }, {
   ui = {
     -- If you are using a Nerd Font: set icons to an empty table which will use the
@@ -193,3 +193,4 @@ require 'user_commands.pyflyby_autoimport'
 require 'user_commands.slime_custom'
 require 'user_commands.config_commands'
 require 'user_commands.navigation'
+require 'user_commands.obsidian'
