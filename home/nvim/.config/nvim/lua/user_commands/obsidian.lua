@@ -9,9 +9,6 @@ local function create_obsidian_picker(items, opts)
 
     -- Add file icon if available
     if picker.opts.icons.files.enabled ~= false then
-      -- local icon, hl = Snacks.util.icon('md', 'file', {
-      --   fallback = picker.opts.icons.files,
-      -- })
       local filename = vim.fn.fnamemodify(item.file, ':t') -- Gets "note.md"
       local icon, hl = Snacks.util.icon(filename, 'file', {
         fallback = picker.opts.icons.files,

@@ -246,4 +246,3 @@ fi
 
 ASYNCAPI_AC_ZSH_SETUP_PATH=/home/gabriel/.cache/@asyncapi/cli/autocomplete/zsh_setup && test -f $ASYNCAPI_AC_ZSH_SETUP_PATH && source $ASYNCAPI_AC_ZSH_SETUP_PATH; # asyncapi autocomplete setup
 
-

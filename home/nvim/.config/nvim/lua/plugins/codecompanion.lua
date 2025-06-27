@@ -30,6 +30,18 @@ return {
               modes = { n = '<C-c>', i = '<C-c>' },
             },
           },
+          slash_commands = {
+            ['file'] = {
+              opts = {
+                provider = 'snacks',
+              },
+            },
+            ['buffer'] = {
+              opts = {
+                provider = 'snacks',
+              },
+            },
+          },
         },
         diff = {
           provider = 'mini_diff',

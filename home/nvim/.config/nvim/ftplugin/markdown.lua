@@ -6,3 +6,5 @@ vim.bo.softtabstop = size -- number of spaces a <Tab> counts for. When 0, featur
 
 vim.opt_local.spell = true
 vim.opt_local.spelllang = "en_au"
+
+-- vim.cmd([[syntax match NoSpellQuotes /"\([^"]\|\\.\)*"/ contains=@NoSpell]])

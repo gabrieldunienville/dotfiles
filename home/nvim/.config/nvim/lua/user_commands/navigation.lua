@@ -43,34 +43,12 @@ end
 function DeleteCurrentFile()
   local current_file = vim.fn.expand '%'
 
-  -- Store the alternate buffer number (previously accessed buffer)
-  local alternate_buffer = vim.fn.bufnr '#'
-
-  -- Check if file exists and is writable
   if current_file ~= '' and vim.fn.filewritable(current_file) == 1 then
-    -- Delete the file from disk
     local success = os.remove(current_file)
     if success then
-      -- Close the buffer without saving
-      vim.cmd 'bd!'
-
-      -- Switch to the alternate buffer if it exists and is valid
-      if alternate_buffer ~= -1 and vim.fn.buflisted(alternate_buffer) == 1 then
-        vim.cmd('buffer ' .. alternate_buffer)
-        print('File deleted: ' .. current_file)
-      else
-        print('File deleted: ' .. current_file .. ' (no previous buffer available)')
-      end
+      Snacks.bufdelete()
     else
       print('Failed to delete file: ' .. current_file)
-    end
-  else
-    -- If it's not a real file or not writable, just close the buffer and switch
-    vim.cmd 'bd!'
-
-    -- Switch to the alternate buffer if it exists and is valid
-    if alternate_buffer ~= -1 and vim.fn.buflisted(alternate_buffer) == 1 then
-      vim.cmd('buffer ' .. alternate_buffer)
     end
   end
 end

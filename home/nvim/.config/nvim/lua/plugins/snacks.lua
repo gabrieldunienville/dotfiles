@@ -18,5 +18,8 @@ return {
       enabled = true,
       timeout = 3000,
     },
+    win = {
+      enable = true,
+    },
   },
 }

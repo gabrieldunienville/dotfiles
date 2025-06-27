@@ -79,7 +79,6 @@ P.S. You can delete this when you're done too. It's your config now! :)
 --]]
 
 require 'options'
-require 'keymaps'
 require 'misc'
 
 -- Install `lazy.nvim` plugin manager
@@ -95,6 +94,7 @@ vim.lsp.enable {
   -- 'basedpyright',
   'pyright',
   'lua_ls',
+  'typescript_language_server',
 }
 
 require('lazy').setup({
@@ -113,7 +113,7 @@ require('lazy').setup({
 
   -- UI and Navigation
   { import = 'plugins.aerial', enabled = true },
-  { import = 'plugins.neotree', enabled = true },
+  { import = 'plugins.neotree', enabled = false },
   { import = 'plugins.telescope', enabled = true }, -- 3
   { import = 'plugins.trouble', enabled = false }, -- 2
   { import = 'plugins.lualine', enabled = true },
@@ -122,6 +122,7 @@ require('lazy').setup({
   { import = 'plugins.detour', enabled = true },
   { import = 'plugins.floating_help', enabled = false },
   { import = 'plugins.snacks', enabled = true },
+  { import = 'plugins.edgy', enabled = false },
 
   -- Git
   { import = 'plugins.git', enabled = true }, -- 3
@@ -135,7 +136,7 @@ require('lazy').setup({
 
   -- Completion and AI
   { import = 'plugins.copilot', enabled = true },
-  { import = 'plugins.parrot', enabled = true },
+  { import = 'plugins.parrot', enabled = false },
   { import = 'plugins.luasnip', enabled = true },
   { import = 'plugins.mcphub', enabled = true },
   { import = 'plugins.avante', enabled = false },
@@ -154,6 +155,7 @@ require('lazy').setup({
   { import = 'plugins.yank_assassin', enabled = true },
   { import = 'plugins.vim_sleuth', enabled = false }, -- 2
   { import = 'plugins.tmux_navigator', enabled = true },
+  { import = 'plugins.conjure', enabled = false },
 
   -- UI Enhancements
   { import = 'plugins.todo_comments', enabled = true }, -- 2
@@ -188,9 +190,12 @@ require('lazy').setup({
   },
 })
 
+require 'keymaps'
+
 require 'user_commands.ipython_run_imports'
 require 'user_commands.pyflyby_autoimport'
 require 'user_commands.slime_custom'
 require 'user_commands.config_commands'
 require 'user_commands.navigation'
 require 'user_commands.obsidian'
+require 'user_commands.lsp'

@@ -7,6 +7,11 @@ return {
   },
   config = function()
     require('aerial').setup {
+      layout = {
+        -- Let edgy handle the positioning
+        -- default_direction = 'left', -- Doesn't matter much with edgy
+        preserve_equality = false,
+      },
       -- optionally use on_attach to set keymaps when aerial has attached to a buffer
       on_attach = function(bufnr)
         -- Jump forwards/backwards with '{' and '}'
@@ -14,7 +19,5 @@ return {
         vim.keymap.set('n', '}', '<cmd>AerialNext<CR>', { buffer = bufnr })
       end,
     }
-    -- You probably also want to set a keymap to toggle aerial
-    -- vim.keymap.set('n', '<leader>a', '<cmd>AerialToggle!<CR>')
   end,
 }

@@ -17,4 +17,17 @@ return {
       },
     },
   },
+  handlers = {
+    ['textDocument/publishDiagnostics'] = function(err, result, ctx, config)
+      -- Filter out the specific await error
+      if result and result.diagnostics then
+        result.diagnostics = vim.tbl_filter(function(diagnostic)
+          return not string.match(diagnostic.message, '"await" allowed only within async function')
+        end, result.diagnostics)
+      end
+
+      -- Call the default handler with filtered diagnostics
+      vim.lsp.diagnostic.on_publish_diagnostics(err, result, ctx, config)
+    end,
+  },
 }

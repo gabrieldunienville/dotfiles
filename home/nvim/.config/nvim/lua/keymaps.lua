@@ -4,6 +4,9 @@ vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>')
 -- Save
 vim.keymap.set('n', '<C-s>', '<cmd>wa<CR>', { desc = 'Save all files' })
 
+-- Quit
+vim.keymap.set('n', '<C-q>', '<cmd>q<CR>', { desc = 'Quit' })
+
 -- Diagnostic keymaps
 vim.keymap.set('n', '<M-i>', vim.diagnostic.goto_prev, { desc = 'Go to previous [D]iagnostic message' })
 vim.keymap.set('n', '<M-u>', vim.diagnostic.goto_next, { desc = 'Go to next [D]iagnostic message' })
@@ -42,20 +45,18 @@ vim.keymap.set('t', '<Esc><Esc>', '<C-\\><C-n>', { desc = 'Exit terminal mode' }
 
 -- vim.keymap.set('n', '<leader>w', ':w')
 
--- Copy path
-local function insertFullPath()
-  local filepath = vim.fn.expand '%'
-  vim.fn.setreg('+', filepath) -- write to clippoard
-end
-
-local function insertFileName()
-  local filename = vim.fn.expand '%:t' -- the ":t" gets only the tail (filename) part
-  vim.fn.setreg('+', filename) -- write to clipboard
-end
-vim.keymap.set('n', '<leader>yp', insertFullPath, { noremap = true, silent = true })
-vim.keymap.set('n', '<leader>yf', insertFileName, { noremap = true, silent = true })
-
--- vim.keymap.set('n', '<leader>yp', ':let @" = expand("%")<cr>')
+-- Copy absolute path to clipboard
+vim.keymap.set('n', '<leader>yp', function()
+  vim.fn.setreg('+', vim.fn.expand '%:p')
+end, { noremap = true, silent = true, desc = 'Copy absolute path to clipboard' })
+-- Copy relative path to clipboard
+vim.keymap.set('n', '<leader>yr', function()
+  vim.fn.setreg('+', vim.fn.expand '%:~:.')
+end, { noremap = true, silent = true, desc = 'Copy relative path to clipboard' })
+-- Copy filename to clipboard
+vim.keymap.set('n', '<leader>yf', function()
+  vim.fn.setreg('+', vim.fn.expand '%:t')
+end, { noremap = true, silent = true, desc = 'Copy filename to clipboard' })
 
 -- Python: string to f-string
 vim.keymap.set('n', '<leader>lf', 'mmF"if<Esc>`mli{}<Left>')
@@ -63,14 +64,18 @@ vim.keymap.set('n', '<leader>lf', 'mmF"if<Esc>`mli{}<Left>')
 -- Spell checking
 vim.keymap.set('n', ')', ']s', { desc = 'Next spelling error' })
 vim.keymap.set('n', '(', '[s', { desc = 'Previous spelling error' })
-vim.keymap.set('n', '<leader>if', 'z=', { desc = 'Show spelling fixed' })
+-- vim.keymap.set('n', '<leader>if', 'z=', { desc = 'Show spelling fixed' })
+-- vim.keymap.set('n', '<leader>if', function()
+--   vim.cmd('normal! z=')
+-- end, { desc = 'Show spelling fixes' })
+
 vim.keymap.set('n', '<leader>ia', 'zg', { desc = 'Add word to dictionary' })
 vim.keymap.set('n', '<leader>iu', 'zug', { desc = 'Undo add word to dictionary' })
 vim.keymap.set('n', '<leader>io', '<cmd>set spell<CR>', { desc = 'Turn on spell checking' })
+-- Note: <leader>if in misc.lua
 
 -- Find and replace
 vim.keymap.set('v', '<C-r>', '"sy:%s/<C-r>s/<C-r>s/g<Left><Left>', { desc = 'Find and Replace' })
--- vim.keymap.set('n', '<C-r>', ':%s/<C-r>s/<C-r>s/g<Left><Left>', { desc = 'Find and Replace' })
 vim.keymap.set('v', '<C-t>', '"sy/<C-r>s<CR>', { desc = 'Find' })
 
 -- Notes
@@ -111,3 +116,9 @@ vim.keymap.set({ 'n', 'v' }, '<leader>at', '<cmd>CodeCompanionChat Toggle<cr>', 
 vim.keymap.set({ 'n', 'v' }, '<leader>aa', '<cmd>CodeCompanionActions<cr>', { noremap = true, silent = true })
 vim.keymap.set({ 'n', 'v' }, '<leader>ah', '<cmd>CodeCompanionHistory<cr>', { noremap = true, silent = true })
 vim.keymap.set('v', '<leader>ap', '<cmd>CodeCompanionChat Add<cr>', { noremap = true, silent = true })
+
+-- Utils
+vim.keymap.set('n', '<leader>ka', '<cmd>AerialToggle!<CR>', { desc = 'Toggle Aerial' })
+vim.keymap.set('n', '<leader>kr', '<cmd>ReloadKeymaps<CR>', { desc = 'Reload keymaps' })
+vim.keymap.set('n', '<leader>kd', '<cmd>DeleteCurrentFile<CR>', { desc = 'Delete current file' })
+vim.keymap.set('n', '<leader>ke', Snacks.explorer.reveal, { desc = 'Open file tree' })

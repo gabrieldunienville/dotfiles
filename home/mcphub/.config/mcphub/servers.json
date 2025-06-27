@@ -1,0 +1,41 @@
+{
+  "nativeMCPServers": [
+    
+  ],
+  "mcpServers": {
+    "github.com/upstash/context7-mcp": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@upstash/context7-mcp@latest"
+      ]
+    },
+    "github.com/zcaceres/markdownify-mcp": {
+      "command": "node",
+      "args": [
+        "/home/gabriel/.mcphub/servers/github.com/zcaceres/markdownify-mcp/dist/index.js"
+      ],
+      "env": {
+        "UV_PATH": "/home/gabriel/.local/bin/uv"
+      }
+    },
+    "demo": {
+      "command": "uv",
+      "args": [
+        "--directory",
+        "/home/gabriel/mcp-demo",
+        "run",
+        "src/demo.py"
+      ],
+      "dev": {
+        "cwd": "/home/gabriel/mcp-demo",
+        "watch": [
+          "src/**/*.py",
+          "pyproject.toml"
+        ],
+        "enabled": true
+      },
+      "disabled": false
+    }
+  }
+}
