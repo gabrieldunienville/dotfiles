@@ -157,6 +157,12 @@ return {
             analysis = {
               -- Ignore all files for analysis to exclusively use Ruff for linting
               -- ignore = { '*' },
+              diagnosticSeverityOverrides = {
+                -- Disable undefined name diagnostics - let Ruff handle these
+                reportUndefinedVariable = 'none',
+                -- Also disable unused variable warnings if they duplicate with Ruff
+                reportUnusedVariable = 'none',
+              },
             },
           },
         },

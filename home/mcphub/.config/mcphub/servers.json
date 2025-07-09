@@ -1,41 +1,50 @@
 {
   "mcpServers": {
-    "github.com/zcaceres/markdownify-mcp": {
-      "env": {
-        "UV_PATH": "/home/gabriel/.local/bin/uv"
-      },
-      "command": "node",
+    "demo": {
       "args": [
-        "/home/gabriel/.mcphub/servers/github.com/zcaceres/markdownify-mcp/dist/index.js"
-      ]
-    },
-    "personal": {
+        "--directory",
+        "/home/gabriel/mcp-demo",
+        "run",
+        "src/demo.py"
+      ],
+      "disabled": false,
+      "command": "uv",
       "dev": {
-        "cwd": "/home/gabriel/personal-mcp-server",
+        "enabled": false,
         "watch": [
           "src/**/*.py",
           "pyproject.toml"
         ],
-        "enabled": false
-      },
-      "command": "uv",
+        "cwd": "/home/gabriel/mcp-demo"
+      }
+    },
+    "claude": {
+      "args": [
+        "mcp",
+        "serve"
+      ],
+      "env": [
+        
+      ],
+      "command": "claude"
+    },
+    "personal": {
       "args": [
         "--directory",
         "/home/gabriel/personal-mcp-server",
         "run",
         "src/server.py"
       ],
-      "disabled": false
-    },
-    "claude": {
-      "env": [
-        
-      ],
-      "command": "claude",
-      "args": [
-        "mcp",
-        "serve"
-      ]
+      "disabled": false,
+      "command": "uv",
+      "dev": {
+        "enabled": false,
+        "watch": [
+          "src/**/*.py",
+          "pyproject.toml"
+        ],
+        "cwd": "/home/gabriel/personal-mcp-server"
+      }
     },
     "github.com/upstash/context7-mcp": {
       "args": [
@@ -44,23 +53,14 @@
       ],
       "command": "npx"
     },
-    "demo": {
-      "dev": {
-        "cwd": "/home/gabriel/mcp-demo",
-        "watch": [
-          "src/**/*.py",
-          "pyproject.toml"
-        ],
-        "enabled": false
-      },
-      "command": "uv",
+    "github.com/zcaceres/markdownify-mcp": {
       "args": [
-        "--directory",
-        "/home/gabriel/mcp-demo",
-        "run",
-        "src/demo.py"
+        "/home/gabriel/.mcphub/servers/github.com/zcaceres/markdownify-mcp/dist/index.js"
       ],
-      "disabled": false
+      "env": {
+        "UV_PATH": "/home/gabriel/.local/bin/uv"
+      },
+      "command": "node"
     }
   },
   "nativeMCPServers": [
