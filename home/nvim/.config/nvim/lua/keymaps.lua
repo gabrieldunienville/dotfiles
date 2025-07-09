@@ -35,13 +35,6 @@ vim.keymap.set('n', '<A-k>', ':m .-2<CR>==')
 -- Easer than ctrl-^
 vim.api.nvim_set_keymap('n', '<M-b>', '<C-^>', { noremap = true })
 
--- Exit terminal mode in the builtin terminal with a shortcut that is a bit easier
--- for people to discover. Otherwise, you normally need to press <C-\><C-n>, which
--- is not what someone will guess without a bit more experience.
---
--- NOTE: This won't work in all terminal emulators/tmux/etc. Try your own mapping
--- or just use <C-\><C-n> to exit terminal mode
-vim.keymap.set('t', '<Esc><Esc>', '<C-\\><C-n>', { desc = 'Exit terminal mode' })
 
 -- vim.keymap.set('n', '<leader>w', ':w')
 
@@ -120,5 +113,5 @@ vim.keymap.set('v', '<leader>ap', '<cmd>CodeCompanionChat Add<cr>', { noremap = 
 -- Utils
 vim.keymap.set('n', '<leader>ka', '<cmd>AerialToggle!<CR>', { desc = 'Toggle Aerial' })
 vim.keymap.set('n', '<leader>kr', '<cmd>ReloadKeymaps<CR>', { desc = 'Reload keymaps' })
-vim.keymap.set('n', '<leader>kd', '<cmd>DeleteCurrentFile<CR>', { desc = 'Delete current file' })
+-- vim.keymap.set('n', '<leader>kd', '<cmd>DeleteCurrentFile<CR>', { desc = 'Delete current file' })
 vim.keymap.set('n', '<leader>ke', Snacks.explorer.reveal, { desc = 'Open file tree' })

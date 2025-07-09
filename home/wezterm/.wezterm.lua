@@ -6,12 +6,36 @@ local config = wezterm.config_builder()
 
 config.font = wezterm.font("JetBrains Mono")
 config.font_size = 16.0
+config.line_height = 1.2
+
+-- Reccommended by claude
+config.max_fps = 120
+config.animation_fps = 60
+config.cursor_blink_rate = 500
+config.harfbuzz_features = { "calt=1", "clig=1", "liga=1" } -- Enable ligatures
+config.hide_tab_bar_if_only_one_tab = true
+config.use_fancy_tab_bar = false
+config.tab_bar_at_bottom = true
+-- Scrollback for AI output
+config.scrollback_lines = 10000
+-- Enable Kitty graphics protocol for image support
+config.enable_kitty_graphics = true
+-- Critical for Neovim: proper terminfo
+-- config.term = "wezterm"
+config.term = "xterm-256color"
+-- Window padding
+config.window_padding = {
+	left = 5,
+	right = 5,
+	top = 5,
+	bottom = 5,
+}
 
 -- config.color_scheme = 'Batman'
 -- config.color_scheme = 'AdventureTime'
 -- config.color_scheme = 'Catppuccin Macchiato'
 -- config.color_scheme = 'Clone Of Ubuntu (Gogh)'
-config.color_scheme = 'Spacedust (Gogh)'
+config.color_scheme = "Spacedust (Gogh)"
 -- config.color_scheme = 'SpaceGray'
 -- config.color_scheme = "SpaceGray Eighties"
 -- config.color_scheme = 'SpaceGray Eighties Dull'
@@ -117,9 +141,28 @@ config.keys = {
 
 config.window_decorations = "TITLE | RESIZE"
 
--- Set the window title to show the current working directory
+-- -- Set the window title to show the current working directory
+-- wezterm.on("format-window-title", function(tab, pane, tabs, pane_config, window_config)
+-- 	return "Custom - " .. pane.current_working_dir
+-- end)
+
 wezterm.on("format-window-title", function(tab, pane, tabs, pane_config, window_config)
-	return pane.current_working_dir
+	local cwd = pane.current_working_dir
+	if cwd then
+		local path = cwd.file_path or cwd
+		-- Remove trailing slash if present
+		path = path:gsub("/$", "")
+		-- Extract the last component of the path (including hidden dirs with .)
+		local dir_name = path:match("([^/]+)$") or path
+		return dir_name
+	end
+	return "WezTerm"
 end)
+
+-- Prevent applications from setting the window title
+config.set_environment_variables = {
+	-- This prevents applications from changing the title
+	DISABLE_AUTO_TITLE = "true",
+}
 
 return config

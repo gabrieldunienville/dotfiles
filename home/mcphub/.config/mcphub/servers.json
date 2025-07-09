@@ -1,15 +1,5 @@
 {
-  "nativeMCPServers": [
-    
-  ],
   "mcpServers": {
-    "github.com/upstash/context7-mcp": {
-      "command": "npx",
-      "args": [
-        "-y",
-        "@upstash/context7-mcp@latest"
-      ]
-    },
     "github.com/zcaceres/markdownify-mcp": {
       "command": "node",
       "args": [
@@ -19,6 +9,16 @@
         "UV_PATH": "/home/gabriel/.local/bin/uv"
       }
     },
+    "claude": {
+      "command": "claude",
+      "args": [
+        "mcp",
+        "serve"
+      ],
+      "env": [
+        
+      ]
+    },
     "demo": {
       "command": "uv",
       "args": [
@@ -27,15 +27,43 @@
         "run",
         "src/demo.py"
       ],
+      "disabled": false,
       "dev": {
         "cwd": "/home/gabriel/mcp-demo",
+        "enabled": false,
         "watch": [
           "src/**/*.py",
           "pyproject.toml"
-        ],
-        "enabled": true
-      },
-      "disabled": false
+        ]
+      }
+    },
+    "personal": {
+      "command": "uv",
+      "args": [
+        "--directory",
+        "/home/gabriel/personal-mcp-server",
+        "run",
+        "src/server.py"
+      ],
+      "disabled": false,
+      "dev": {
+        "cwd": "/home/gabriel/personal-mcp-server",
+        "enabled": false,
+        "watch": [
+          "src/**/*.py",
+          "pyproject.toml"
+        ]
+      }
+    },
+    "github.com/upstash/context7-mcp": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@upstash/context7-mcp@latest"
+      ]
     }
-  }
+  },
+  "nativeMCPServers": [
+    
+  ]
 }

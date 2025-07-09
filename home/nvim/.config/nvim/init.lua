@@ -191,6 +191,9 @@ require('lazy').setup({
 })
 
 require 'keymaps'
+require 'terminal'
+
+require 'mcp'
 
 require 'user_commands.ipython_run_imports'
 require 'user_commands.pyflyby_autoimport'

@@ -12,8 +12,7 @@ return {
       output = {
         enable = true,
         open_on_run = false,
-      },
-      output_panel = {
+        output_panel = {},
         enabled = true,
         open = 'vsplit',
       },
@@ -36,6 +35,16 @@ return {
           -- virtual envs in the local directory and for Pipenev/Poetry configs
           -- python = ".venv/bin/python",
           -- python = 'poetry run -m python',
+          -- python = 'docker compose exec fastapi uv run python',
+          -- python = {
+          --   'docker',
+          --   'compose',
+          --   'exec',
+          --   'fastapi',
+          --   'uv',
+          --   'run',
+          --   'python',
+          -- },
           -- Returns if a given file path is a test file.
           -- NB: This function is called a lot so don't perform any heavy tasks within it.
           -- is_test_file = function(file_path)
@@ -53,11 +62,6 @@ return {
       vim.cmd 'wa'
       require('neotest').run.run()
     end, { desc = '[U]nit test run [C]losest' })
-
-    vim.keymap.set('n', '<leader>ud', function()
-      vim.cmd 'wa'
-      require('neotest').run.run({strategy = 'dap'})
-    end, { desc = '[U]nit test run with [D]AP' })
 
     vim.keymap.set('n', '<leader>ul', function()
       require('neotest').run.run_last()

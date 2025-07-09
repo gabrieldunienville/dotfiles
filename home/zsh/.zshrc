@@ -145,6 +145,8 @@ function project_context_prompt() {
             local color="%{$fg_bold[red]%}"
         elif [[ $ENVIRONMENT == "test" ]]; then
             local color="%{$fg_bold[green]%}"
+        elif [[ $ENVIRONMENT == "host" ]]; then
+            local color="%{$fg_bold[magenta]%}"
         else
             local color=""
         fi

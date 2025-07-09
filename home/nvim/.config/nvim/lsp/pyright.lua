@@ -20,6 +20,8 @@ return {
   handlers = {
     ['textDocument/publishDiagnostics'] = function(err, result, ctx, config)
       -- Filter out the specific await error
+      -- Note: This is a hack because Pyright does not support disabling this diagnostic
+      -- The purpuse is to to be used in ipython scripts
       if result and result.diagnostics then
         result.diagnostics = vim.tbl_filter(function(diagnostic)
           return not string.match(diagnostic.message, '"await" allowed only within async function')
