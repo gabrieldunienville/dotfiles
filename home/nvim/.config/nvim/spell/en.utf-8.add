@@ -454,3 +454,6 @@ transpiling
 tsconfig
 subpath
 js
+#nowlege
+codecompanion
+nvim

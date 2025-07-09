@@ -110,6 +110,13 @@ vim.keymap.set({ 'n', 'v' }, '<leader>aa', '<cmd>CodeCompanionActions<cr>', { no
 vim.keymap.set({ 'n', 'v' }, '<leader>ah', '<cmd>CodeCompanionHistory<cr>', { noremap = true, silent = true })
 vim.keymap.set('v', '<leader>ap', '<cmd>CodeCompanionChat Add<cr>', { noremap = true, silent = true })
 
+-- -- Workspace Navigation
+-- local workspace = require('workspace')
+-- vim.keymap.set('n', '<leader>we', workspace.navigate_to_editor, { desc = 'Navigate to editor' })
+-- vim.keymap.set('n', '<leader>wt', workspace.navigate_to_terminal, { desc = 'Navigate to terminal' })
+-- vim.keymap.set('n', '<leader>wc', workspace.navigate_to_claude, { desc = 'Navigate to Claude Code' })
+-- vim.keymap.set('n', '<leader>wp', workspace.navigate_to_ipython, { desc = 'Navigate to IPython' })
+
 -- Utils
 vim.keymap.set('n', '<leader>ka', '<cmd>AerialToggle!<CR>', { desc = 'Toggle Aerial' })
 vim.keymap.set('n', '<leader>kr', '<cmd>ReloadKeymaps<CR>', { desc = 'Reload keymaps' })
