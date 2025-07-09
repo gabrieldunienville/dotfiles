@@ -1,43 +1,23 @@
 {
   "mcpServers": {
     "github.com/zcaceres/markdownify-mcp": {
+      "env": {
+        "UV_PATH": "/home/gabriel/.local/bin/uv"
+      },
       "command": "node",
       "args": [
         "/home/gabriel/.mcphub/servers/github.com/zcaceres/markdownify-mcp/dist/index.js"
-      ],
-      "env": {
-        "UV_PATH": "/home/gabriel/.local/bin/uv"
-      }
-    },
-    "claude": {
-      "command": "claude",
-      "args": [
-        "mcp",
-        "serve"
-      ],
-      "env": [
-        
       ]
     },
-    "demo": {
-      "command": "uv",
-      "args": [
-        "--directory",
-        "/home/gabriel/mcp-demo",
-        "run",
-        "src/demo.py"
-      ],
-      "disabled": false,
+    "personal": {
       "dev": {
-        "cwd": "/home/gabriel/mcp-demo",
-        "enabled": false,
+        "cwd": "/home/gabriel/personal-mcp-server",
         "watch": [
           "src/**/*.py",
           "pyproject.toml"
-        ]
-      }
-    },
-    "personal": {
+        ],
+        "enabled": false
+      },
       "command": "uv",
       "args": [
         "--directory",
@@ -45,22 +25,42 @@
         "run",
         "src/server.py"
       ],
-      "disabled": false,
-      "dev": {
-        "cwd": "/home/gabriel/personal-mcp-server",
-        "enabled": false,
-        "watch": [
-          "src/**/*.py",
-          "pyproject.toml"
-        ]
-      }
+      "disabled": false
+    },
+    "claude": {
+      "env": [
+        
+      ],
+      "command": "claude",
+      "args": [
+        "mcp",
+        "serve"
+      ]
     },
     "github.com/upstash/context7-mcp": {
-      "command": "npx",
       "args": [
         "-y",
         "@upstash/context7-mcp@latest"
-      ]
+      ],
+      "command": "npx"
+    },
+    "demo": {
+      "dev": {
+        "cwd": "/home/gabriel/mcp-demo",
+        "watch": [
+          "src/**/*.py",
+          "pyproject.toml"
+        ],
+        "enabled": false
+      },
+      "command": "uv",
+      "args": [
+        "--directory",
+        "/home/gabriel/mcp-demo",
+        "run",
+        "src/demo.py"
+      ],
+      "disabled": false
     }
   },
   "nativeMCPServers": [
