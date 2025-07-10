@@ -95,4 +95,10 @@ function M.get_diagnostic_under_cursor()
   return table.concat(result, '\n')
 end
 
+function M.capture_diagnostic_under_cursor()
+  local diagnostic_info = M.get_diagnostic_under_cursor()
+  -- Put in register
+  vim.fn.setreg('+', diagnostic_info)
+end
+
 return M

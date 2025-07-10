@@ -82,7 +82,8 @@ vim.keymap.set('v', '<C-t>', '"sy/<C-r>s<CR>', { desc = 'Find' })
 -- vim.keymap.set('c', '<Up>', '<C-p>', { desc = 'Previous completion' })
 
 -- LSP
-vim.keymap.set('n', 'gd', vim.lsp.buf.definition, { desc = 'Go to definition' })
+-- vim.keymap.set('n', 'gd', vim.lsp.buf.definition, { desc = 'Go to definition' })
+vim.keymap.set('n', 'gd', Snacks.picker.lsp_definitions, { desc = 'Go to definition' })
 vim.keymap.set('i', '<M-k>', vim.lsp.buf.signature_help)
 
 -- Git

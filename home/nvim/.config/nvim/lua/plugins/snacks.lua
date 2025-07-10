@@ -14,6 +14,9 @@ return {
         },
       },
     },
+    -- explorer = {
+    --   enabled = true,
+    -- },
     notifier = {
       enabled = true,
       timeout = 3000,
@@ -21,6 +24,30 @@ return {
     win = {
       enable = true,
     },
+    -- layout = {
+    --   show = true,
+    --   fullscreen = true,
+    --   layout = {
+    --     box = 'horizontal',
+    --     position = 'left',
+    --     {
+    --       win = 'left',
+    --       width = 0.6,
+    --     },
+    --     {
+    --       win = 'right',
+    --       width = 0.4,
+    --     },
+    --   },
+    --   -- wins = {
+    --   --   left = Snacks.win.new {
+    --   --     border = 'rounded',
+    --   --   },
+    --   --   right = Snacks.win.new {
+    --   --     border = 'single',
+    --   --   },
+    --   -- },
+    -- },
     -- layout = {
     --   wins = {
     --     editor = Snacks.win {
@@ -36,6 +63,7 @@ return {
     --       -- Claude Code or IPython repr
     --     },
     --   },
+    -- },
     --   layout = {
     --     box = 'horizontal',
     --     width = 0.9,

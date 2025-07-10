@@ -192,8 +192,7 @@ require('lazy').setup({
 
 require 'keymaps'
 require 'workspace'
--- require 'terminal_tab'
-
+require 'terminal'
 require 'diagnostics'
 
 require 'user_commands.ipython_run_imports'
@@ -203,3 +202,5 @@ require 'user_commands.config_commands'
 require 'user_commands.navigation'
 require 'user_commands.obsidian'
 require 'user_commands.lsp'
+
+require 'startup'

@@ -190,10 +190,10 @@ return {
 
       -- Optional, set to true if you use the Obsidian Advanced URI plugin.
       -- https://github.com/Vinzent03/obsidian-advanced-uri
-      use_advanced_uri = false,
+      -- use_advanced_uri = false,
 
       -- Optional, set to true to force ':Obsidian open' to bring the app to the foreground.
-      open_app_foreground = false,
+      -- open_app_foreground = false,
 
       picker = {
         -- Set your preferred picker. Can be one of 'telescope.nvim', 'fzf-lua', 'mini.pick' or 'snacks.pick'.
