@@ -5,6 +5,7 @@ _G.W = M
 local state = require 'workspace.state'
 local tabs = require 'workspace.tabs'
 local windows = require 'workspace.windows'
+local buffers = require 'workspace.buffers'
 
 function M.setup()
   state.initialize()
@@ -15,11 +16,17 @@ function M.setup()
     windows.open_window 'code'
   end, { desc = 'Open code window' })
   vim.keymap.set({ 'n', 't' }, '<C-M-k>', function()
-    windows.open_window 'tools'
+    buffers.open_buffer 'claude_code'
+  end, { desc = 'Open tools window' })
+  vim.keymap.set({ 'n', 't' }, '<C-M-i>', function()
+    buffers.open_buffer 'ipython'
   end, { desc = 'Open tools window' })
   vim.keymap.set({ 'n', 't' }, '<C-M-l>', function()
-    windows.open_window 'terminal'
+    windows.open_window 'primary_terminal'
   end, { desc = 'Open terminal window' })
+  vim.keymap.set({ 'n', 't' }, '<C-M-;>', function()
+    windows.open_window 'runner'
+  end, { desc = 'Open server window' })
 end
 
 function M.default_workspace()
@@ -34,9 +41,6 @@ function M.debug()
   print(vim.inspect(state.get()))
 end
 
-M.tabs = tabs
-M.windows = windows
-
 M.setup()
 
 -- vim.api.nvim_create_autocmd({ 'WinNew', 'WinClosed' }, {
@@ -46,5 +50,10 @@ M.setup()
 --     print(string.format('Info: %s', vim.inspect(info)))
 --   end,
 -- })
+
+
+M.tabs = tabs
+M.windows = windows
+M.buffers = buffers
 
 return M

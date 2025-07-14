@@ -35,7 +35,6 @@ vim.keymap.set('n', '<A-k>', ':m .-2<CR>==')
 -- Easer than ctrl-^
 vim.api.nvim_set_keymap('n', '<M-b>', '<C-^>', { noremap = true })
 
-
 -- vim.keymap.set('n', '<leader>w', ':w')
 
 -- Copy absolute path to clipboard
@@ -85,6 +84,9 @@ vim.keymap.set('v', '<C-t>', '"sy/<C-r>s<CR>', { desc = 'Find' })
 -- vim.keymap.set('n', 'gd', vim.lsp.buf.definition, { desc = 'Go to definition' })
 vim.keymap.set('n', 'gd', Snacks.picker.lsp_definitions, { desc = 'Go to definition' })
 vim.keymap.set('i', '<M-k>', vim.lsp.buf.signature_help)
+vim.keymap.set('n', 'grr', function()
+  Snacks.picker.lsp_references()
+end, { desc = 'LSP references' })
 
 -- Git
 vim.keymap.set('n', '<leader>gs', function()

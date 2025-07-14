@@ -6,20 +6,13 @@ local tabs = require 'workspace.tabs'
 
 function M.initialize()
   if not state.get().windows['code'] then
-    -- local code_win = vim.api.nvim_get_current_win()
-    -- state.set_window('code', code_win)
     vim.api.nvim_set_current_win(1000)
     local win = Snacks.win.new {
       position = 'current',
       buf = vim.api.nvim_get_current_buf(),
       fixbuf = false,
+      minimal = false,
     }
-    -- local win = Snacks.win.new {
-    --   height = 0,
-    --   width = 0,
-    --   show = true,
-    --   enter = true,
-    -- }
     state.set_window('code', win)
   end
 end
@@ -33,7 +26,7 @@ function M.open_window(window_name)
     return
   end
 
-  local win_config = config.win_tab_map[window_name]
+  local win_config = config.get_win_config(window_name)
 
   -- Identify the tab configured for this window
   local tab_name = win_config.tab_name
@@ -48,12 +41,24 @@ function M.open_window(window_name)
     win = Snacks.win.new {
       position = 'current',
       buf = vim.api.nvim_get_current_buf(),
+      on_win = function()
+        if win_config.launch() then
+          win_config.launch()
+        end
+      end,
     }
   else
     win = Snacks.win.new(vim.tbl_deep_extend('force', win_config.win_args, {
       show = true,
+      fixbuf = false,
+      on_win = function()
+        if win_config.launch then
+          win_config.launch()
+        end
+      end,
     }))
   end
+
   state.set_window(window_name, win)
 end
 

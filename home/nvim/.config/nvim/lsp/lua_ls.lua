@@ -14,7 +14,7 @@ return {
       },
       diagnostics = {
         disable = {
-          'missing-fields',
+          -- 'missing-fields',
         },
         globals = {
           'vim',
