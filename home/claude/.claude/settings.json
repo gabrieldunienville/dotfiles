@@ -1,0 +1,28 @@
+{
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "jq -r '\"\\(.tool_input.command) - \\(.tool_input.description // \"No description\")\"' >> ~/.claude/bash-command-log.txt"
+          }
+        ]
+      },
+      {
+        "matcher": "Edit|MultiEdit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "jq '.' >> ~/tool_events.log"
+          },
+          {
+            "type": "command",
+            "command": "nvr --servername $NVIM_SOCKET -c \"WorkspaceReloadCodeBuffer $(jq -r '.tool_response.filePath')\""
+          }
+        ]
+      }
+    ]
+  }
+}
