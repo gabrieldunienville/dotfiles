@@ -1,7 +1,6 @@
 PACKAGES := zsh git vim tmux
 
-# Dictionary-like structure: package:target pairs
-STOW_PACKAGES := \
+USER_STOW_PACKAGES := \
 	claude:${HOME}/.claude \
 	git:${HOME} \
 	httpie:${HOME}/.config/httpie \
@@ -11,20 +10,24 @@ STOW_PACKAGES := \
 	tmux:${HOME} \
 	custom-scripts:${HOME}/.local/bin \
 	zsh:${HOME} \
+	wezterm:${HOME} \
+	desktop:${HOME}/.local/share/applications \
+	sway:${HOME}/.config \
+	nvim:${HOME}/.config/nvim
 
-.PHONY: debug install uninstall
+# Require sudo
+SYSTEM_STOW_PACKAGES := \
+	zsa-rules:/etc/udev/rules.d
+	
 
-debug:
-	# Test iteration over STOW_PACKAGES
-	@$(foreach pkg_target,$(STOW_PACKAGES), \
-		$(eval pkg := $(word 1,$(subst :, ,$(pkg_target)))) \
-		$(eval target := $(word 2,$(subst :, ,$(pkg_target)))) \
-		echo "Package: $(pkg), Target: $(target)" ; \
-	)
+.PHONY: install-user install-system install uninstall-user uninstall-system uninstall
 
+install: install-user install-system
 
-install:
-	@$(foreach pkg_target,$(STOW_PACKAGES), \
+uninstall: uninstall-user uninstall-system
+
+install-user:
+	@$(foreach pkg_target,$(USER_STOW_PACKAGES), \
 		$(eval pkg := $(word 1,$(subst :, ,$(pkg_target)))) \
 		$(eval target := $(word 2,$(subst :, ,$(pkg_target)))) \
 		mkdir -p "$(target)" && \
@@ -32,11 +35,27 @@ install:
 		stow --target="$(target)" $(pkg) ; \
 	)
 
-uninstall:
-	@$(foreach pkg_target,$(STOW_PACKAGES), \
+install-system:
+	@$(foreach pkg_target,$(SYSTEM_STOW_PACKAGES), \
+		$(eval pkg := $(word 1,$(subst :, ,$(pkg_target)))) \
+		$(eval target := $(word 2,$(subst :, ,$(pkg_target)))) \
+		echo "Installing $(pkg) to $(target)" ; \
+		sudo stow --target="$(target)" $(pkg) ; \
+	)
+
+uninstall-user:
+	@$(foreach pkg_target,$(USER_STOW_PACKAGES), \
 		$(eval pkg := $(word 1,$(subst :, ,$(pkg_target)))) \
 		$(eval target := $(word 2,$(subst :, ,$(pkg_target)))) \
 		echo "Uninstalling $(pkg) from $(target)" ; \
 		stow --target="$(target)" --del $(pkg) ; \
+	)
+
+uninstall-system:
+	@$(foreach pkg_target,$(SYSTEM_STOW_PACKAGES), \
+		$(eval pkg := $(word 1,$(subst :, ,$(pkg_target)))) \
+		$(eval target := $(word 2,$(subst :, ,$(pkg_target)))) \
+		echo "Uninstalling $(pkg) from $(target)" ; \
+		sudo stow --target="$(target)" --del $(pkg) ; \
 	)
 
