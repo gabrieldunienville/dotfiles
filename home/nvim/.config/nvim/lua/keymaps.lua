@@ -107,11 +107,11 @@ vim.keymap.set('n', '<M-h>', '<cmd>OpenPrevFile<CR>', { desc = 'Open prevous fil
 vim.keymap.set('n', '<M-l>', '<cmd>OpenNextFile<CR>', { desc = 'Open next file' })
 
 -- Code companion
-vim.keymap.set({ 'n', 'v' }, '<leader>an', '<cmd>CodeCompanionChat<cr>', { noremap = true, silent = true })
-vim.keymap.set({ 'n', 'v' }, '<leader>at', '<cmd>CodeCompanionChat Toggle<cr>', { noremap = true, silent = true })
-vim.keymap.set({ 'n', 'v' }, '<leader>aa', '<cmd>CodeCompanionActions<cr>', { noremap = true, silent = true })
-vim.keymap.set({ 'n', 'v' }, '<leader>ah', '<cmd>CodeCompanionHistory<cr>', { noremap = true, silent = true })
-vim.keymap.set('v', '<leader>ap', '<cmd>CodeCompanionChat Add<cr>', { noremap = true, silent = true })
+-- vim.keymap.set({ 'n', 'v' }, '<leader>an', '<cmd>CodeCompanionChat<cr>', { noremap = true, silent = true })
+-- vim.keymap.set({ 'n', 'v' }, '<leader>at', '<cmd>CodeCompanionChat Toggle<cr>', { noremap = true, silent = true })
+-- vim.keymap.set({ 'n', 'v' }, '<leader>aa', '<cmd>CodeCompanionActions<cr>', { noremap = true, silent = true })
+-- vim.keymap.set({ 'n', 'v' }, '<leader>ah', '<cmd>CodeCompanionHistory<cr>', { noremap = true, silent = true })
+-- vim.keymap.set('v', '<leader>ap', '<cmd>CodeCompanionChat Add<cr>', { noremap = true, silent = true })
 
 -- -- Workspace Navigation
 -- local workspace = require('workspace')

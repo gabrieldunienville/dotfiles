@@ -248,3 +248,9 @@ fi
 
 ASYNCAPI_AC_ZSH_SETUP_PATH=/home/gabriel/.cache/@asyncapi/cli/autocomplete/zsh_setup && test -f $ASYNCAPI_AC_ZSH_SETUP_PATH && source $ASYNCAPI_AC_ZSH_SETUP_PATH; # asyncapi autocomplete setup
 
+# pnpm
+export PNPM_HOME="/home/gabriel/.local/share/pnpm"
+case ":$PATH:" in
+  *":$PNPM_HOME:"*) ;;
+  *) export PATH="$PNPM_HOME:$PATH" ;;
+esac

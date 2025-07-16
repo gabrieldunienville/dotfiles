@@ -74,7 +74,7 @@ function M.get_diagnostic_under_cursor()
   }
 
   local result = {
-    string.format('File: %s', relative_path),
+    string.format('File: @%s', relative_path),
     string.format('Line %d, Column %d', line + 1, col + 1),
     string.format('Found %d diagnostic(s) on this line:', #diagnostics),
     '',

@@ -6,27 +6,35 @@ local state = require 'workspace.state'
 local tabs = require 'workspace.tabs'
 local windows = require 'workspace.windows'
 local buffers = require 'workspace.buffers'
+local utils = require 'workspace.utils'
 
 function M.setup()
   state.initialize()
   tabs.initialize()
   windows.initialize()
 
-  vim.keymap.set({ 'n', 't' }, '<C-M-j>', function()
+  vim.keymap.set({ 'n', 't', 'v' }, '<C-M-j>', function()
     windows.open_window 'code'
   end, { desc = 'Open code window' })
-  vim.keymap.set({ 'n', 't' }, '<C-M-k>', function()
+  vim.keymap.set({ 'n', 't', 'v' }, '<C-M-k>', function()
     buffers.open_buffer 'claude_code'
   end, { desc = 'Open tools window' })
-  vim.keymap.set({ 'n', 't' }, '<C-M-i>', function()
+  vim.keymap.set({ 'n', 't', 'v' }, '<C-M-i>', function()
     buffers.open_buffer 'ipython'
   end, { desc = 'Open tools window' })
-  vim.keymap.set({ 'n', 't' }, '<C-M-l>', function()
+  vim.keymap.set({ 'n', 't', 'v' }, '<C-M-l>', function()
     windows.open_window 'primary_terminal'
   end, { desc = 'Open terminal window' })
-  vim.keymap.set({ 'n', 't' }, '<C-M-;>', function()
+  vim.keymap.set({ 'n', 't', 'v' }, '<C-M-;>', function()
     windows.open_window 'runner'
   end, { desc = 'Open server window' })
+
+  vim.api.nvim_create_user_command('WorkspaceReloadCodeBuffer', function(input)
+    utils.reload_code_buffer_if_updated(input.args)
+  end, {
+    desc = 'Reload code buffer if it has been updated',
+    nargs = 1,
+  })
 end
 
 function M.default_workspace()
@@ -50,7 +58,6 @@ M.setup()
 --     print(string.format('Info: %s', vim.inspect(info)))
 --   end,
 -- })
-
 
 M.tabs = tabs
 M.windows = windows

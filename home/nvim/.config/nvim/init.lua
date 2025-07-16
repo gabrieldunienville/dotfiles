@@ -123,6 +123,7 @@ require('lazy').setup({
   { import = 'plugins.floating_help', enabled = false },
   { import = 'plugins.snacks', enabled = true },
   { import = 'plugins.edgy', enabled = false },
+  { import = 'plugins.flash', enabled = true },
 
   -- Git
   { import = 'plugins.git', enabled = true }, -- 3
@@ -140,7 +141,7 @@ require('lazy').setup({
   { import = 'plugins.luasnip', enabled = true },
   { import = 'plugins.mcphub', enabled = true },
   { import = 'plugins.avante', enabled = false },
-  { import = 'plugins.codecompanion', enabled = true },
+  { import = 'plugins.codecompanion', enabled = false },
 
   -- Language specific
   { import = 'plugins.ansible', enabled = false }, -- 2
@@ -194,6 +195,7 @@ require 'keymaps'
 require 'workspace'
 require 'terminal'
 require 'diagnostics'
+require 'ai_commands'
 
 require 'user_commands.ipython_run_imports'
 require 'user_commands.pyflyby_autoimport'

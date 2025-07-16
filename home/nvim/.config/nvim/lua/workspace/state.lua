@@ -29,9 +29,17 @@ function M.set_tab(name, value)
   -- vim.g.workspace_state = state
 end
 
-function M.set_window(name, value)
-  state.windows[name] = value
+---@param name string
+---@param win snacks.win
+function M.set_window(name, win)
+  state.windows[name] = win
   -- vim.g.workspace_state = state
+end
+
+---@param name string
+---@return snacks.win|nil
+function M.get_window(name)
+  return state.windows[name]
 end
 
 function M.set_buffer(buf_name, win_name, buf_id)
@@ -39,6 +47,9 @@ function M.set_buffer(buf_name, win_name, buf_id)
   state.buffers[buf_name][win_name] = buf_id
 end
 
+---@param buf_name string
+---@param win_name string
+---@return number|nil
 function M.get_buffer(buf_name, win_name)
   if state.buffers[buf_name] then
     return state.buffers[buf_name][win_name]

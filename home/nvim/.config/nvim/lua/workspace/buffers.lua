@@ -12,19 +12,9 @@ function M.open_buffer(buf_name)
   windows.open_window(window_name)
 
   local buf_id = state.get_buffer(buf_name, window_name)
-  -- print(string.format('Buffer ID for %s in %s: %s', buf_name, window_name, buf_id))
-  -- print(string.format('Current buffer ID: %s', vim.api.nvim_get_current_buf()))
-
-  -- vim.print({
-  --   buf_name = buf_name,
-  --   window_name = window_name,
-  --   buf_id = buf_id,
-  --   current_buf_id = vim.api.nvim_get_current_buf(),
-  -- })
 
   if not buf_id then
     -- Create a new buffer and run launch function if it exists
-    print(string.format('Creating new buffer for %s in %s', buf_name, window_name))
     if buf_config.launch then
       buf_config.launch()
     end
@@ -32,11 +22,19 @@ function M.open_buffer(buf_name)
     state.set_buffer(buf_name, window_name, buf_id)
   elseif buf_id ~= vim.api.nvim_get_current_buf() then
     -- If the buffer is already open in this window, switch to it
-    print(string.format('Switching to existing buffer %s in %s', buf_name, window_name))
-    print(string.format('Current buffer ID: %s', vim.api.nvim_get_current_buf()))
-    print(string.format('Buffer ID: %s', buf_id))
     vim.api.nvim_set_current_buf(buf_id)
   end
 end
+
+function M.paste_to_buffer(win_name, buf_name, text)
+  local buf_id = state.get_buffer(buf_name, win_name)
+  local job_id = vim.api.nvim_buf_get_var(buf_id, 'terminal_job_id')
+  if not job_id or job_id == 0 then
+    print(string.format('No terminal job found for buffer %s', buf_name))
+    return
+  end
+  vim.fn.chansend(job_id, text .. '\n')
+end
+
 
 return M

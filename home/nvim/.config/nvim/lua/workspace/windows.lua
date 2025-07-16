@@ -62,4 +62,5 @@ function M.open_window(window_name)
   state.set_window(window_name, win)
 end
 
+
 return M
