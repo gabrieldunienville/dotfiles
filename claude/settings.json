@@ -6,7 +6,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "jq -r '\"\\(.tool_input.command) - \\(.tool_input.description // \"No description\")\"' >> ~.claude-bash-command-log.txt"
+            "command": "jq -r '\"\\(.tool_input.command) - \\(.tool_input.description // \"No description\")\"' >> /tmp/claude-bash-command-log.txt"
           }
         ]
       },
@@ -15,7 +15,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "jq '.' >> ~/tool_events.log"
+            "command": "jq '.' >> /tmp/claude_tool_events.log"
           },
           {
             "type": "command",
@@ -26,4 +26,3 @@
     ]
   }
 }
-
