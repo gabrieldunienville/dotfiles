@@ -7,7 +7,7 @@ M.layout = {
       tools = {
         win_args = {
           position = 'right',
-          width = 0.4,
+          width = 0.45,
         },
         buffers = {
           claude_code = {

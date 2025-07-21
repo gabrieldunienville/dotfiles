@@ -7,6 +7,7 @@ local tabs = require 'workspace.tabs'
 local windows = require 'workspace.windows'
 local buffers = require 'workspace.buffers'
 local utils = require 'workspace.utils'
+require 'workspace.highlight_groups'
 
 function M.setup()
   state.initialize()

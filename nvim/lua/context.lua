@@ -20,7 +20,15 @@ function M.get_visual_selection()
   local lines = vim.api.nvim_buf_get_lines(0, start_row - 1, end_row, false)
 
   if #lines == 1 then
-    return lines[1]:sub(start_col, end_col)
+    -- For single line, handle visual mode properly
+    local mode = vim.fn.mode()
+    if mode == 'V' then
+      -- Visual line mode - return full line
+      return lines[1]
+    else
+      -- Visual character mode - extract substring
+      return lines[1]:sub(start_col, end_col)
+    end
   else
     -- Check if we're in visual line mode
     local mode = vim.fn.mode()
@@ -62,6 +70,11 @@ Lines: %d-%d
   )
 
   return context
+end
+
+function M.get_file_context()
+  local rel_path = vim.fn.expand '%:~:.'
+  return string.format('@%s', rel_path)
 end
 
 return M

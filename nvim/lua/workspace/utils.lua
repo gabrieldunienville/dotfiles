@@ -1,6 +1,5 @@
 local M = {}
 
-local windows = require 'workspace.windows'
 local state = require 'workspace.state'
 
 function M.reload_code_buffer_if_updated(file_path)
@@ -24,7 +23,5 @@ function M.reload_code_buffer_if_updated(file_path)
   print('Reloading code buffer:', buf_file_path)
   require('utils').safe_reload_buffer(win.buf)
 end
-
-M.reload_code_buffer_if_updated 'init.lua'
 
 return M

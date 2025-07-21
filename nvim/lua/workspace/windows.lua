@@ -12,6 +12,9 @@ function M.initialize()
       buf = vim.api.nvim_get_current_buf(),
       fixbuf = false,
       minimal = false,
+      wo = {
+        winhighlight = 'Normal:WorkspaceFocused,NormalNC:WorkspaceUnfocused',
+      },
     }
     state.set_window('code', win)
   end
@@ -46,6 +49,10 @@ function M.open_window(window_name)
           win_config.launch()
         end
       end,
+      -- minimal = false,
+      wo = {
+        winhighlight = 'Normal:WorkspaceFocused,NormalNC:WorkspaceUnfocused',
+      },
     }
   else
     win = Snacks.win.new(vim.tbl_deep_extend('force', win_config.win_args, {
@@ -56,11 +63,14 @@ function M.open_window(window_name)
           win_config.launch()
         end
       end,
+      -- minimal = false,
+      wo = {
+        winhighlight = 'Normal:WorkspaceFocused,NormalNC:WorkspaceUnfocused',
+      },
     }))
   end
 
   state.set_window(window_name, win)
 end
-
 
 return M

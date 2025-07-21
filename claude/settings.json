@@ -1,5 +1,20 @@
 {
   "hooks": {
+    "Notification": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "notify-send 'Claude Code' 'Awaiting your input'"
+          },
+          {
+            "type": "command",
+            "command": "jq '{\"source\": \"claude-code\", \"type\": \"notification\", \"payload\": .}' | socat - UNIX-CONNECT:/tmp/dashboard.sock"
+          }
+        ]
+      }
+    ],
     "PostToolUse": [
       {
         "matcher": "Bash",
@@ -19,7 +34,7 @@
           },
           {
             "type": "command",
-            "command": "nvr --servername $NVIM_SOCKET -c \"WorkspaceReloadCodeBuffer $(jq -r '.tool_response.filePath')\""
+            "command": "if [ -n \"$NVIM_SOCKET\" ]; then nvr --servername \"$NVIM_SOCKET\" -c \"WorkspaceReloadCodeBuffer $(jq -r '.tool_response.filePath')\"; fi"
           }
         ]
       }

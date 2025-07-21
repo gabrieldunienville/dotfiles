@@ -1,33 +1,8 @@
 {
+  "nativeMCPServers": [
+    
+  ],
   "mcpServers": {
-    "demo": {
-      "args": [
-        "--directory",
-        "/home/gabriel/mcp-demo",
-        "run",
-        "src/demo.py"
-      ],
-      "disabled": false,
-      "command": "uv",
-      "dev": {
-        "enabled": false,
-        "watch": [
-          "src/**/*.py",
-          "pyproject.toml"
-        ],
-        "cwd": "/home/gabriel/mcp-demo"
-      }
-    },
-    "claude": {
-      "args": [
-        "mcp",
-        "serve"
-      ],
-      "env": [
-        
-      ],
-      "command": "claude"
-    },
     "personal": {
       "args": [
         "--directory",
@@ -35,16 +10,16 @@
         "run",
         "src/server.py"
       ],
-      "disabled": false,
       "command": "uv",
       "dev": {
+        "cwd": "/home/gabriel/personal-mcp-server",
         "enabled": false,
         "watch": [
           "src/**/*.py",
           "pyproject.toml"
-        ],
-        "cwd": "/home/gabriel/personal-mcp-server"
-      }
+        ]
+      },
+      "disabled": false
     },
     "github.com/upstash/context7-mcp": {
       "args": [
@@ -53,17 +28,51 @@
       ],
       "command": "npx"
     },
+    "playwright": {
+      "args": [
+        "dlx",
+        "@playwright/mcp@latest",
+        "--cdp-endpoint=http://localhost:9222"
+      ],
+      "command": "pnpm",
+      "disabled": false
+    },
+    "claude": {
+      "args": [
+        "mcp",
+        "serve"
+      ],
+      "command": "claude",
+      "env": [
+        
+      ]
+    },
     "github.com/zcaceres/markdownify-mcp": {
       "args": [
         "/home/gabriel/.mcphub/servers/github.com/zcaceres/markdownify-mcp/dist/index.js"
       ],
+      "command": "node",
       "env": {
         "UV_PATH": "/home/gabriel/.local/bin/uv"
+      }
+    },
+    "demo": {
+      "args": [
+        "--directory",
+        "/home/gabriel/mcp-demo",
+        "run",
+        "src/demo.py"
+      ],
+      "command": "uv",
+      "dev": {
+        "cwd": "/home/gabriel/mcp-demo",
+        "enabled": false,
+        "watch": [
+          "src/**/*.py",
+          "pyproject.toml"
+        ]
       },
-      "command": "node"
+      "disabled": false
     }
-  },
-  "nativeMCPServers": [
-    
-  ]
+  }
 }
