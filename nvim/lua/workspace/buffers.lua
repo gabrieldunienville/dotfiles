@@ -34,7 +34,9 @@ function M.paste_to_buffer(win_name, buf_name, text)
     return
   end
   vim.fn.chansend(job_id, text .. '\n')
+  -- print("sending with termcodes")
+  -- vim.fn.chansend(job_id, text)
+  -- vim.fn.chansend(job_id, vim.api.nvim_replace_termcodes('<CR>', true, false, true))
 end
-
 
 return M

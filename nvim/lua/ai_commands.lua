@@ -18,4 +18,9 @@ end, { desc = 'Paste buffer file context to claude' })
 vim.keymap.set('n', '<leader>ad', function()
   local text = require('diagnostics').get_diagnostic_under_cursor()
   paste_to_claude(text)
+  W.buffers.open_buffer 'claude_code'
 end, { desc = 'Paste diagnostics to claude' })
+
+-- vim.keymap.set('n', '<leader>ac', function()
+--   paste_to_claude('/clear')
+-- end, { desc = 'Clear claude code' })
