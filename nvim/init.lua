@@ -109,7 +109,7 @@ require('lazy').setup({
   { import = 'plugins.tailwind_tools', enabled = false },
   { import = 'plugins.indent_line', enabled = false }, -- 2
   { import = 'plugins.autopairs', enabled = false }, -- disable to test performance
-  { import = 'plugins.ts_autotag', enabled = true }, -- disable to test performance
+  { import = 'plugins.ts_autotag', enabled = false }, -- disable to test performance
 
   -- UI and Navigation
   { import = 'plugins.aerial', enabled = true },
@@ -196,6 +196,7 @@ require 'workspace'
 require 'terminal'
 require 'diagnostics'
 require 'ai_commands'
+require 'folding'
 
 require 'user_commands.ipython_run_imports'
 require 'user_commands.pyflyby_autoimport'

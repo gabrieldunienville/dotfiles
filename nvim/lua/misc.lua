@@ -119,4 +119,13 @@ vim.keymap.set('n', '<leader>if', spellsuggest_select, { desc = 'Shows spelling 
 vim.opt.laststatus = 3
 -- Default splitting will cause your main splits to jump when opening an edgebar.
 -- To prevent this, set `splitkeep` to either `screen` or `topline`.
-vim.opt.splitkeep = "screen"
+vim.opt.splitkeep = 'screen'
+
+-- Code folding
+vim.opt.foldmethod = 'manual'
+-- vim.opt.foldexpr = 'v:lua.vim.treesitter.foldexpr()'
+-- vim.opt.foldexpr = 'v:lua.vim.lsp.foldexpr()'
+vim.opt.foldtext = '' -- Use treesitter for fold text
+vim.opt.fillchars = { fold = ' ' }
+vim.opt.foldnestmax = 3
+vim.opt.foldminlines = 1

@@ -7,5 +7,6 @@ vim.filetype.add {
     ['.*%.jinja%.xml'] = 'jinja.xml',
     [".envrc"] = "sh",
     ["%.envrc%..*"] = "sh",
+    [".env.local"] = "sh",
   },
 }

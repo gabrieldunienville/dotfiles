@@ -31,6 +31,10 @@ return {
           name = 'bellus',
           path = '~/bellus-obsidian',
         },
+        {
+          name = 'wearables',
+          path = '~/flinders/wearables-obsidian',
+        },
       },
 
       -- Optional, if you keep notes in a specific subdirectory of your vault.
