@@ -44,13 +44,13 @@ function _G.fold_xstate()
         local num_lines = end_row - start_row + 1
         local fold_text = before .. '{' .. string.format('%d lines', num_lines) .. '}'
 
-        -- print(vim.inspect {
-        --   captures = captures,
-        --   start_row = start_row,
-        --   end_row = end_row,
-        --   original_line = original_line,
-        --   fold_text = fold_text,
-        -- })
+        print(vim.inspect {
+          captures = captures,
+          start_row = start_row,
+          end_row = end_row,
+          original_line = original_line,
+          fold_text = fold_text,
+        })
 
         _G.fold_texts[start_row + 1] = fold_text
 
