@@ -2,9 +2,13 @@ local function parse_captures(match, query)
   local captures = {}
   for id, nodes in pairs(match) do
     local capture_name = query.captures[id]
-    local node = nodes[1]
-    if node then
-      captures[capture_name] = node
+    if not capture_name:match '^_' then
+      captures[capture_name] = captures[capture_name] or {}
+      for _, node in ipairs(nodes) do
+        if node then
+          table.insert(captures[capture_name], node)
+        end
+      end
     end
   end
   return captures
@@ -25,6 +29,17 @@ function _G.fold_xstate()
   for pattern, match, metadata in query:iter_matches(root, 0) do
     local captures = parse_captures(match, query)
     -- print(vim.inspect(captures))
+
+    local captures_text = {}
+    for id, nodes in pairs(captures) do
+      if nodes and #nodes > 0 then
+        captures_text[id] = {}
+        for i, node in ipairs(nodes) do
+          captures_text[id][i] = vim.treesitter.get_node_text(node, 0)
+        end
+      end
+    end
+    print('Captures text', vim.inspect(captures_text))
 
     local target = 'event'
 

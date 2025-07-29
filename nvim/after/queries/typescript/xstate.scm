@@ -1,29 +1,34 @@
 (
   (pair
-    key: (property_identifier) @states_key
+    key: (property_identifier) @_states_slot
     value: (object
       (pair
-        key: (_) @state_name-key
+        key: (_) @state_key
         value: (object
           (pair
-            key: (property_identifier) @entry_key
-            value: (_) @entry)?
-          (pair
-            key: (property_identifier) @on_key
+            key: (property_identifier) @_on_slot
             value: (object
               (pair
                 key: (_) @event_key
                 value: (object
                   (pair
-                    key: (_) @actions_slot
+                    key: (_) @_actions_slot
                     value: (array
                       (call_expression
-                        function: (identifier) @action_func) @action_item) @actions) @event)
-                )) @on)?
+                        function: (identifier) @action_func_name
+                        )+)))
+                )))?
         ))))
-  (#eq? @states_key "states")
-  (#eq? @entry_key "entry")
-  (#eq? @on_key "on")
-  (#eq? @actions_slot "actions")
+  (#eq? @_states_slot "states")
+  ; (#eq? @_entry_slot "entry")
+  (#eq? @_on_slot "on")
+  (#eq? @_actions_slot "actions")
 )
 
+                      ; (call_expression
+                      ;   function: (identifier) @action_func_name)+) @actions) @event)
+
+
+          ; (pair
+          ;   key: (property_identifier) @_entry_slot
+          ;   value: (_) @entry)?
