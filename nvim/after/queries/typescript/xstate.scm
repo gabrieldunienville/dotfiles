@@ -13,10 +13,17 @@
             value: (object
               (pair
                 key: (_) @event_key
-                value: (object) @event)) @on)?
+                value: (object
+                  (pair
+                    key: (_) @actions_slot
+                    value: (array
+                      (call_expression
+                        function: (identifier) @action_func) @action_item) @actions) @event)
+                )) @on)?
         ))))
   (#eq? @states_key "states")
   (#eq? @entry_key "entry")
   (#eq? @on_key "on")
+  (#eq? @actions_slot "actions")
 )
 
