@@ -54,6 +54,7 @@ return { -- Autoformat
       xsd = { 'prettierd' },
       -- ['jinja.html'] = { 'prettierd' },
       -- ['jinja.xml'] = { 'prettierd' },
+      query = { 'format-queries' },
     },
     formatters = {
       prettierd = {
