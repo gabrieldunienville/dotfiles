@@ -129,3 +129,6 @@ vim.opt.foldtext = '' -- Use treesitter for fold text
 vim.opt.fillchars = { fold = ' ' }
 vim.opt.foldnestmax = 3
 vim.opt.foldminlines = 1
+-- Helps with buffer switching and navigation
+vim.opt.foldenable = true
+vim.opt.foldlevelstart = 99

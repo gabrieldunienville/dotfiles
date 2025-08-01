@@ -125,3 +125,6 @@ vim.keymap.set('n', '<leader>ka', '<cmd>AerialToggle!<CR>', { desc = 'Toggle Aer
 vim.keymap.set('n', '<leader>kr', '<cmd>ReloadKeymaps<CR>', { desc = 'Reload keymaps' })
 -- vim.keymap.set('n', '<leader>kd', '<cmd>DeleteCurrentFile<CR>', { desc = 'Delete current file' })
 vim.keymap.set('n', '<leader>ke', Snacks.explorer.reveal, { desc = 'Open file tree' })
+vim.keymap.set('n', '<leader>kx', function()
+  require('folding').fold_xstate()
+end, { desc = 'Fold XState' })

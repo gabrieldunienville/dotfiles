@@ -5,3 +5,5 @@ vim.api.nvim_set_hl(0, 'WorkspaceFocused', {
 -- vim.api.nvim_set_hl(0, 'WorkspaceUnfocused', {
 --   bg = '#1d2533', -- lighter gray
 -- })
+
+vim.api.nvim_set_hl(0, '@markup.strong', { fg = '#8fcbff', bold = true })

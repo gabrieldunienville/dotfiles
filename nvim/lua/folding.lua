@@ -1,3 +1,5 @@
+local M = {}
+
 local function parse_captures(match, query)
   local captures = {}
   for id, nodes in pairs(match) do
@@ -14,7 +16,8 @@ local function parse_captures(match, query)
   return captures
 end
 
-function _G.fold_xstate()
+function M.fold_xstate()
+  -- vim.opt.foldmethod = 'manual'
   vim.opt.foldtext = 'v:lua.custom_fold_text()'
 
   local parser = vim.treesitter.get_parser()
@@ -28,11 +31,7 @@ function _G.fold_xstate()
 
   for pattern, match, metadata in query:iter_matches(root, 0) do
     local captures = parse_captures(match, query)
-    -- print(vim.inspect(captures))
-    -- local target = 'event'
-    -- local target = 'entry'
     local targets = { 'event', 'entry', 'invoke' }
-    -- local targets = { 'event' }
 
     for _, target in ipairs(targets) do
       if captures[target] and captures[target][1] then
@@ -44,13 +43,13 @@ function _G.fold_xstate()
         local num_lines = end_row - start_row + 1
         local fold_text = before .. '{' .. string.format('%d lines', num_lines) .. '}'
 
-        print(vim.inspect {
-          captures = captures,
-          start_row = start_row,
-          end_row = end_row,
-          original_line = original_line,
-          fold_text = fold_text,
-        })
+        -- print(vim.inspect {
+        --   captures = captures,
+        --   start_row = start_row,
+        --   end_row = end_row,
+        --   original_line = original_line,
+        --   fold_text = fold_text,
+        -- })
 
         _G.fold_texts[start_row + 1] = fold_text
 
@@ -71,3 +70,5 @@ function _G.custom_fold_text()
 
   return _G.fold_texts[vim.v.foldstart] or vim.fn.foldtext()
 end
+
+return M

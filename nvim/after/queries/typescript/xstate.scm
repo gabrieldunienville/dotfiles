@@ -20,7 +20,7 @@
       value: (object
         (pair
           key: (property_identifier) @_invoke_slot
-          value: (object) @invoke)))))
+          value: (_) @invoke)))))
   (#eq? @_states_slot "states")
   (#eq? @_invoke_slot "invoke"))
 
