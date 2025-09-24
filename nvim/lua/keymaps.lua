@@ -127,7 +127,7 @@ vim.keymap.set('n', '<M-l>', '<cmd>OpenNextFile<CR>', { desc = 'Open next file' 
 
 -- Utils
 vim.keymap.set('n', '<leader>ka', '<cmd>AerialToggle!<CR>', { desc = 'Toggle Aerial' })
-vim.keymap.set('n', '<leader>kr', '<cmd>ReloadKeymaps<CR>', { desc = 'Reload keymaps' })
+vim.keymap.set('n', '<leader>kr', '<cmd>ReloadModule keymaps<CR>', { desc = 'Reload keymaps' })
 -- vim.keymap.set('n', '<leader>kd', '<cmd>DeleteCurrentFile<CR>', { desc = 'Delete current file' })
 vim.keymap.set('n', '<leader>ke', Snacks.explorer.reveal, { desc = 'Open file tree' })
 vim.keymap.set('n', '<leader>kx', function()
@@ -146,7 +146,7 @@ vim.keymap.set(
       return file:find '^packages/actors/src/interface/.-%.interface.ts$'
     end,
     format_path = function(path)
-      return path:gsub('^packages/.-/src/', '')
+      return path:gsub('^packages/.-/src/interface/', '')
     end,
   },
   { desc = 'Actor Interface' }
@@ -166,19 +166,27 @@ vim.keymap.set(
   { desc = 'Actor API' }
 )
 
--- vim.keymap.set(
---   'n',
---   '<leader>wl',
---   custom_pickers.workspace_symbols_filtered {
---     filter = function(file)
---       return file:find '^packages/actors/src/.-%.ts?$'
---     end,
---     format_path = function(path)
---       return path:gsub('^packages/.-/src/', '')
---     end,
---   },
---   { desc = 'Actor Logic' }
--- )
+vim.keymap.set(
+  'n',
+  '<leader>wl',
+  custom_pickers.workspace_symbols_filtered {
+    filter = function(file, name)
+      local function match_dir(dir)
+        return file:find('^packages/actors/src/' .. dir .. '/.-%.ts?$')
+      end
+      -- local match = file:find '^packages/actors/src/.-%.ts?$' and name:find '^.-Logic$'
+      local match = (match_dir 'apps' or match_dir 'components' or match_dir 'adapters') and name:find '^.-Logic$'
+      return match ~= nil
+    end,
+    format_path = function(path)
+      return path:gsub('^packages/.-/src/', '')
+    end,
+    kinds = {
+      'Constant',
+    },
+  },
+  { desc = 'Actor Logic' }
+)
 
 vim.keymap.set('n', '<leader>ww', function()
   Snacks.picker.lsp_workspace_symbols()

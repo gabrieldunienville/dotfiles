@@ -1,8 +1,9 @@
 local M = {}
 
 ---@class WorkspaceSymbolsFilteredOpts
----@field filter? fun(file: string): boolean Filter function for file paths
+---@field filter? fun(file: string, name: string): boolean Filter function for file paths
 ---@field format_path? fun(path: string): string Format function for display paths
+---@field kinds? string[] List of symbol kinds to include (default: all kinds)
 
 ---@param opts? WorkspaceSymbolsFilteredOpts
 function M.workspace_symbols_filtered(opts)
@@ -18,7 +19,7 @@ function M.workspace_symbols_filtered(opts)
           relative_path = item.file:sub(#cwd + 2) -- +2 to remove cwd + "/"
         end
 
-        if opts.filter and not opts.filter(relative_path) then
+        if opts.filter and not opts.filter(relative_path, item.name) then
           return false
         end
 
@@ -30,26 +31,35 @@ function M.workspace_symbols_filtered(opts)
 
         return item
       end,
-      tree = true,
       -- Custom format
       format = function(item, picker)
-        local opts = picker.opts --[[@as snacks.picker.lsp.symbols.Config]]
-        local name_hl = 'SnacksPickerMatch'
+        -- local opts = picker.opts --[[@as snacks.picker.lsp.symbols.Config]]
+        local ret = {}
 
-        -- Pick highlight color based on symbol kind
-        local kind_hl = '@lsp.type.' .. (item.kind_name or ''):lower()
-        local ret = {
-          { item.name, name_hl },
-          { '  ', 'Comment' },
-          { item.kind_name or '', kind_hl },
-        }
+        local kind = item.kind or 'Unknown'
+        local kind_hl = 'SnacksPickerIcon' .. kind
 
-        if item._display_path then
-          table.insert(ret, { '  ' .. item._display_path, 'Comment' })
-        end
+        ret[#ret + 1] = { picker.opts.icons.kinds[kind], kind_hl }
+        ret[#ret + 1] = { ' ' }
+
+        -- Add symbol name with highlighting
+        local name = vim.trim(item.name:gsub('\r?\n', ' '))
+        name = name == '' and item.detail or name
+        Snacks.picker.highlight.format(item, name, ret)
+
+        local offset = Snacks.picker.highlight.offset(ret, { char_idx = true })
+        ret[#ret + 1] = { Snacks.picker.util.align(' ', 40 - offset) }
+        ret[#ret + 1] = { item._display_path, 'SnacksPickerFile' }
 
         return ret
       end,
+      -- filter = {
+      --   ['Class'] = true,
+      --   ['Constant'] = true,
+      -- },
+      filter = opts.kinds and {
+        default = opts.kinds,
+      } or {},
     }
   end
 end
