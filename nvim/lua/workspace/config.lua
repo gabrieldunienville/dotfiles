@@ -15,6 +15,12 @@ M.layout = {
               vim.cmd 'terminal claude'
             end,
           },
+          testing = {
+            launch = function()
+              require('neotest').output_panel.open()
+              require('neotest').summary.open()
+            end,
+          },
           ipython = {
             launch = function()
               vim.cmd 'terminal uv run ipython'

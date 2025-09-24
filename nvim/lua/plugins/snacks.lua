@@ -49,6 +49,26 @@ return {
             '.prettierrc',
           },
         },
+        lsp_symbols = {
+          filter = {
+            default = {
+              'Class',
+              'Constant', -- Add this to include const declarations
+              -- 'Constructor',
+              'Enum',
+              -- 'Field',
+              'Function',
+              'Interface',
+              'Method',
+              'Module',
+              'Namespace',
+              'Package',
+              -- 'Property',
+              'Struct',
+              'Trait',
+            },
+          },
+        },
       },
       icons = {
         files = {
@@ -62,6 +82,7 @@ return {
           keys = {
             ['<a-s>'] = { 'flash', mode = { 'n', 'i' } },
             ['s'] = { 'flash' },
+            ['<a-y>'] = { 'yank', mode = { 'n', 'i' } },
           },
         },
       },
@@ -112,5 +133,41 @@ return {
       end,
       desc = 'Grep',
     },
+    {
+      '<leader>s.',
+      function()
+        Snacks.picker.recent()
+      end,
+      desc = 'Recent Files',
+    },
+    {
+      '<leader>sr',
+      function()
+        Snacks.picker.resume()
+      end,
+      desc = 'Resume Last Picker',
+    },
+    -- {
+    --   '<leader>wi',
+    --   function()
+    --     -- Snacks.picker.lsp_workspace_symbols({
+    --     --   filter = {
+    --     --     path
+    --     -- })
+    --     Snacks.picker.lsp_workspace_symbols {
+    --       filter = {
+    --         filter = function(item, filter)
+    --           -- Debug: print the actual file paths
+    --           if item.file then
+    --             print('File path:', item.file)
+    --           end
+    --           -- Exclude actors for now
+    --           return not (item.file and item.file:find('actors', 1, true))
+    --         end,
+    --       },
+    --     }
+    --   end,
+    --   desc = 'Lsp Workspace Symbols',
+    -- },
   },
 }

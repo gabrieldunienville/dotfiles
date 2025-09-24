@@ -1,3 +1,4 @@
+---@diagnostic disable: missing-fields
 return {
   'nvim-neotest/neotest',
   dependencies = {
@@ -12,9 +13,13 @@ return {
       output = {
         enable = true,
         open_on_run = false,
-        output_panel = {},
         enabled = true,
         open = 'vsplit',
+      },
+      output_panel = {
+        open = function()
+          return vim.api.nvim_get_current_win()
+        end,
       },
       adapters = {
         require 'neotest-python' {
@@ -62,6 +67,11 @@ return {
       vim.cmd 'wa'
       require('neotest').run.run()
     end, { desc = '[U]nit test run [C]losest' })
+
+    vim.keymap.set('n', '<leader>ur', function()
+      vim.cmd 'wa'
+      require('neotest').run.run { extra_args = { '--session-mode', 'record' } }
+    end, { desc = '[U]nit test run closest in [R]ecord mode' })
 
     vim.keymap.set('n', '<leader>ul', function()
       require('neotest').run.run_last()

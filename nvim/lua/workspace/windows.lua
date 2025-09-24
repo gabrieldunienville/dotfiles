@@ -73,4 +73,14 @@ function M.open_window(window_name)
   state.set_window(window_name, win)
 end
 
+function M.hide_window(window_name)
+  local win = state.get_window(window_name)
+  if win then
+    win:hide()
+  else
+    print('Window not found: ' .. window_name)
+  end
+end
+
+
 return M

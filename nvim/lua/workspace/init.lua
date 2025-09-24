@@ -14,18 +14,33 @@ function M.setup()
   tabs.initialize()
   windows.initialize()
 
+  -- Main code
   vim.keymap.set({ 'n', 't', 'v' }, '<C-M-j>', function()
     windows.open_window 'code'
   end, { desc = 'Open code window' })
+  -- Claude code
   vim.keymap.set({ 'n', 't', 'v' }, '<C-M-k>', function()
     buffers.open_buffer 'claude_code'
-  end, { desc = 'Open tools window' })
+  end, { desc = 'Open claude code' })
+  vim.keymap.set({ 'n', 't', 'v' }, '<C-M-d>k', function()
+    buffers.hide_buffer 'claude_code'
+  end, { desc = 'Hide claude code' })
+  -- Testing
+  vim.keymap.set({ 'n', 't', 'v' }, '<C-M-,>', function()
+    buffers.open_buffer 'testing'
+  end, { desc = 'Open testing' })
+  vim.keymap.set({ 'n', 't', 'v' }, '<C-M-d>,', function()
+    buffers.hide_buffer 'testing'
+  end, { desc = 'Hide testing' })
+  -- IPython
   vim.keymap.set({ 'n', 't', 'v' }, '<C-M-i>', function()
     buffers.open_buffer 'ipython'
-  end, { desc = 'Open tools window' })
+  end, { desc = 'Open ipython' })
+  -- Terminal
   vim.keymap.set({ 'n', 't', 'v' }, '<C-M-l>', function()
     windows.open_window 'primary_terminal'
   end, { desc = 'Open terminal window' })
+  -- Dev server
   vim.keymap.set({ 'n', 't', 'v' }, '<C-M-;>', function()
     windows.open_window 'runner'
   end, { desc = 'Open server window' })
@@ -63,5 +78,6 @@ M.setup()
 M.tabs = tabs
 M.windows = windows
 M.buffers = buffers
+M.state = state
 
 return M

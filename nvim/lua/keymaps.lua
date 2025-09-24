@@ -84,6 +84,11 @@ vim.keymap.set('v', '<C-t>', '"sy/<C-r>s<CR>', { desc = 'Find' })
 -- vim.keymap.set('n', 'gd', vim.lsp.buf.definition, { desc = 'Go to definition' })
 vim.keymap.set('n', 'gd', Snacks.picker.lsp_definitions, { desc = 'Go to definition' })
 vim.keymap.set('i', '<M-k>', vim.lsp.buf.signature_help)
+vim.keymap.set('n', 'K', function()
+  vim.lsp.buf.hover {
+    width = 80,
+  }
+end, { desc = 'Hover documentation' })
 vim.keymap.set('n', 'grr', function()
   Snacks.picker.lsp_references()
 end, { desc = 'LSP references' })
@@ -128,3 +133,53 @@ vim.keymap.set('n', '<leader>ke', Snacks.explorer.reveal, { desc = 'Open file tr
 vim.keymap.set('n', '<leader>kx', function()
   require('folding').fold_xstate()
 end, { desc = 'Fold XState' })
+
+-- Snacks
+
+local custom_pickers = require 'pickers'
+
+vim.keymap.set(
+  'n',
+  '<leader>wi',
+  custom_pickers.workspace_symbols_filtered {
+    filter = function(file)
+      return file:find '^packages/actors/src/interface/.-%.interface.ts$'
+    end,
+    format_path = function(path)
+      return path:gsub('^packages/.-/src/', '')
+    end,
+  },
+  { desc = 'Actor Interface' }
+)
+
+vim.keymap.set(
+  'n',
+  '<leader>wa',
+  custom_pickers.workspace_symbols_filtered {
+    filter = function(file)
+      return file:find '^packages/actors/src/api/.-%.interface.ts$'
+    end,
+    format_path = function(path)
+      return path:gsub('^packages/.-/src/', '')
+    end,
+  },
+  { desc = 'Actor API' }
+)
+
+-- vim.keymap.set(
+--   'n',
+--   '<leader>wl',
+--   custom_pickers.workspace_symbols_filtered {
+--     filter = function(file)
+--       return file:find '^packages/actors/src/.-%.ts?$'
+--     end,
+--     format_path = function(path)
+--       return path:gsub('^packages/.-/src/', '')
+--     end,
+--   },
+--   { desc = 'Actor Logic' }
+-- )
+
+vim.keymap.set('n', '<leader>ww', function()
+  Snacks.picker.lsp_workspace_symbols()
+end, { desc = 'All Workspace Symbols' })

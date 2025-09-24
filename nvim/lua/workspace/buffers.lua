@@ -26,6 +26,12 @@ function M.open_buffer(buf_name)
   end
 end
 
+function M.hide_buffer(buf_name)
+  local buf_config = config.get_buf_config(buf_name)
+  local window_name = buf_config.win_name
+  windows.hide_window(window_name)
+end
+
 function M.paste_to_buffer(win_name, buf_name, text)
   local buf_id = state.get_buffer(buf_name, win_name)
   local job_id = vim.api.nvim_buf_get_var(buf_id, 'terminal_job_id')

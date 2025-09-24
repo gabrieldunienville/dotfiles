@@ -95,6 +95,7 @@ vim.lsp.enable {
   'pyright',
   'lua_ls',
   'typescript_language_server',
+  'tailwind',
 }
 
 require('lazy').setup({
@@ -106,7 +107,7 @@ require('lazy').setup({
   { import = 'plugins.blink', enabled = true },
   { import = 'plugins.mason', enabled = true },
   { import = 'plugins.typescript_tools', enabled = false },
-  { import = 'plugins.tailwind_tools', enabled = false },
+  { import = 'plugins.tailwind_tools', enabled = true },
   { import = 'plugins.indent_line', enabled = false }, -- 2
   { import = 'plugins.autopairs', enabled = false }, -- disable to test performance
   { import = 'plugins.ts_autotag', enabled = false }, -- disable to test performance
