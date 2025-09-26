@@ -188,6 +188,46 @@ vim.keymap.set(
   { desc = 'Actor Logic' }
 )
 
+vim.keymap.set(
+  'n',
+  '<leader>wp',
+  custom_pickers.workspace_symbols_filtered {
+    filter = function(file, name)
+      local match = file:find '^packages/prompts/src/.-%.tsx?$' and name:find '^[A-Z]'
+      return match ~= nil
+    end,
+    format_path = function(path)
+      return path:gsub('^packages/.-/src/', '')
+    end,
+    kinds = {
+      'Function',
+    },
+  },
+  { desc = 'Prompt Component' }
+)
+
+vim.keymap.set(
+  'n',
+  '<leader>wt',
+  custom_pickers.workspace_symbols_filtered {
+    -- filter = function(file, name)
+    --   local match = file:find '^packages/prompts/src/.-%.tsx?$' and name:find '^[A-Z]'
+    --   return match ~= nil
+    -- end,
+    -- format_path = function(path)
+    --   return path:gsub('^packages/.-/src/', '')
+    -- end,
+    kinds = {
+      'Variable',
+    },
+  },
+  { desc = 'Workspace TS Type' }
+)
+
 vim.keymap.set('n', '<leader>ww', function()
   Snacks.picker.lsp_workspace_symbols()
 end, { desc = 'All Workspace Symbols' })
+
+vim.keymap.set('n', '<leader>sa', function()
+  Snacks.picker()
+end, { desc = 'All Pickers' })

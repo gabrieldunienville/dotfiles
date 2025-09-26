@@ -1,4 +1,3 @@
-
 # If you come from bash you might have to change your $PATH.
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
 
@@ -198,8 +197,11 @@ function senv() {
     # echo "export ENVIRONMENT=$new_env" > .envrc
     # echo "export COMPOSE_FILE=\"docker-compose.yml:docker-compose.${new_env}.yml\"" >> .envrc
 
-    tmux set-environment ENVIRONMENT $new_env
-    export ENVIRONMENT=$new_env
+    # tmux set-environment ENVIRONMENT $new_env
+    # export ENVIRONMENT=$new_env
+
+    tmux set-environment OVERRIDE_ENVIRONMENT $new_env
+    export OVERRIDE_ENVIRONMENT=$new_env
 
     direnv reload
 
@@ -254,3 +256,9 @@ case ":$PATH:" in
   *":$PNPM_HOME:"*) ;;
   *) export PATH="$PNPM_HOME:$PATH" ;;
 esac
+
+# Project CLI
+# alias proj="uv run --package ${UV_PROJECT_CLI_PACKAGE_NAME} project-cli"
+alias proj="${PROJECT_CLI_COMMAND}"
+
+fpath+=~/.zfunc; autoload -Uz compinit; compinit
