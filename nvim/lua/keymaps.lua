@@ -193,7 +193,7 @@ vim.keymap.set(
   '<leader>wp',
   custom_pickers.workspace_symbols_filtered {
     filter = function(file, name)
-      local match = file:find '^packages/prompts/src/.-%.tsx?$' and name:find '^[A-Z]'
+      local match = file:find '^packages/prompts/src/.-%.tsx?$'
       return match ~= nil
     end,
     format_path = function(path)
