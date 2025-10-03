@@ -80,9 +80,9 @@ return {
       win = {
         input = {
           keys = {
-            ['<a-s>'] = { 'flash', mode = { 'n', 'i' } },
+            ['<M-s>'] = { 'flash', mode = { 'n', 'i' } },
             ['s'] = { 'flash' },
-            ['<a-y>'] = { 'yank', mode = { 'n', 'i' } },
+            ['<M-y>'] = { 'yank', mode = { 'n', 'i' } },
           },
         },
       },

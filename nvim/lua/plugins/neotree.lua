@@ -32,7 +32,7 @@ return {
         },
       },
     }
-    -- vim.keymap.set('n','<A-w>', '<Plug>SlimeParagraphSend', { remap = true, silent = false })
+    -- vim.keymap.set('n','<M-w>', '<Plug>SlimeParagraphSend', { remap = true, silent = false })
     -- vim.keymap.set('n', '<leader>t', '<Cmd>Neotree reveal<CR>', { desc = 'File [T]ree' })
   end,
 }

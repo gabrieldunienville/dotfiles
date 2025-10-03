@@ -40,23 +40,23 @@ return {
     -- vim.g.slime_bracketed_paste = 1
 
     -- Send line
-    vim.keymap.set('n', '<A-e>', '<Plug>SlimeLineSend', { remap = true, silent = false })
+    vim.keymap.set('n', '<M-e>', '<Plug>SlimeLineSend', { remap = true, silent = false })
 
     -- Send visual block
-    vim.keymap.set('x', '<A-e>', '<Plug>SlimeRegionSend', { remap = true, silent = false })
+    vim.keymap.set('x', '<M-e>', '<Plug>SlimeRegionSend', { remap = true, silent = false })
 
     -- Send paragraph
-    vim.keymap.set('n', '<A-w>', '<Plug>SlimeParagraphSend', { remap = true, silent = false })
+    vim.keymap.set('n', '<M-w>', '<Plug>SlimeParagraphSend', { remap = true, silent = false })
 
     -- Send entire file
-    vim.keymap.set('n', '<A-q>', ':%SlimeSend<CR>', { remap = true, silent = false })
+    vim.keymap.set('n', '<M-q>', ':%SlimeSend<CR>', { remap = true, silent = false })
 
     -- Send cell
-    vim.keymap.set('n', '<A-r>', '<Plug>SlimeSendCell', { remap = true, silent = false })
-    vim.keymap.set('n', '<A-t>', '<Plug>SlimeCellsSendAndGoToNext', { remap = true, silent = false })
+    vim.keymap.set('n', '<M-r>', '<Plug>SlimeSendCell', { remap = true, silent = false })
+    vim.keymap.set('n', '<M-t>', '<Plug>SlimeCellsSendAndGoToNext', { remap = true, silent = false })
 
     -- Navigate cells
-    vim.keymap.set('n', '<A-c>', '<Plug>SlimeCellsNext', { remap = true, silent = false })
-    vim.keymap.set('n', '<A-v>', '<Plug>SlimeCellsPrev', { remap = true, silent = false })
+    vim.keymap.set('n', '<M-c>', '<Plug>SlimeCellsNext', { remap = true, silent = false })
+    vim.keymap.set('n', '<M-v>', '<Plug>SlimeCellsPrev', { remap = true, silent = false })
   end,
 }

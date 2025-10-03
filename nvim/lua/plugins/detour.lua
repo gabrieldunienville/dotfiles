@@ -12,7 +12,7 @@ return {
     --  After you create your detour floating window, make sure to turn off signcolumn.
     vim.opt.signcolumn = 'no'
 
-    vim.keymap.set('n', '<A-o>', function()
+    vim.keymap.set('n', '<M-o>', function()
       local popup_id = require('detour').Detour()
       if popup_id then
         require('telescope.builtin').live_grep {

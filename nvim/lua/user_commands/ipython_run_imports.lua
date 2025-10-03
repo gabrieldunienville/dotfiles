@@ -58,6 +58,6 @@ vim.api.nvim_create_user_command('IPythonRunImports', function()
   end
 end, {})
 
-vim.api.nvim_set_keymap('n', '<A-z>', ':IPythonRunImports<CR>', { noremap = true, silent = true, desc = 'Run Imports in Ipython' })
+vim.api.nvim_set_keymap('n', '<M-z>', ':IPythonRunImports<CR>', { noremap = true, silent = true, desc = 'Run Imports in Ipython' })
 
 return M

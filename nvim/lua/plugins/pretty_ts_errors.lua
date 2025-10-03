@@ -11,7 +11,7 @@ return {
         wrap = true, -- Whether to wrap long lines
       },
       auto_open = false, -- Automatically show errors on hover
-      lazy_window = false, -- Open the floating window only after errors are formatted
+      lazy_window = true, -- Open the floating window only after errors are formatted
     },
   },
 }

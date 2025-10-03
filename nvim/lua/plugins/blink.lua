@@ -9,6 +9,11 @@ return {
   ---@module 'blink.cmp'
   ---@type blink.cmp.Config
   opts = {
+
+    -- Opt in (experimental)
+    -- https://cmp.saghen.dev/configuration/signature.html
+    signature = { enabled = true },
+
     -- 'default' (recommended) for mappings similar to built-in completions (C-y to accept)
     -- 'super-tab' for mappings similar to vscode (tab to accept)
     -- 'enter' for enter to accept
@@ -24,10 +29,15 @@ return {
     keymap = {
       preset = 'super-tab',
       ['<CR>'] = { 'fallback' }, -- Enter does NOT accept completion
-      -- ['<Up>'] = { 'select_prev', 'fallback' },
-      -- ['<Down>'] = { 'select_next', 'fallback' },
+      ['<Up>'] = { 'select_prev', 'fallback' },
+      ['<Down>'] = { 'select_next', 'fallback' },
       -- ['<Tab>'] = { 'accept', 'fallback' },
       -- ['<Escape>'] = { 'cancel', 'fallback' },
+      ['<M-j>'] = {
+        function(cmp)
+          cmp.show { providers = { 'lsp' } }
+        end,
+      },
     },
 
     appearance = {
