@@ -137,7 +137,7 @@ require('lazy').setup({
   { import = 'plugins.dap', enabled = true },
 
   -- Completion and AI
-  { import = 'plugins.copilot', enabled = false },
+  { import = 'plugins.copilot', enabled = true },
   { import = 'plugins.parrot', enabled = false },
   { import = 'plugins.luasnip', enabled = true },
   { import = 'plugins.mcphub', enabled = false },
@@ -149,6 +149,10 @@ require('lazy').setup({
   { import = 'plugins.obsidian', enabled = true },
   { import = 'plugins.markdown', enabled = true },
   { import = 'plugins.venv_selector', enabled = true },
+  -- Don't think this is working but leaving for now to see if
+  -- starts working
+  { import = 'plugins.ts_error_translator', enabled = false },
+  { import = 'plugins.pretty_ts_errors', enabled = true },
 
   -- Utilities
   { import = 'plugins.slime', enabled = true }, -- 2

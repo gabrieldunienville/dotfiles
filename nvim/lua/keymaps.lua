@@ -142,8 +142,8 @@ vim.keymap.set(
   'n',
   '<leader>wi',
   custom_pickers.workspace_symbols_filtered {
-    filter = function(file)
-      return file:find '^packages/actors/src/interface/.-%.interface.ts$'
+    filter = function(file, name)
+      return file:find '^packages/actors/src/interface/.-%.interface.ts$' and name:find '^[A-Z]'
     end,
     format_path = function(path)
       return path:gsub('^packages/.-/src/interface/', '')
@@ -193,7 +193,7 @@ vim.keymap.set(
   '<leader>wp',
   custom_pickers.workspace_symbols_filtered {
     filter = function(file, name)
-      local match = file:find '^packages/prompts/src/.-%.tsx?$'
+      local match = file:find '^packages/prompts/src/.-%.tsx$' and name:find '^[A-Z]'
       return match ~= nil
     end,
     format_path = function(path)
@@ -210,13 +210,13 @@ vim.keymap.set(
   'n',
   '<leader>wt',
   custom_pickers.workspace_symbols_filtered {
-    -- filter = function(file, name)
-    --   local match = file:find '^packages/prompts/src/.-%.tsx?$' and name:find '^[A-Z]'
-    --   return match ~= nil
-    -- end,
-    -- format_path = function(path)
-    --   return path:gsub('^packages/.-/src/', '')
-    -- end,
+    filter = function(file, name)
+      local match = name:find '^[A-Z]'
+      return match ~= nil
+    end,
+    format_path = function(path)
+      return path:gsub('^packages/.-/src/', '')
+    end,
     kinds = {
       'Variable',
     },
@@ -231,3 +231,8 @@ end, { desc = 'All Workspace Symbols' })
 vim.keymap.set('n', '<leader>sa', function()
   Snacks.picker()
 end, { desc = 'All Pickers' })
+
+-- Jump to floating window
+vim.keymap.set('n', '<C-f>', function()
+  require('windows').focus_float()
+end, { desc = 'Focus floating window' })

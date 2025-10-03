@@ -43,4 +43,11 @@ return {
       },
     },
   },
+  handlers = {
+    -- ['textDocument/publishDiagnostics'] = function(err, result, ctx, config)
+    --   print('TS Diagnostics', vim.inspect(result))
+    --   require('ts-error-translator').translate_diagnostics(err, result, ctx)
+    --   vim.lsp.diagnostic.on_publish_diagnostics(err, result, ctx)
+    -- end,
+  },
 }
