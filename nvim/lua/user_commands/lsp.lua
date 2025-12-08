@@ -210,27 +210,33 @@ vim.api.nvim_create_user_command('LspSourceAction', function(opts)
   end
 
   -- Apply specific source action directly
-  local params = vim.lsp.util.make_range_params()
-  -- local params = vim.lsp.util.make_range_params(nil, 'utf-8')
-  -- { position_encoding = 'utf-8' }
-  params.context = {
-    diagnostics = vim.diagnostic.get(0),
-    only = { kind },
+  -- For source actions, use full document range instead of cursor position
+  local bufnr = vim.api.nvim_get_current_buf()
+  local line_count = vim.api.nvim_buf_line_count(bufnr)
+
+  local params = {
+    textDocument = vim.lsp.util.make_text_document_params(bufnr),
+    range = {
+      start = { line = 0, character = 0 },
+      ['end'] = { line = line_count, character = 0 },
+    },
+    context = {
+      diagnostics = vim.lsp.diagnostic.from(vim.diagnostic.get(bufnr)),
+      only = { kind },
+    },
   }
 
   vim.lsp.buf_request(0, 'textDocument/codeAction', params, function(err, result)
-    print 'LspSourceAction result:'
-    print('params', vim.inspect(params))
-    print('result', vim.inspect(result))
     if err or not result or vim.tbl_isempty(result) then
       return -- Silently do nothing
     end
 
-    local action = result[1]
-    if action.edit then
-      vim.lsp.util.apply_workspace_edit(action.edit, 'utf-8')
-    elseif action.command then
-      vim.lsp.buf_request(0, 'workspace/executeCommand', action.command)
+    for _, action in ipairs(result) do
+      if action.edit then
+        vim.lsp.util.apply_workspace_edit(action.edit, 'utf-8')
+      elseif action.command then
+        vim.lsp.buf_request(0, 'workspace/executeCommand', action.command)
+      end
     end
   end)
 end, {
