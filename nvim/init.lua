@@ -96,6 +96,7 @@ vim.lsp.enable {
   'lua_ls',
   'typescript_language_server',
   'tailwind',
+  'jsonls',
 }
 
 require('lazy').setup({
@@ -107,7 +108,8 @@ require('lazy').setup({
   { import = 'plugins.blink', enabled = true },
   { import = 'plugins.mason', enabled = true },
   { import = 'plugins.typescript_tools', enabled = false },
-  { import = 'plugins.tailwind_tools', enabled = true },
+  -- Disabled because it loads lsp-config which i don't want atm
+  { import = 'plugins.tailwind_tools', enabled = false },
   { import = 'plugins.indent_line', enabled = false }, -- 2
   { import = 'plugins.autopairs', enabled = false }, -- disable to test performance
   { import = 'plugins.ts_autotag', enabled = false }, -- disable to test performance
@@ -140,7 +142,7 @@ require('lazy').setup({
   { import = 'plugins.copilot', enabled = true },
   { import = 'plugins.parrot', enabled = false },
   { import = 'plugins.luasnip', enabled = true },
-  { import = 'plugins.mcphub', enabled = false },
+  { import = 'plugins.mcphub', enabled = true },
   { import = 'plugins.avante', enabled = false },
   { import = 'plugins.codecompanion', enabled = false },
 

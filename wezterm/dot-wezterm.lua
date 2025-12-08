@@ -124,6 +124,11 @@ config.keys = {
 		end),
 	},
 	{
+		key = "Enter",
+		mods = "SHIFT",
+		action = wezterm.action({ SendString = "\x1b\r" }),
+	},
+	{
 		key = "s",
 		mods = "CTRL|SHIFT",
 		action = wezterm.action_callback(function(window, pane)

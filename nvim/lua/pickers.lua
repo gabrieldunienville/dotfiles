@@ -9,14 +9,16 @@ local M = {}
 function M.workspace_symbols_filtered(opts)
   opts = opts or {}
   return function()
+    -- local repo_root = vim.fs.root(vim.fn.getcwd(), '.git') or vim.fn.getcwd()
     Snacks.picker.lsp_workspace_symbols {
       transform = function(item, ctx)
         local cwd = ctx.filter.cwd
+        local root = cwd
 
         -- Make path relative to cwd if it's absolute and within cwd
         local relative_path = item.file
-        if vim.startswith(item.file, cwd) then
-          relative_path = item.file:sub(#cwd + 2) -- +2 to remove cwd + "/"
+        if vim.startswith(item.file, root) then
+          relative_path = item.file:sub(#root + 2) -- +2 to remove cwd + "/"
         end
 
         if opts.filter and not opts.filter(relative_path, item.name) then

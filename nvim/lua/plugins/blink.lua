@@ -12,7 +12,7 @@ return {
 
     -- Opt in (experimental)
     -- https://cmp.saghen.dev/configuration/signature.html
-    signature = { enabled = true },
+    -- signature = { enabled = true },
 
     -- 'default' (recommended) for mappings similar to built-in completions (C-y to accept)
     -- 'super-tab' for mappings similar to vscode (tab to accept)
@@ -33,7 +33,7 @@ return {
       ['<Down>'] = { 'select_next', 'fallback' },
       -- ['<Tab>'] = { 'accept', 'fallback' },
       -- ['<Escape>'] = { 'cancel', 'fallback' },
-      ['<M-j>'] = {
+      ['<C-Space>'] = {
         function(cmp)
           cmp.show { providers = { 'lsp' } }
         end,
@@ -55,7 +55,7 @@ return {
       default = {
         'lsp',
         'path',
-        'snippets',
+        -- 'snippets',
         -- 'buffer',
       },
     },

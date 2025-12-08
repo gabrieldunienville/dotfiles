@@ -321,20 +321,6 @@ input * {
 #===============================#
 exec dunst
 
-#===============================#
-# Keyboard Shortcuts (Hardware) #
-#===============================#
-# Audio
-bindsym XF86AudioRaiseVolume exec "wpctl set-volume -l 1.5 @DEFAULT_AUDIO_SINK@ 5%+; pkill -RTMIN+8 waybar"
-bindsym XF86AudioLowerVolume exec "wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-; pkill -RTMIN+8 waybar"
-bindsym XF86AudioMute exec "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle; pkill -RTMIN+8 waybar"
-
-# Brightness
-# bindsym XF86MonBrightnessUp exec light -A 10
-
-bindsym XF86MonBrightnessDown exec brightnessctl s 10%-
-bindsym XF86MonBrightnessUp exec brightnessctl s +10%
-
 #=============================================#
 # Keyboard Shortcuts (launching applications) #
 #=============================================#
@@ -342,9 +328,6 @@ bindsym XF86MonBrightnessUp exec brightnessctl s +10%
 set $menu wofi --show drun  -i | xargs swaymsg exec --
 
 # Launch your browser:
-bindsym $mod+shift+b exec firefox
-
-# Open a file manager:
 # bindsym ctrl+$mod+f exec pcmanfm
 
 # Open a terminal emulator:
@@ -406,3 +389,37 @@ input "type:touchpad" {
 }
 
 include /etc/sway/config.d/*
+
+# =================
+# Media
+# =================
+
+# Dependency: sudo apt install playerctl
+
+bindsym XF86AudioPlay exec playerctl play-pause
+bindsym XF86AudioStop exec playerctl stop
+bindsym XF86AudioNext exec playerctl next
+bindsym XF86AudioPrev exec playerctl previous
+
+# TODO: these don't work yet
+bindsym XF86AudioRaiseVolume exec "wpctl set-volume -l 1.5 @DEFAULT_AUDIO_SINK@ 5%+; pkill -RTMIN+8 waybar"
+bindsym XF86AudioLowerVolume exec "wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-; pkill -RTMIN+8 waybar"
+bindsym XF86AudioMute exec "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle; pkill -RTMIN+8 waybar"
+
+# =================
+# Brighness
+# =================
+
+# Setup
+# Dependency: sudo apt install ddcutil
+# And load the i2c kernel module:
+#   bashsudo modprobe i2c-de
+#   echo "i2c-dev" | sudo tee /etc/modules-load.d/i2c-dev.conf
+# Add your user to the i2c group (then log out/in):
+#   bashsudo usermod -aG i2c $USER
+
+# Both laptop and external monitor at once
+bindsym XF86MonBrightnessDown exec brightnessctl s 10%- && ddcutil setvcp 10 - 10 --bus 2
+bindsym XF86MonBrightnessUp exec brightnessctl s +10% && ddcutil setvcp 10 + 10 --bus 2
+
+

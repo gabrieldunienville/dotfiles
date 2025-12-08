@@ -92,6 +92,19 @@ end, { desc = 'Hover documentation' })
 vim.keymap.set('n', 'grr', function()
   Snacks.picker.lsp_references()
 end, { desc = 'LSP references' })
+-- TODO: move to typescript ftplugin
+vim.keymap.set('n', '<leader>rm', '<cmd>MoveToFile<CR>', {
+  desc = 'Move to file',
+})
+vim.keymap.set('n', '<leader>ro', '<cmd>LspSourceAction source.organizeImports.ts<CR>', {
+  desc = 'Organise imports',
+})
+vim.keymap.set('n', '<leader>ru', '<cmd>LspSourceAction source.removeUnusedImports.ts<CR>', {
+  desc = 'Remove unused imports',
+})
+vim.keymap.set('n', '<leader>ri', '<cmd>LspSourceAction source.addMissingImports.ts<CR>', {
+  desc = 'Add missing imports',
+})
 
 -- Git
 vim.keymap.set('n', '<leader>gs', function()
@@ -175,7 +188,7 @@ vim.keymap.set(
         return file:find('^packages/actors/src/' .. dir .. '/.-%.ts?$')
       end
       -- local match = file:find '^packages/actors/src/.-%.ts?$' and name:find '^.-Logic$'
-      local match = (match_dir 'apps' or match_dir 'components' or match_dir 'adapters') and name:find '^.-Logic$'
+      local match = (match_dir 'apps' or match_dir 'components' or match_dir 'platform') and name:find '^.-Logic$'
       return match ~= nil
     end,
     format_path = function(path)
@@ -193,15 +206,19 @@ vim.keymap.set(
   '<leader>wp',
   custom_pickers.workspace_symbols_filtered {
     filter = function(file, name)
-      local match = file:find '^packages/prompts/src/.-%.tsx$' and name:find '^[A-Z]'
+      -- local match = file:find '^packages/prompts/src/.-%.tsx$' and name:find '^[A-Z]'
+      -- local match = file:find '^packages/prompts/src/.-%.tsx$'
+      -- print(file)
+      local match = file:find '^packages/prompts/src/'
       return match ~= nil
+      -- return true
     end,
     format_path = function(path)
       return path:gsub('^packages/.-/src/', '')
     end,
-    kinds = {
-      'Function',
-    },
+    -- kinds = {
+    --   'Function',
+    -- },
   },
   { desc = 'Prompt Component' }
 )

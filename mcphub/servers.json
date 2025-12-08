@@ -1,60 +1,12 @@
 {
-  "nativeMCPServers": [
-    
-  ],
   "mcpServers": {
-    "personal": {
-      "args": [
-        "--directory",
-        "/home/gabriel/personal-mcp-server",
-        "run",
-        "src/server.py"
-      ],
-      "command": "uv",
-      "dev": {
-        "cwd": "/home/gabriel/personal-mcp-server",
-        "enabled": false,
-        "watch": [
-          "src/**/*.py",
-          "pyproject.toml"
-        ]
-      },
-      "disabled": false
-    },
-    "github.com/upstash/context7-mcp": {
-      "args": [
-        "-y",
-        "@upstash/context7-mcp@latest"
-      ],
-      "command": "npx"
-    },
-    "playwright": {
-      "args": [
-        "dlx",
-        "@playwright/mcp@latest",
-        "--cdp-endpoint=http://localhost:9222"
-      ],
-      "command": "pnpm",
-      "disabled": false
-    },
     "claude": {
       "args": [
         "mcp",
         "serve"
       ],
       "command": "claude",
-      "env": [
-        
-      ]
-    },
-    "github.com/zcaceres/markdownify-mcp": {
-      "args": [
-        "/home/gabriel/.mcphub/servers/github.com/zcaceres/markdownify-mcp/dist/index.js"
-      ],
-      "command": "node",
-      "env": {
-        "UV_PATH": "/home/gabriel/.local/bin/uv"
-      }
+      "env": []
     },
     "demo": {
       "args": [
@@ -73,6 +25,73 @@
         ]
       },
       "disabled": false
+    },
+    "github.com/upstash/context7-mcp": {
+      "args": [
+        "-y",
+        "@upstash/context7-mcp@latest"
+      ],
+      "command": "npx"
+    },
+    "github.com/zcaceres/markdownify-mcp": {
+      "args": [
+        "/home/gabriel/.mcphub/servers/github.com/zcaceres/markdownify-mcp/dist/index.js"
+      ],
+      "command": "node",
+      "env": {
+        "UV_PATH": "/home/gabriel/.local/bin/uv"
+      }
+    },
+    "personal": {
+      "args": [
+        "--directory",
+        "/home/gabriel/personal-mcp-server",
+        "run",
+        "src/server.py"
+      ],
+      "command": "uv",
+      "dev": {
+        "cwd": "/home/gabriel/personal-mcp-server",
+        "enabled": false,
+        "watch": [
+          "src/**/*.py",
+          "pyproject.toml"
+        ]
+      },
+      "disabled": false
+    },
+    "playwright": {
+      "args": [
+        "dlx",
+        "@playwright/mcp@latest",
+        "--cdp-endpoint=http://localhost:9222"
+      ],
+      "autoApprove": [
+        "browser_close",
+        "browser_resize",
+        "browser_console_messages",
+        "browser_handle_dialog",
+        "browser_evaluate",
+        "browser_file_upload",
+        "browser_fill_form",
+        "browser_install",
+        "browser_press_key",
+        "browser_type",
+        "browser_navigate",
+        "browser_navigate_back",
+        "browser_network_requests",
+        "browser_take_screenshot",
+        "browser_snapshot",
+        "browser_click",
+        "browser_drag",
+        "browser_hover",
+        "browser_select_option",
+        "browser_tabs",
+        "browser_wait_for"
+      ],
+      "command": "pnpm",
+      "disabled": false
     }
-  }
+  },
+  "nativeMCPServers": []
 }

@@ -73,3 +73,167 @@ end, {
 })
 
 vim.api.nvim_create_user_command('LspRestartAll', restart_lsp_all, {})
+
+vim.api.nvim_create_user_command('LspTrace', function()
+  vim.lsp.log.set_level 'trace'
+  require('vim.lsp.log').set_format_func(vim.inspect)
+end, {})
+
+vim.api.nvim_create_user_command('LspOpenLog', function()
+  vim.cmd('tabnew ' .. vim.lsp.log.get_filename())
+end, {})
+
+vim.api.nvim_create_user_command('LspServerCapabilities', function()
+  print(vim.inspect(vim.lsp.get_clients()[1].server_capabilities))
+end, {})
+
+-- Usage: :MoveToFile (will prompt for target file)
+-- Implementation ported from typescript-langauge-server test file at
+--   src/lsp-server.test.ts (test 'provides "Move to file" code action')
+vim.api.nvim_create_user_command('MoveToFile', function()
+  local params = vim.lsp.util.make_range_params()
+  params.context = { diagnostics = vim.diagnostic.get(0) }
+
+  vim.lsp.buf_request(0, 'textDocument/codeAction', params, function(err, result, ctx)
+    if err then
+      vim.notify('Error requesting code actions: ' .. err.message, vim.log.levels.ERROR)
+      return
+    end
+
+    if not result or vim.tbl_isempty(result) then
+      vim.notify('No code actions available', vim.log.levels.WARN)
+      return
+    end
+
+    -- Find "Move to file" action
+    local move_action = nil
+    for _, action in ipairs(result) do
+      if action.title == 'Move to file' then
+        move_action = action
+        break
+      end
+    end
+
+    if not move_action or not move_action.command then
+      vim.notify('Move to file action not available at cursor position', vim.log.levels.WARN)
+      return
+    end
+
+    -- Use Snacks picker for file selection
+    local completed = false
+    Snacks.picker.smart {
+      actions = {
+        confirm = function(picker, item)
+          if completed then
+            return
+          end
+          completed = true
+          picker:close()
+
+          if not item then
+            vim.notify('Move to file cancelled', vim.log.levels.INFO)
+            return
+          end
+
+          vim.schedule(function()
+            -- Get absolute path
+            local target_file = vim.fn.fnamemodify(item.file, ':p')
+
+            -- Create target file if it doesn't exist
+            local target_exists = vim.fn.filereadable(target_file) == 1
+            if not target_exists then
+              vim.fn.writefile({}, target_file)
+            end
+
+            -- Open the target file in a buffer so tsserver knows about it
+            local target_bufnr = vim.fn.bufadd(target_file)
+            vim.fn.bufload(target_bufnr)
+
+            -- Execute command with interactiveRefactorArguments
+            local cmd = move_action.command
+            local args = vim.deepcopy(cmd.arguments[1])
+            args.interactiveRefactorArguments = { targetFile = target_file }
+
+            vim.lsp.buf_request(0, 'workspace/executeCommand', {
+              command = cmd.command,
+              arguments = { args },
+            })
+          end)
+        end,
+      },
+      on_close = function()
+        if completed then
+          return
+        end
+        completed = true
+        vim.schedule(function()
+          vim.notify('Move to file cancelled', vim.log.levels.INFO)
+        end)
+      end,
+    }
+  end)
+end, {
+  desc = 'Move symbol to another file (TypeScript) - Snacks picker',
+})
+
+vim.api.nvim_create_user_command('LspSourceAction', function(opts)
+  local kind = opts.args
+
+  -- If no kind provided, show menu with all source actions
+  if kind == '' then
+    local clients = vim.lsp.get_clients { bufnr = 0 }
+    local source_actions = {}
+
+    for _, client in ipairs(clients) do
+      if client.server_capabilities.codeActionProvider then
+        local kinds = client.server_capabilities.codeActionProvider.codeActionKinds or {}
+        for _, action in ipairs(kinds) do
+          if vim.startswith(action, 'source.') then
+            table.insert(source_actions, action)
+          end
+        end
+      end
+    end
+
+    if #source_actions == 0 then
+      vim.notify('No source actions available', vim.log.levels.WARN)
+      return
+    end
+
+    vim.lsp.buf.code_action {
+      context = {
+        only = source_actions,
+        diagnostics = vim.diagnostic.get(0),
+      },
+    }
+    return
+  end
+
+  -- Apply specific source action directly
+  local params = vim.lsp.util.make_range_params()
+  -- local params = vim.lsp.util.make_range_params(nil, 'utf-8')
+  -- { position_encoding = 'utf-8' }
+  params.context = {
+    diagnostics = vim.diagnostic.get(0),
+    only = { kind },
+  }
+
+  vim.lsp.buf_request(0, 'textDocument/codeAction', params, function(err, result)
+    print 'LspSourceAction result:'
+    print('params', vim.inspect(params))
+    print('result', vim.inspect(result))
+    if err or not result or vim.tbl_isempty(result) then
+      return -- Silently do nothing
+    end
+
+    local action = result[1]
+    if action.edit then
+      vim.lsp.util.apply_workspace_edit(action.edit, 'utf-8')
+    elseif action.command then
+      vim.lsp.buf_request(0, 'workspace/executeCommand', action.command)
+    end
+  end)
+end, {
+  nargs = '?',
+  desc = 'Apply TypeScript source action',
+})

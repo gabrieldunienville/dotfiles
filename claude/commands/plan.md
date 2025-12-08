@@ -14,7 +14,7 @@ NEVER create more todo items than the following:
 
 ### Create task document
 
-Create the new task file at `tasks/$ARGUMENTS.md` using the template
+Create the new task file at `./tasks/$ARGUMENTS.md` using the template
 @~/.claude/templates/task.md
 
 ### Recieve overview
@@ -55,6 +55,12 @@ the reference list and I will indicate which ones to include in the list. If we
 have used an other important references from the web, ask me if I want want
 those listed as MCP resources too.
 
+### Create key file list
+
+Now list the key files that have come up in our discussion or you have found. It
+doesn't have to be every file, just the ones that are important for our task.
+
 ### Create implementation plan
 
-
+This should contain enough detail to follow but not so much that it tries to
+solve all the problems ahead of time.
