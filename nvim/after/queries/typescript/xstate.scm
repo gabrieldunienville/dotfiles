@@ -55,6 +55,21 @@
   (#eq? @_create_machine "createMachine")
   (#eq? @_on_slot "on"))
 
+; State config scoped event
+((call_expression
+  function: (member_expression
+    property: (property_identifier) @_create_state_config)
+  arguments: (arguments
+    (object
+      (pair
+        key: (property_identifier) @_on_slot
+        value: (object
+          (pair
+            key: (_) @event_key
+            value: (object) @event))))))
+  (#eq? @_create_state_config "createStateConfig")
+  (#eq? @_on_slot "on"))
+
 ; Context init
 ((call_expression
   function: (member_expression
