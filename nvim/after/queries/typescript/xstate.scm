@@ -11,6 +11,19 @@
   (#eq? @_states_slot "states")
   (#eq? @_entry_slot "entry"))
 
+; Exit
+((pair
+  key: (property_identifier) @_states_slot
+  value: (object
+    (pair
+      key: (_) @state_key
+      value: (object
+        (pair
+          key: (property_identifier) @_exit_slot
+          value: (_) @exit)))))
+  (#eq? @_states_slot "states")
+  (#eq? @_exit_slot "exit"))
+
 ; Invoke
 ((pair
   key: (property_identifier) @_states_slot
@@ -69,6 +82,16 @@
             value: (object) @event))))))
   (#eq? @_create_state_config "createStateConfig")
   (#eq? @_on_slot "on"))
+
+; Always actions
+((pair
+  key: (property_identifier) @_always_slot
+  value: (object
+    (pair
+      key: (_) @_actions_slot
+      value: (_) @actions)))
+  (#eq? @_always_slot "always")
+  (#eq? @_actions_slot "actions"))
 
 ; Context init
 ((call_expression

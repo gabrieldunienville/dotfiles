@@ -19,6 +19,8 @@ vim.api.nvim_create_autocmd('TermOpen', {
   end,
 })
 
+-- Turning off as it was getting annoying scrolling back up claude code buffer all the time
+
 vim.api.nvim_create_autocmd('BufEnter', {
   pattern = 'term://*',
   callback = function()

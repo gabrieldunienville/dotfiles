@@ -24,7 +24,15 @@ local function refresh_fold_state()
 
   _G.fold_state = {}
 
-  local targets = { 'event', 'entry', 'invoke', 'setup_action', 'context_init' }
+  local targets = {
+    'event',
+    'entry',
+    'exit',
+    'invoke',
+    'setup_action',
+    'context_init',
+    'actions',
+  }
   for pattern, match, metadata in query:iter_matches(root, 0) do
     local captures = parse_captures(match, query)
 
