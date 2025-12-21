@@ -91,10 +91,18 @@ end, {})
 -- Implementation ported from typescript-langauge-server test file at
 --   src/lsp-server.test.ts (test 'provides "Move to file" code action')
 vim.api.nvim_create_user_command('MoveToFile', function()
+  local bufnr = vim.api.nvim_get_current_buf()
+  local ts_client = vim.lsp.get_clients({ bufnr = bufnr, name = 'typescript_language_server' })[1]
+
+  if not ts_client then
+    vim.notify('TypeScript language server not attached to buffer', vim.log.levels.WARN)
+    return
+  end
+
   local params = vim.lsp.util.make_range_params()
   params.context = { diagnostics = vim.diagnostic.get(0) }
 
-  vim.lsp.buf_request(0, 'textDocument/codeAction', params, function(err, result, ctx)
+  ts_client.request('textDocument/codeAction', params, function(err, result, ctx)
     if err then
       vim.notify('Error requesting code actions: ' .. err.message, vim.log.levels.ERROR)
       return
@@ -154,10 +162,10 @@ vim.api.nvim_create_user_command('MoveToFile', function()
             local args = vim.deepcopy(cmd.arguments[1])
             args.interactiveRefactorArguments = { targetFile = target_file }
 
-            vim.lsp.buf_request(0, 'workspace/executeCommand', {
+            ts_client.request('workspace/executeCommand', {
               command = cmd.command,
               arguments = { args },
-            })
+            }, nil, bufnr)
           end)
         end,
       },
@@ -226,7 +234,15 @@ vim.api.nvim_create_user_command('LspSourceAction', function(opts)
     },
   }
 
-  vim.lsp.buf_request(0, 'textDocument/codeAction', params, function(err, result)
+  -- Only send to TypeScript language server, not Copilot or other clients
+  local ts_client = vim.lsp.get_clients({ bufnr = bufnr, name = 'typescript_language_server' })[1]
+
+  if not ts_client then
+    vim.notify('TypeScript language server not attached to buffer', vim.log.levels.WARN)
+    return
+  end
+
+  ts_client.request('textDocument/codeAction', params, function(err, result)
     if err or not result or vim.tbl_isempty(result) then
       return -- Silently do nothing
     end
@@ -235,10 +251,10 @@ vim.api.nvim_create_user_command('LspSourceAction', function(opts)
       if action.edit then
         vim.lsp.util.apply_workspace_edit(action.edit, 'utf-8')
       elseif action.command then
-        vim.lsp.buf_request(0, 'workspace/executeCommand', action.command)
+        ts_client.request('workspace/executeCommand', action.command)
       end
     end
-  end)
+  end, bufnr)
 end, {
   nargs = '?',
   desc = 'Apply TypeScript source action',
