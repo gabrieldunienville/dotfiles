@@ -184,6 +184,43 @@ end, {
   desc = 'Move symbol to another file (TypeScript) - Snacks picker',
 })
 
+vim.api.nvim_create_user_command('LspFixAll', function(opts)
+  local kind = opts.args
+  if kind == '' then
+    vim.notify('Please specify a fix kind (e.g., source.removeUnusedImports.ts)', vim.log.levels.WARN)
+    return
+  end
+
+  local bufnr = vim.api.nvim_get_current_buf()
+  local ts_client = vim.lsp.get_clients({ bufnr = bufnr, name = 'typescript_language_server' })[1]
+
+  if not ts_client then
+    vim.notify('TypeScript language server not attached to buffer', vim.log.levels.WARN)
+    return
+  end
+
+  local file = vim.api.nvim_buf_get_name(bufnr)
+  local params = {
+    command = '_typescript.applyFixAllCodeAction',
+    arguments = {
+      {
+        type = 'file',
+        action = kind,
+        uri = vim.uri_from_fname(file),
+      },
+    },
+  }
+
+  ts_client.request('workspace/executeCommand', params, function(err, result)
+    if err then
+      vim.notify('Error applying fix: ' .. vim.inspect(err), vim.log.levels.ERROR)
+    end
+  end, bufnr)
+end, {
+  nargs = 1,
+  desc = 'Apply all fixes of a certain kind (TypeScript)',
+})
+
 vim.api.nvim_create_user_command('LspSourceAction', function(opts)
   local kind = opts.args
 

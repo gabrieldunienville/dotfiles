@@ -25,11 +25,18 @@ function M.setup()
   vim.keymap.set({ 'n', 't', 'v' }, '<C-M-d>k', function()
     buffers.hide_buffer 'claude_code'
   end, { desc = 'Hide claude code' })
-  -- Testing
+  -- Claude code - secondary
   vim.keymap.set({ 'n', 't', 'v' }, '<C-M-,>', function()
+    buffers.open_buffer 'claude_code_secondary'
+  end, { desc = 'Open claude code' })
+  vim.keymap.set({ 'n', 't', 'v' }, '<C-M-d>,', function()
+    buffers.hide_buffer 'claude_code_secondary'
+  end, { desc = 'Hide claude code' })
+  -- Testing
+  vim.keymap.set({ 'n', 't', 'v' }, '<C-M-o>', function()
     buffers.open_buffer 'testing'
   end, { desc = 'Open testing' })
-  vim.keymap.set({ 'n', 't', 'v' }, '<C-M-d>,', function()
+  vim.keymap.set({ 'n', 't', 'v' }, '<C-M-d>o', function()
     buffers.hide_buffer 'testing'
   end, { desc = 'Hide testing' })
   -- IPython
