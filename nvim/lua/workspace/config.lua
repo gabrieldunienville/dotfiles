@@ -31,6 +31,11 @@ M.layout = {
               vim.cmd 'terminal uv run ipython'
             end,
           },
+          free_terminal = {
+            launch = function()
+              vim.cmd 'terminal'
+            end,
+          },
         },
       },
     },

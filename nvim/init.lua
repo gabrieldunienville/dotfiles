@@ -94,7 +94,8 @@ vim.lsp.enable {
   -- 'basedpyright',
   'pyright',
   'lua_ls',
-  'typescript_language_server',
+  -- 'typescript_language_server',
+  'ts_go',
   'tailwind',
   'jsonls',
 }
@@ -142,9 +143,10 @@ require('lazy').setup({
   { import = 'plugins.copilot', enabled = true },
   { import = 'plugins.parrot', enabled = false },
   { import = 'plugins.luasnip', enabled = true },
-  { import = 'plugins.mcphub', enabled = true },
+  { import = 'plugins.mcphub', enabled = false },
   { import = 'plugins.avante', enabled = false },
   { import = 'plugins.codecompanion', enabled = false },
+  { import = 'plugins.opencode', enabled = true },
 
   -- Language specific
   { import = 'plugins.ansible', enabled = false }, -- 2

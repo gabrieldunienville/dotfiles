@@ -27,10 +27,10 @@ vim.keymap.set('n', '<C-j>', '<C-w><C-j>', { desc = 'Move focus to the lower win
 vim.keymap.set('n', '<C-k>', '<C-w><C-k>', { desc = 'Move focus to the upper window' })
 
 -- Move lines
-vim.keymap.set('v', '<M-j>', ":m '>+1<CR>gv=gv")
-vim.keymap.set('v', '<M-k>', ":m '<-2<CR>gv=gv")
-vim.keymap.set('n', '<M-j>', ':m .+1<CR>==')
-vim.keymap.set('n', '<M-k>', ':m .-2<CR>==')
+vim.keymap.set('v', '<M-j>', ":m '>+1<CR>gv=gv", { desc = 'Move selected lines down' })
+vim.keymap.set('v', '<M-k>', ":m '<-2<CR>gv=gv", { desc = 'Move selected lines up' })
+vim.keymap.set('n', '<M-j>', ':m .+1<CR>==', { desc = 'Move line down' })
+vim.keymap.set('n', '<M-k>', ':m .-2<CR>==', { desc = 'Move line up' })
 
 -- Easer than ctrl-^
 vim.api.nvim_set_keymap('n', '<M-b>', '<C-^>', { noremap = true })
@@ -110,7 +110,8 @@ vim.keymap.set('n', '<leader>ri', '<cmd>LspSourceAction source.addMissingImports
 vim.keymap.set('n', '<leader>gs', function()
   require('diffview.config').actions.toggle_stage_entry()
 end, { desc = 'Refresh git diff view' })
-vim.keymap.set('n', '<leader>gd', '<cmd>DiffviewOpen<CR>', { desc = 'Open git diff view' })
+vim.keymap.set('n', '<C-m>', ']c', { desc = 'Next change' })
+vim.keymap.set('n', '<C-,>', '[c', { desc = 'Previous change' })
 
 -- Obsidian
 vim.keymap.set('n', '<leader>on', '<cmd>Obsidian new<CR>', { desc = 'Create new note' })

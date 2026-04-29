@@ -82,5 +82,4 @@ function M.hide_window(window_name)
   end
 end
 
-
 return M

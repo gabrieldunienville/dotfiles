@@ -24,6 +24,9 @@ function M.open_buffer(buf_name)
     -- If the buffer is already open in this window, switch to it
     vim.api.nvim_set_current_buf(buf_id)
   end
+
+  -- Track which buffer is currently active in this window
+  state.set_active_buffer(window_name, buf_name)
 end
 
 function M.hide_buffer(buf_name)

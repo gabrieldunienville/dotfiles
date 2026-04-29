@@ -47,6 +47,7 @@ return {
             '.env*',
             '.gitignore',
             '.prettierrc',
+            '.claude/*',
           },
         },
         lsp_symbols = {
@@ -68,6 +69,12 @@ return {
               'Trait',
             },
           },
+        },
+      },
+      formatters = {
+        file = {
+          min_width = 80,
+          -- truncate = 'left',
         },
       },
       icons = {

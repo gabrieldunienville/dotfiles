@@ -43,6 +43,13 @@ function M.setup()
   vim.keymap.set({ 'n', 't', 'v' }, '<C-M-i>', function()
     buffers.open_buffer 'ipython'
   end, { desc = 'Open ipython' })
+  -- Free terminal
+  vim.keymap.set({ 'n', 't', 'v' }, '<C-M-m>', function()
+    buffers.open_buffer 'free_terminal'
+  end, { desc = 'Open free terminal' })
+  vim.keymap.set({ 'n', 't', 'v' }, '<C-M-d>m', function()
+    buffers.hide_buffer 'free_terminal'
+  end, { desc = 'Hide free terminal' })
   -- Terminal
   vim.keymap.set({ 'n', 't', 'v' }, '<C-M-l>', function()
     windows.open_window 'primary_terminal'
@@ -51,6 +58,8 @@ function M.setup()
   vim.keymap.set({ 'n', 't', 'v' }, '<C-M-;>', function()
     windows.open_window 'runner'
   end, { desc = 'Open server window' })
+
+  vim.keymap.set({ 'n', 't', 'v' }, '<C-M-.>', '<cmd>DiffviewOpen<CR>', { desc = 'Open Diffview' })
 
   vim.api.nvim_create_user_command('WorkspaceReloadCodeBuffer', function(input)
     utils.reload_code_buffer_if_updated(input.args)

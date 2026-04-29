@@ -7,6 +7,7 @@ return {
     'antoinemadec/FixCursorHold.nvim',
     'nvim-treesitter/nvim-treesitter',
     'nvim-neotest/neotest-python',
+    'marilari88/neotest-vitest',
   },
   config = function()
     require('neotest').setup {
@@ -59,6 +60,7 @@ return {
           -- instances for fil
           pytest_discover_instances = true,
         },
+        require 'neotest-vitest',
       },
       -- log_level = 0,
     }

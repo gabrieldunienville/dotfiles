@@ -14,6 +14,7 @@ local state = {
   tabs = {},
   windows = {},
   buffers = {},
+  active_buffers = {}, -- tracks which buffer is currently active in each window
 }
 
 -- function M.reload()
@@ -55,6 +56,18 @@ function M.get_buffer(buf_name, win_name)
     return state.buffers[buf_name][win_name]
   end
   return nil
+end
+
+---@param win_name string
+---@param buf_name string
+function M.set_active_buffer(win_name, buf_name)
+  state.active_buffers[win_name] = buf_name
+end
+
+---@param win_name string
+---@return string|nil
+function M.get_active_buffer(win_name)
+  return state.active_buffers[win_name]
 end
 
 function M.initialize()

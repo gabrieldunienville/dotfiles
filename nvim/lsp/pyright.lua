@@ -1,3 +1,8 @@
+-- npm install -g pyright
+--
+-- Upgrade:
+-- npm install -g pyright@latest
+
 return {
   cmd = { 'pyright-langserver', '--stdio' },
   filetypes = { 'python' },
@@ -16,9 +21,11 @@ return {
       analysis = {
         -- Options:
         --  https://microsoft.github.io/pyright/#/configuration?id=type-check-diagnostics-settings
+        diagnosticMode = 'workspace',
         diagnosticSeverityOverrides = {
           reportUndefinedVariable = 'none',
           reportUnusedVariable = 'none',
+          reportRedeclaration = 'none',
         },
       },
     },
@@ -31,6 +38,7 @@ return {
       if result and result.diagnostics then
         result.diagnostics = vim.tbl_filter(function(diagnostic)
           return not string.match(diagnostic.message, '"await" allowed only within async function')
+            and not string.match(diagnostic.message, '"async" not allowed outside of async function')
         end, result.diagnostics)
       end
 
