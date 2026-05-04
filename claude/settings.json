@@ -5,6 +5,7 @@
       "Bash(psql -d fastapi_db:*)"
     ]
   },
+  "model": "opus",
   "hooks": {
     "Notification": [
       {
@@ -61,6 +62,5 @@
   },
   "feedbackSurveyState": {
     "lastShownTime": 1754076378141
-  },
-  "model": "haiku"
+  }
 }
