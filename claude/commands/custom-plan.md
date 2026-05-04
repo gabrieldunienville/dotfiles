@@ -14,8 +14,8 @@ NEVER create more todo items than the following:
 
 ### Create task document
 
-Create the new task file at `./tasks/$ARGUMENTS.md` using the template
-@~/.claude/templates/task.md
+Create the new task file at `./plans/$ARGUMENTS.md` using the template
+@~/.claude/templates/plan.md
 
 ### Recieve overview
 

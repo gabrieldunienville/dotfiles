@@ -1,4 +1,4 @@
-# {{ task_name | title case }}
+# {{ plan_name | title case }}
 
 ## Problem Details
 
@@ -21,5 +21,3 @@ A step by step plan on what needs to be changed in code and where.
 ## References
 
 This is a place to link important reference material used to generate this plan.
-
-Provide a list of MCP resources that may be looked up as needed.

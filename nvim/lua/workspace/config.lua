@@ -12,7 +12,7 @@ M.layout = {
         buffers = {
           claude_code = {
             launch = function()
-              vim.cmd 'terminal claude'
+              vim.cmd 'terminal claude --model claude-opus-4-6'
             end,
           },
           claude_code_secondary = {
