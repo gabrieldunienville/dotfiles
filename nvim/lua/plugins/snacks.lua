@@ -15,7 +15,6 @@ return {
             'node_modules',
             '.turbo/*',
             '.vscode/*',
-            '.claude/*',
             'pnpm-lock.yaml',
             'package-lock.json',
             '.venv',
@@ -47,7 +46,7 @@ return {
             '.env*',
             '.gitignore',
             '.prettierrc',
-            '.claude/*',
+            '.claude',
           },
         },
         lsp_symbols = {

@@ -267,3 +267,6 @@ fpath+=~/.zfunc; autoload -Uz compinit; compinit
 # opencode
 export PATH=/home/gabriel/.opencode/bin:$PATH
 export PATH=$PATH:/snap/bin
+
+export PATH="/home/gabriel/flinders/wearables/scripts:$PATH"
+source /home/gabriel/flinders/wearables/scripts/pj.zsh-completion
