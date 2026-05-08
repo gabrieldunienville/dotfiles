@@ -54,10 +54,10 @@ function M.setup()
   vim.keymap.set({ 'n', 't', 'v' }, '<C-M-l>', function()
     windows.open_window 'primary_terminal'
   end, { desc = 'Open terminal window' })
-  -- Dev server
+  -- LazyGit
   vim.keymap.set({ 'n', 't', 'v' }, '<C-M-;>', function()
-    windows.open_window 'runner'
-  end, { desc = 'Open server window' })
+    windows.open_window 'lazygit'
+  end, { desc = 'Open lazygit window' })
 
   vim.keymap.set({ 'n', 't', 'v' }, '<C-M-.>', '<cmd>DiffviewOpen<CR>', { desc = 'Open Diffview' })
 

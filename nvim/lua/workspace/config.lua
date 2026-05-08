@@ -49,11 +49,11 @@ M.layout = {
       },
     },
   },
-  runner = {
+  lazygit = {
     windows = {
-      runner = {
+      lazygit = {
         launch = function()
-          vim.cmd 'terminal'
+          vim.cmd 'terminal lazygit'
         end,
       },
     },

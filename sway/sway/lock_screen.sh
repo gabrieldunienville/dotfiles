@@ -10,7 +10,7 @@ swayidle \
     resume 'swaymsg "output * dpms on"' &
 
 # Locks the screen immediately
-swaylock -c 550000
+swaylock -i ~/wallpapers/an_astronaut_in_space_with_a_satellite.png -s fill
 
 # Kills last background task so idle timer doesn't keep running
 kill %%
