@@ -6,31 +6,158 @@ local windows = require 'workspace.windows'
 
 function M.initialize() end
 
+local function setup_compose_keymaps(compose_buf, buf_name)
+  local opts = { buffer = compose_buf, noremap = true, silent = true }
+
+  -- Scroll TUI down half page (set before <CR> so send takes priority if terminal can't distinguish)
+  vim.keymap.set('n', '<C-m>', function()
+    M.scroll_tui(buf_name, 'down')
+  end, opts)
+
+  vim.keymap.set('n', '<C-,>', function()
+    M.scroll_tui(buf_name, 'up')
+  end, opts)
+
+  vim.keymap.set('n', '<CR>', function()
+    M.send_compose(buf_name)
+  end, opts)
+end
+
+function M.get_or_create_compose_buf(buf_name)
+  local compose = state.get_compose(buf_name)
+  if compose and compose.buf_id and vim.api.nvim_buf_is_valid(compose.buf_id) then
+    return compose.buf_id
+  end
+
+  local buf = vim.api.nvim_create_buf(false, true)
+  vim.bo[buf].filetype = 'markdown'
+  vim.bo[buf].bufhidden = 'hide'
+  vim.bo[buf].buflisted = false
+  setup_compose_keymaps(buf, buf_name)
+  state.set_compose_buf(buf_name, buf)
+  return buf
+end
+
+function M.show_compose(buf_name)
+  local compose = state.get_compose(buf_name)
+
+  if compose and compose.win_id and vim.api.nvim_win_is_valid(compose.win_id) then
+    vim.api.nvim_set_current_win(compose.win_id)
+    return
+  end
+
+  local compose_buf = M.get_or_create_compose_buf(buf_name)
+
+  vim.cmd 'belowright 12split'
+  local compose_win = vim.api.nvim_get_current_win()
+  vim.api.nvim_set_current_buf(compose_buf)
+  vim.wo[compose_win].winfixheight = true
+  vim.wo[compose_win].number = false
+  vim.wo[compose_win].relativenumber = false
+  vim.wo[compose_win].signcolumn = 'no'
+  vim.wo[compose_win].wrap = true
+  state.set_compose_win(buf_name, compose_win)
+end
+
+function M.close_active_compose()
+  for _, compose in pairs(state.get_all_compose()) do
+    if compose.win_id and vim.api.nvim_win_is_valid(compose.win_id) then
+      vim.api.nvim_win_close(compose.win_id, true)
+      compose.win_id = nil
+    end
+  end
+end
+
+function M.send_compose(buf_name)
+  local compose = state.get_compose(buf_name)
+  if not compose or not compose.buf_id or not vim.api.nvim_buf_is_valid(compose.buf_id) then
+    return
+  end
+
+  local lines = vim.api.nvim_buf_get_lines(compose.buf_id, 0, -1, false)
+  local text = table.concat(lines, '\n')
+  if vim.trim(text) == '' then
+    return
+  end
+
+  vim.fn.setreg('c', text)
+
+  local buf_config = config.get_buf_config(buf_name)
+  local tui_buf = state.get_buffer(buf_name, buf_config.win_name)
+  if tui_buf and vim.api.nvim_buf_is_valid(tui_buf) then
+    local ok, job_id = pcall(vim.api.nvim_buf_get_var, tui_buf, 'terminal_job_id')
+    if ok and job_id and job_id ~= 0 then
+      vim.fn.chansend(job_id, text .. '\n')
+    end
+  end
+
+  vim.api.nvim_buf_set_lines(compose.buf_id, 0, -1, false, { '' })
+end
+
+function M.scroll_tui(buf_name, direction)
+  local buf_config = config.get_buf_config(buf_name)
+  local win = state.get_window(buf_config.win_name)
+  if not win or not win.win or not vim.api.nvim_win_is_valid(win.win) then
+    return
+  end
+
+  local key = direction == 'down' and '\\<C-d>' or '\\<C-u>'
+  vim.fn.win_execute(win.win, 'normal! ' .. key)
+end
+
+function M.append_to_compose(buf_name, text)
+  local compose_buf = M.get_or_create_compose_buf(buf_name)
+  local lines = vim.split(text, '\n')
+  local line_count = vim.api.nvim_buf_line_count(compose_buf)
+  local last_line = vim.api.nvim_buf_get_lines(compose_buf, line_count - 1, line_count, false)[1]
+
+  if last_line == '' and line_count == 1 then
+    vim.api.nvim_buf_set_lines(compose_buf, 0, -1, false, lines)
+  else
+    vim.api.nvim_buf_set_lines(compose_buf, line_count, line_count, false, lines)
+  end
+end
+
 function M.open_buffer(buf_name)
   local buf_config = config.get_buf_config(buf_name)
   local window_name = buf_config.win_name
+
+  if buf_config.compose then
+    local compose = state.get_compose(buf_name)
+    if compose and compose.win_id and vim.api.nvim_win_is_valid(compose.win_id) then
+      vim.api.nvim_set_current_win(compose.win_id)
+      return
+    end
+  end
+
+  M.close_active_compose()
+
   windows.open_window(window_name)
 
   local buf_id = state.get_buffer(buf_name, window_name)
 
   if not buf_id then
-    -- Create a new buffer and run launch function if it exists
     if buf_config.launch then
       buf_config.launch()
     end
     buf_id = vim.api.nvim_get_current_buf()
     state.set_buffer(buf_name, window_name, buf_id)
   elseif buf_id ~= vim.api.nvim_get_current_buf() then
-    -- If the buffer is already open in this window, switch to it
     vim.api.nvim_set_current_buf(buf_id)
   end
 
-  -- Track which buffer is currently active in this window
   state.set_active_buffer(window_name, buf_name)
+
+  if buf_config.compose then
+    M.show_compose(buf_name)
+  end
 end
 
 function M.hide_buffer(buf_name)
   local buf_config = config.get_buf_config(buf_name)
+  if buf_config.compose then
+    M.close_active_compose()
+  end
   local window_name = buf_config.win_name
   windows.hide_window(window_name)
 end
@@ -43,9 +170,6 @@ function M.paste_to_buffer(win_name, buf_name, text)
     return
   end
   vim.fn.chansend(job_id, text .. '\n')
-  -- print("sending with termcodes")
-  -- vim.fn.chansend(job_id, text)
-  -- vim.fn.chansend(job_id, vim.api.nvim_replace_termcodes('<CR>', true, false, true))
 end
 
 return M

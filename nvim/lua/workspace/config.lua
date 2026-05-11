@@ -11,11 +11,13 @@ M.layout = {
         },
         buffers = {
           claude_code = {
+            compose = true,
             launch = function()
               vim.cmd 'terminal claude --model claude-opus-4-6'
             end,
           },
           claude_code_secondary = {
+            compose = true,
             launch = function()
               vim.cmd 'terminal claude'
             end,
@@ -69,6 +71,7 @@ M.layout = {
 ---@field tab_name string
 ---@field win_name string
 ---@field launch? fun():nil
+---@field compose? boolean
 
 local win_items = {}
 local buf_items = {}
@@ -86,6 +89,7 @@ for tab_name, tab_config in pairs(M.layout) do
           tab_name = tab_name,
           win_name = win_name,
           launch = buf_config.launch,
+          compose = buf_config.compose,
         }
       end
     end

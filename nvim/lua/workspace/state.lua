@@ -14,7 +14,8 @@ local state = {
   tabs = {},
   windows = {},
   buffers = {},
-  active_buffers = {}, -- tracks which buffer is currently active in each window
+  active_buffers = {},
+  compose = {},
 }
 
 -- function M.reload()
@@ -68,6 +69,24 @@ end
 ---@return string|nil
 function M.get_active_buffer(win_name)
   return state.active_buffers[win_name]
+end
+
+function M.get_compose(buf_name)
+  return state.compose[buf_name]
+end
+
+function M.set_compose_buf(buf_name, buf_id)
+  state.compose[buf_name] = state.compose[buf_name] or {}
+  state.compose[buf_name].buf_id = buf_id
+end
+
+function M.set_compose_win(buf_name, win_id)
+  state.compose[buf_name] = state.compose[buf_name] or {}
+  state.compose[buf_name].win_id = win_id
+end
+
+function M.get_all_compose()
+  return state.compose
 end
 
 function M.initialize()
