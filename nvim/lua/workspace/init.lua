@@ -15,51 +15,51 @@ function M.setup()
   windows.initialize()
 
   -- Main code
-  vim.keymap.set({ 'n', 't', 'v' }, '<C-M-j>', function()
+  vim.keymap.set({ 'n', 't', 'v', 'i' }, '<C-M-j>', function()
     windows.open_window 'code'
   end, { desc = 'Open code window' })
   -- Claude code
-  vim.keymap.set({ 'n', 't', 'v' }, '<C-M-k>', function()
+  vim.keymap.set({ 'n', 't', 'v', 'i' }, '<C-M-k>', function()
     buffers.open_buffer 'claude_code'
   end, { desc = 'Open claude code' })
-  vim.keymap.set({ 'n', 't', 'v' }, '<C-M-d>k', function()
+  vim.keymap.set({ 'n', 't', 'v', 'i' }, '<C-M-d>k', function()
     buffers.hide_buffer 'claude_code'
   end, { desc = 'Hide claude code' })
   -- Claude code - secondary
-  vim.keymap.set({ 'n', 't', 'v' }, '<C-M-,>', function()
+  vim.keymap.set({ 'n', 't', 'v', 'i' }, '<C-M-,>', function()
     buffers.open_buffer 'claude_code_secondary'
   end, { desc = 'Open claude code' })
-  vim.keymap.set({ 'n', 't', 'v' }, '<C-M-d>,', function()
+  vim.keymap.set({ 'n', 't', 'v', 'i' }, '<C-M-d>,', function()
     buffers.hide_buffer 'claude_code_secondary'
   end, { desc = 'Hide claude code' })
   -- Testing
-  vim.keymap.set({ 'n', 't', 'v' }, '<C-M-o>', function()
+  vim.keymap.set({ 'n', 't', 'v', 'i' }, '<C-M-o>', function()
     buffers.open_buffer 'testing'
   end, { desc = 'Open testing' })
-  vim.keymap.set({ 'n', 't', 'v' }, '<C-M-d>o', function()
+  vim.keymap.set({ 'n', 't', 'v', 'i' }, '<C-M-d>o', function()
     buffers.hide_buffer 'testing'
   end, { desc = 'Hide testing' })
   -- IPython
-  vim.keymap.set({ 'n', 't', 'v' }, '<C-M-i>', function()
+  vim.keymap.set({ 'n', 't', 'v', 'i' }, '<C-M-i>', function()
     buffers.open_buffer 'ipython'
   end, { desc = 'Open ipython' })
   -- Free terminal
-  vim.keymap.set({ 'n', 't', 'v' }, '<C-M-m>', function()
+  vim.keymap.set({ 'n', 't', 'v', 'i' }, '<C-M-m>', function()
     buffers.open_buffer 'free_terminal'
   end, { desc = 'Open free terminal' })
-  vim.keymap.set({ 'n', 't', 'v' }, '<C-M-d>m', function()
+  vim.keymap.set({ 'n', 't', 'v', 'i' }, '<C-M-d>m', function()
     buffers.hide_buffer 'free_terminal'
   end, { desc = 'Hide free terminal' })
   -- Terminal
-  vim.keymap.set({ 'n', 't', 'v' }, '<C-M-l>', function()
+  vim.keymap.set({ 'n', 't', 'v', 'i' }, '<C-M-l>', function()
     windows.open_window 'primary_terminal'
   end, { desc = 'Open terminal window' })
   -- LazyGit
-  vim.keymap.set({ 'n', 't', 'v' }, '<C-M-;>', function()
+  vim.keymap.set({ 'n', 't', 'v', 'i' }, '<C-M-;>', function()
     windows.open_window 'lazygit'
   end, { desc = 'Open lazygit window' })
 
-  vim.keymap.set({ 'n', 't', 'v' }, '<C-M-.>', '<cmd>DiffviewOpen<CR>', { desc = 'Open Diffview' })
+  vim.keymap.set({ 'n', 't', 'v', 'i' }, '<C-M-.>', '<cmd>DiffviewOpen<CR>', { desc = 'Open Diffview' })
 
   vim.api.nvim_create_user_command('WorkspaceReloadCodeBuffer', function(input)
     utils.reload_code_buffer_if_updated(input.args)

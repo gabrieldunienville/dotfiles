@@ -6,7 +6,7 @@ end
 
 vim.keymap.set('v', '<leader>av', function()
   local text = require('context').get_selection_context()
-  append_to_compose(text)
+  append_to_compose(text .. '\n')
   vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes('<Esc>', true, false, true), 'n', false)
 end, { desc = 'Append visual selection to claude compose' })
 

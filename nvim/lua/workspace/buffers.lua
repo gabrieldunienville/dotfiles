@@ -6,20 +6,30 @@ local windows = require 'workspace.windows'
 
 function M.initialize() end
 
+local startinsert_cmd = vim.api.nvim_replace_termcodes('<Cmd>startinsert<CR>', true, false, true)
+
+local function enter_insert_after_cursor()
+  local pos = vim.api.nvim_win_get_cursor(0)
+  local line = vim.api.nvim_get_current_line()
+  if pos[2] < #line then
+    vim.api.nvim_win_set_cursor(0, { pos[1], pos[2] + 1 })
+  end
+  vim.api.nvim_feedkeys(startinsert_cmd, 'n', false)
+end
+
 local function setup_compose_keymaps(compose_buf, buf_name)
   local opts = { buffer = compose_buf, noremap = true, silent = true }
 
-  -- Scroll TUI down half page (set before <CR> so send takes priority if terminal can't distinguish)
+  vim.keymap.set('n', '<CR>', function()
+    M.send_compose(buf_name)
+  end, opts)
+
   vim.keymap.set('n', '<C-m>', function()
     M.scroll_tui(buf_name, 'down')
   end, opts)
 
   vim.keymap.set('n', '<C-,>', function()
     M.scroll_tui(buf_name, 'up')
-  end, opts)
-
-  vim.keymap.set('n', '<CR>', function()
-    M.send_compose(buf_name)
   end, opts)
 end
 
@@ -43,12 +53,13 @@ function M.show_compose(buf_name)
 
   if compose and compose.win_id and vim.api.nvim_win_is_valid(compose.win_id) then
     vim.api.nvim_set_current_win(compose.win_id)
+    enter_insert_after_cursor()
     return
   end
 
   local compose_buf = M.get_or_create_compose_buf(buf_name)
 
-  vim.cmd 'belowright 12split'
+  vim.cmd 'belowright 16split'
   local compose_win = vim.api.nvim_get_current_win()
   vim.api.nvim_set_current_buf(compose_buf)
   vim.wo[compose_win].winfixheight = true
@@ -57,6 +68,7 @@ function M.show_compose(buf_name)
   vim.wo[compose_win].signcolumn = 'no'
   vim.wo[compose_win].wrap = true
   state.set_compose_win(buf_name, compose_win)
+  enter_insert_after_cursor()
 end
 
 function M.close_active_compose()
@@ -87,11 +99,15 @@ function M.send_compose(buf_name)
   if tui_buf and vim.api.nvim_buf_is_valid(tui_buf) then
     local ok, job_id = pcall(vim.api.nvim_buf_get_var, tui_buf, 'terminal_job_id')
     if ok and job_id and job_id ~= 0 then
-      vim.fn.chansend(job_id, text .. '\n')
+      vim.fn.chansend(job_id, text)
+      vim.defer_fn(function()
+        vim.fn.chansend(job_id, '\r')
+      end, 100)
     end
   end
 
   vim.api.nvim_buf_set_lines(compose.buf_id, 0, -1, false, { '' })
+  enter_insert_after_cursor()
 end
 
 function M.scroll_tui(buf_name, direction)
@@ -101,8 +117,12 @@ function M.scroll_tui(buf_name, direction)
     return
   end
 
-  local key = direction == 'down' and '\\<C-d>' or '\\<C-u>'
-  vim.fn.win_execute(win.win, 'normal! ' .. key)
+  local height = vim.api.nvim_win_get_height(win.win)
+  local count = math.floor(height / 4)
+  local key = direction == 'down' and Snacks.util.keycode '<C-e>' or Snacks.util.keycode '<C-y>'
+  vim.api.nvim_win_call(win.win, function()
+    vim.cmd(('normal! %d%s'):format(count, key))
+  end)
 end
 
 function M.append_to_compose(buf_name, text)
@@ -116,6 +136,13 @@ function M.append_to_compose(buf_name, text)
   else
     vim.api.nvim_buf_set_lines(compose_buf, line_count, line_count, false, lines)
   end
+
+  local compose = state.get_compose(buf_name)
+  if compose and compose.win_id and vim.api.nvim_win_is_valid(compose.win_id) then
+    local new_line_count = vim.api.nvim_buf_line_count(compose_buf)
+    local last = vim.api.nvim_buf_get_lines(compose_buf, new_line_count - 1, new_line_count, false)[1]
+    vim.api.nvim_win_set_cursor(compose.win_id, { new_line_count, math.max(0, #last - 1) })
+  end
 end
 
 function M.open_buffer(buf_name)
@@ -126,6 +153,7 @@ function M.open_buffer(buf_name)
     local compose = state.get_compose(buf_name)
     if compose and compose.win_id and vim.api.nvim_win_is_valid(compose.win_id) then
       vim.api.nvim_set_current_win(compose.win_id)
+      enter_insert_after_cursor()
       return
     end
   end
