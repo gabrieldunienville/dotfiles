@@ -1,12 +1,12 @@
 vim.filetype.add {
-  -- extension = {
-  --   jinja = 'jinja.html',
-  -- },
+  filename = {
+    ['dot-zshrc'] = 'zsh',
+  },
   pattern = {
     ['.*%.jinja%.html'] = 'jinja.html',
     ['.*%.jinja%.xml'] = 'jinja.xml',
-    [".envrc"] = "sh",
-    ["%.envrc%..*"] = "sh",
-    [".env.local"] = "sh",
+    ['.envrc'] = 'sh',
+    ['%.envrc%..*'] = 'sh',
+    ['.env.local'] = 'sh',
   },
 }

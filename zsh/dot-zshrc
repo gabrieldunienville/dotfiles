@@ -270,3 +270,174 @@ export PATH=$PATH:/snap/bin
 
 export PATH="/home/gabriel/flinders/wearables/scripts:$PATH"
 source /home/gabriel/flinders/wearables/scripts/pj.zsh-completion
+
+
+_port_render() {
+    # args: "<prefix>" <pid>...
+    # groups pids into parents (ppid not in set) and children (ppid in set)
+    emulate -L zsh
+    local prefix=$1; shift
+    local -a pids=("$@")
+    local B="" D="" R=""
+    if (( ${PORT_COLOR:-0} )); then
+        B=$'\e[1;36m'   # bold cyan: port + addr
+        D=$'\e[2m'      # dim: age, cmd, children
+        R=$'\e[0m'
+    fi
+    if (( ${#pids} == 0 )); then
+        print -r -- "${B}${prefix}${R}  ${D}(no PID — try sudo)${R}"
+        return
+    fi
+    local -A ppid_of
+    local -a parents
+    local pid
+    for pid in $pids; do
+        ppid_of[$pid]=$(awk '/^PPid:/{print $2}' /proc/$pid/status 2>/dev/null)
+    done
+    for pid in $pids; do
+        (( ${pids[(Ie)${ppid_of[$pid]}]} == 0 )) && parents+=$pid
+    done
+    (( ${#parents} == 0 )) && parents=($pids)  # fallback: no detectable parent
+
+    local parent cwd cmd age
+    for parent in $parents; do
+        cwd=$(readlink /proc/$parent/cwd 2>/dev/null)
+        cmd=$(tr '\0' ' ' < /proc/$parent/cmdline 2>/dev/null)
+        age=$(ps -o etime= -p $parent 2>/dev/null | tr -d ' ')
+        printf '%s%s%s  pid=%s  %sage=%s%s\n  ↳ %s\n  %s$ %s%s\n' \
+            "$B" "$prefix" "$R" "$parent" "$D" "${age:--}" "$R" \
+            "${cwd:-?}" "$D" "${cmd:-?}" "$R"
+        for pid in $pids; do
+            [[ ${ppid_of[$pid]} == $parent ]] || continue
+            cmd=$(tr '\0' ' ' < /proc/$pid/cmdline 2>/dev/null)
+            age=$(ps -o etime= -p $pid 2>/dev/null | tr -d ' ')
+            printf '  %s└─ pid=%s  age=%s  (child)\n       $ %s%s\n' \
+                "$D" "$pid" "${age:--}" "${cmd:-?}" "$R"
+        done
+    done
+}
+
+ports() {
+    emulate -L zsh
+    local PORT_COLOR=0
+    [[ -t 1 ]] && PORT_COLOR=1
+    local -a lines
+    ss -tlnpH 2>/dev/null | while read -r _ _ _ local _ procs; do
+        local port=${local##*:} addr=${local%:*}
+        local pids=(${(u)${(s: :)$(print -r -- "$procs" | grep -oE 'pid=[0-9]+' | cut -d= -f2)}})
+        local rendered=$(_port_render ":$port  $addr" $pids)
+        lines+="$port|$rendered"
+    done
+    local first=1
+    for entry in ${(n)lines}; do
+        (( first )) || print
+        first=0
+        print -r -- "${entry#*|}"
+    done
+}
+
+port() {
+    emulate -L zsh
+    local PORT_COLOR=0
+    [[ -t 1 ]] && PORT_COLOR=1
+    local sig="" p=""
+    for arg in $@; do
+        case $arg in
+            -k) sig=TERM ;;
+            -K|-9) sig=KILL ;;
+            -*) echo "unknown flag: $arg"; return 1 ;;
+            *) p=$arg ;;
+        esac
+    done
+    [[ -z $p ]] && { echo "usage: port <number> [-k|-K]"; return 1 }
+
+    local -a all_pids
+    local first=1
+    ss -tlnpH "sport = :$p" 2>/dev/null | while read -r _ _ _ local _ procs; do
+        (( first )) || print
+        first=0
+        local addr=${local%:*}
+        local pids=(${(u)${(s: :)$(print -r -- "$procs" | grep -oE 'pid=[0-9]+' | cut -d= -f2)}})
+        _port_render ":$p  $addr" $pids
+        all_pids+=($pids)
+    done
+    if (( ${#all_pids} == 0 )); then
+        echo "nothing listening on :$p"
+        return 1
+    fi
+    local pids=(${(u)all_pids})
+
+    if [[ -n $sig ]]; then
+        print -n "kill ${#pids} process(es) on :$p with SIG$sig? [y/N] "
+        read -r confirm
+        [[ $confirm == (y|Y)* ]] || { echo "aborted"; return 1 }
+        kill -$sig $pids && echo "sent SIG$sig to $pids"
+    fi
+}
+
+killport() {
+    # fzf picker for killing port listeners. Shows parents only (children
+    # usually die with their parent). Default signal SIGTERM; use -9 for KILL.
+    emulate -L zsh
+    if ! command -v fzf >/dev/null; then
+        echo "killport requires fzf"
+        return 1
+    fi
+    local sig=TERM
+    [[ $1 == "-9" || $1 == "-K" ]] && sig=KILL
+
+    local B=$'\e[1;36m' R=$'\e[0m'
+    local laddr procs port addr pid parent age cmd cwd line selected confirm
+    local -A ppid_of
+    local -a parents rows pids targets
+
+    ss -tlnpH 2>/dev/null | while read -r _ _ _ laddr _ procs; do
+        port=${laddr##*:}
+        addr=${laddr%:*}
+        pids=(${(u)${(s: :)$(print -r -- "$procs" | grep -oE 'pid=[0-9]+' | cut -d= -f2)}})
+        (( ${#pids} == 0 )) && continue
+        ppid_of=()
+        parents=()
+        for pid in $pids; do
+            ppid_of[$pid]=$(awk '/^PPid:/{print $2}' /proc/$pid/status 2>/dev/null)
+        done
+        for pid in $pids; do
+            (( ${pids[(Ie)${ppid_of[$pid]}]} == 0 )) && parents+=$pid
+        done
+        (( ${#parents} == 0 )) && parents=($pids)
+        for parent in $parents; do
+            age=$(ps -o etime= -p $parent 2>/dev/null | tr -d ' ')
+            cmd=$(tr '\0' ' ' < /proc/$parent/cmdline 2>/dev/null)
+            cwd=$(readlink /proc/$parent/cwd 2>/dev/null)
+            cwd=${cwd/#$HOME/\~}
+            line=$(printf '%s:%-5s %-15s%s  %-9s  %-50s  %.70s' \
+                "$B" "$port" "$addr" "$R" "${age:-?}" "${cwd:-?}" "${cmd:-?}")
+            rows+=("${parent}"$'\t'"${line}")
+        done
+    done
+
+    if (( ${#rows} == 0 )); then
+        echo "no listeners (or none with accessible PIDs — try sudo)"
+        return 1
+    fi
+
+    selected=$(printf '%s\n' "${rows[@]}" | \
+        fzf --multi --ansi \
+            --with-nth=2.. --delimiter=$'\t' \
+            --header="TAB multi-select • Enter sends SIG${sig}" \
+            --prompt='killport> ' \
+        | cut -f1)
+
+    [[ -z $selected ]] && { echo "aborted"; return 1 }
+
+    targets=(${(f)selected})
+    echo "Sending SIG${sig} to ${#targets} process(es):"
+    for pid in $targets; do
+        cmd=$(tr '\0' ' ' < /proc/$pid/cmdline 2>/dev/null)
+        printf '  pid=%s  %.80s\n' "$pid" "${cmd:-?}"
+    done
+    print -n "confirm? [y/N] "
+    read -r confirm
+    [[ $confirm == (y|Y)* ]] || { echo "aborted"; return 1 }
+    kill -$sig $targets && echo "killed"
+}
