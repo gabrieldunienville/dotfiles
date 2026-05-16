@@ -2,7 +2,30 @@ return {
   'zbirenbaum/copilot.lua',
   enabled = true,
   cmd = 'Copilot',
-  event = 'InsertEnter',
+  init = function()
+    local disabled_filetypes = {
+      markdown = true,
+      help = true,
+      gitcommit = true,
+      gitrebase = true,
+      hgcommit = true,
+      svn = true,
+      cvs = true,
+    }
+    local function try_load()
+      if not disabled_filetypes[vim.bo.filetype] then
+        require('lazy').load { plugins = { 'copilot.lua' } }
+        return true
+      end
+    end
+    vim.api.nvim_create_autocmd('InsertEnter', {
+      callback = function()
+        if try_load() then
+          return true
+        end
+      end,
+    })
+  end,
   config = function()
     require('copilot').setup {
       panel = {
