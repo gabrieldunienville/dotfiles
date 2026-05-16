@@ -13,13 +13,15 @@ M.layout = {
           claude_code = {
             compose = true,
             launch = function()
-              vim.cmd 'terminal claude --model claude-opus-4-6'
+              vim.cmd 'terminal claude'
+              -- vim.cmd 'terminal claude --model claude-opus-4-6'
             end,
           },
           claude_code_secondary = {
             compose = true,
             launch = function()
-              vim.cmd 'terminal claude'
+              -- vim.cmd 'terminal claude'
+              vim.cmd 'terminal claude --model claude-opus-4-6'
             end,
           },
           testing = {

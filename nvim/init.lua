@@ -146,7 +146,7 @@ require('lazy').setup({
   { import = 'plugins.mcphub', enabled = false },
   { import = 'plugins.avante', enabled = false },
   { import = 'plugins.codecompanion', enabled = false },
-  { import = 'plugins.opencode', enabled = true },
+  { import = 'plugins.opencode', enabled = false },
 
   -- Language specific
   { import = 'plugins.ansible', enabled = false }, -- 2

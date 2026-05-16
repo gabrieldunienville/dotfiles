@@ -107,7 +107,7 @@ function M.send_compose(buf_name)
   end
 
   vim.api.nvim_buf_set_lines(compose.buf_id, 0, -1, false, { '' })
-  enter_insert_after_cursor()
+  vim.cmd 'startinsert'
 end
 
 function M.scroll_tui(buf_name, direction)
