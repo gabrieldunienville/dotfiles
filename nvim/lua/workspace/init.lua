@@ -61,6 +61,14 @@ function M.setup()
 
   vim.keymap.set({ 'n', 't', 'v', 'i' }, '<C-M-.>', '<cmd>DiffviewOpen<CR>', { desc = 'Open Diffview' })
 
+  -- Claude TUI scroll (works anywhere)
+  vim.keymap.set({ 'n', 't', 'v', 'i' }, '<C-m>', function()
+    buffers.scroll_active_tui 'down'
+  end, { desc = 'Scroll active Claude TUI down' })
+  vim.keymap.set({ 'n', 't', 'v', 'i' }, '<C-,>', function()
+    buffers.scroll_active_tui 'up'
+  end, { desc = 'Scroll active Claude TUI up' })
+
   vim.api.nvim_create_user_command('WorkspaceReloadCodeBuffer', function(input)
     utils.reload_code_buffer_if_updated(input.args)
   end, {

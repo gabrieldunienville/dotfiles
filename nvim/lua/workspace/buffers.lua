@@ -23,14 +23,6 @@ local function setup_compose_keymaps(compose_buf, buf_name)
   vim.keymap.set('n', '<CR>', function()
     M.send_compose(buf_name)
   end, opts)
-
-  vim.keymap.set('n', '<C-m>', function()
-    M.scroll_tui(buf_name, 'down')
-  end, opts)
-
-  vim.keymap.set('n', '<C-,>', function()
-    M.scroll_tui(buf_name, 'up')
-  end, opts)
 end
 
 function M.get_or_create_compose_buf(buf_name)
@@ -123,6 +115,18 @@ function M.scroll_tui(buf_name, direction)
   vim.api.nvim_win_call(win.win, function()
     vim.cmd(('normal! %d%s'):format(count, key))
   end)
+end
+
+function M.scroll_active_tui(direction)
+  local active = state.get_active_buffer 'tools'
+  if not active then
+    return
+  end
+  local buf_config = config.get_buf_config(active)
+  if not buf_config or not buf_config.compose then
+    return
+  end
+  M.scroll_tui(active, direction)
 end
 
 function M.append_to_compose(buf_name, text)
