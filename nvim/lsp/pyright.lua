@@ -10,6 +10,13 @@ return {
     'pyproject.toml',
     'pyrightconfig.json',
   },
+  capabilities = {
+    workspace = {
+      didChangeWatchedFiles = {
+        dynamicRegistration = true,
+      },
+    },
+  },
   settings = {
     -- These are LSP level settings
     -- See https://microsoft.github.io/pyright/#/settings
