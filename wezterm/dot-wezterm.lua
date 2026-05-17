@@ -20,6 +20,8 @@ config.tab_bar_at_bottom = true
 config.scrollback_lines = 10000
 -- Enable Kitty graphics protocol for image support
 config.enable_kitty_graphics = true
+-- Enable Kitty keyboard protocol so Neovim can distinguish <C-m>/<CR>, <C-S-...>, etc.
+config.enable_kitty_keyboard = true
 -- Critical for Neovim: proper terminfo
 -- config.term = "wezterm"
 config.term = "xterm-256color"
