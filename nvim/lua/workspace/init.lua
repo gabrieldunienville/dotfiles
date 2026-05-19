@@ -16,6 +16,7 @@ function M.setup()
 
   -- Main code
   vim.keymap.set({ 'n', 't', 'v', 'i' }, '<C-M-j>', function()
+    vim.cmd('stopinsert')
     windows.open_window 'code'
   end, { desc = 'Open code window' })
   -- Claude code
@@ -61,14 +62,45 @@ function M.setup()
 
   vim.keymap.set({ 'n', 't', 'v', 'i' }, '<C-M-.>', '<cmd>DiffviewOpen<CR>', { desc = 'Open Diffview' })
 
-  -- Claude TUI scroll via Meh+j/k (Ctrl+Alt+Shift+j/k)
+  -- Claude TUI control via Meh (Ctrl+Alt+Shift) prefix.
   -- Excludes terminal mode so keys pass through to Claude when typing in TUI.
+
+  -- Arrow nav inside the TUI (Meh+j/k)
   vim.keymap.set({ 'n', 'v', 'i' }, '<C-M-S-j>', function()
-    buffers.scroll_active_tui 'down'
-  end, { desc = 'Scroll active Claude TUI down (Meh+j)' })
+    buffers.send_to_active_tui '\27[B'
+  end, { desc = 'Claude TUI arrow down (Meh+j)' })
   vim.keymap.set({ 'n', 'v', 'i' }, '<C-M-S-k>', function()
+    buffers.send_to_active_tui '\27[A'
+  end, { desc = 'Claude TUI arrow up (Meh+k)' })
+
+  -- Window scroll (Meh+i/,)
+  vim.keymap.set({ 'n', 'v', 'i' }, '<C-M-S-i>', function()
     buffers.scroll_active_tui 'up'
-  end, { desc = 'Scroll active Claude TUI up (Meh+k)' })
+  end, { desc = 'Scroll active Claude TUI up (Meh+i)' })
+  vim.keymap.set({ 'n', 'v', 'i' }, '<C-M-S-,>', function()
+    buffers.scroll_active_tui 'down'
+  end, { desc = 'Scroll active Claude TUI down (Meh+,)' })
+
+  -- Numeric option select (Meh+1..9)
+  for i = 1, 9 do
+    vim.keymap.set({ 'n', 'v', 'i' }, '<C-M-S-' .. i .. '>', function()
+      buffers.send_to_active_tui(tostring(i) .. '\r')
+    end, { desc = 'Claude TUI select option ' .. i })
+  end
+
+  -- Submit and mode cycle
+  vim.keymap.set({ 'n', 'v', 'i' }, '<C-M-S-CR>', function()
+    buffers.send_to_active_tui '\r'
+  end, { desc = 'Claude TUI submit (Meh+Enter)' })
+  vim.keymap.set({ 'n', 'v', 'i' }, '<C-M-S-Tab>', function()
+    buffers.send_to_active_tui '\27[Z'
+  end, { desc = 'Claude TUI cycle mode (Meh+Tab)' })
+
+  -- Paste image: forward Ctrl-V to Claude so it reads the system clipboard,
+  -- then backslash+Enter to drop to a new line in Claude's input
+  vim.keymap.set({ 'n', 'v', 'i' }, '<C-M-S-v>', function()
+    buffers.send_to_active_tui '\x16\\\r'
+  end, { desc = 'Claude TUI paste clipboard image (Meh+v)' })
 
   vim.api.nvim_create_user_command('WorkspaceReloadCodeBuffer', function(input)
     utils.reload_code_buffer_if_updated(input.args)

@@ -20,7 +20,7 @@ end
 local function setup_compose_keymaps(compose_buf, buf_name)
   local opts = { buffer = compose_buf, noremap = true, silent = true }
 
-  vim.keymap.set('n', '<CR>', function()
+  vim.keymap.set({ 'n', 'i' }, '<C-CR>', function()
     M.send_compose(buf_name)
   end, opts)
 end
@@ -127,6 +127,26 @@ function M.scroll_active_tui(direction)
     return
   end
   M.scroll_tui(active, direction)
+end
+
+function M.send_to_active_tui(text)
+  local active = state.get_active_buffer 'tools'
+  if not active then
+    return
+  end
+  local buf_config = config.get_buf_config(active)
+  if not buf_config or not buf_config.compose then
+    return
+  end
+  local buf_id = state.get_buffer(active, buf_config.win_name)
+  if not buf_id or not vim.api.nvim_buf_is_valid(buf_id) then
+    return
+  end
+  local ok, job_id = pcall(vim.api.nvim_buf_get_var, buf_id, 'terminal_job_id')
+  if not ok or not job_id or job_id == 0 then
+    return
+  end
+  vim.fn.chansend(job_id, text)
 end
 
 function M.append_to_compose(buf_name, text)
