@@ -97,9 +97,9 @@ function M.setup()
   end, { desc = 'Claude TUI cycle mode (Meh+Tab)' })
 
   -- Paste image: forward Ctrl-V to Claude so it reads the system clipboard,
-  -- then backslash+Enter to drop to a new line in Claude's input
+  -- then (deferred) backslash+Enter to drop to a new line after the image lands
   vim.keymap.set({ 'n', 'v', 'i' }, '<C-M-S-v>', function()
-    buffers.send_to_active_tui '\x16\\\r'
+    buffers.paste_image_to_active_tui()
   end, { desc = 'Claude TUI paste clipboard image (Meh+v)' })
 
   -- Focus active TUI window in normal mode (for yanking from Claude output)

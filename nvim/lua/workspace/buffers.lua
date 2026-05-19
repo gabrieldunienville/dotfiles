@@ -124,6 +124,13 @@ function M.focus_active_tui()
   vim.cmd 'stopinsert'
 end
 
+function M.paste_image_to_active_tui()
+  M.send_to_active_tui '\x16'
+  vim.defer_fn(function()
+    M.send_to_active_tui '\\\r'
+  end, 150)
+end
+
 function M.send_to_active_tui(text)
   local active = state.get_active_buffer 'tools'
   if not active then
