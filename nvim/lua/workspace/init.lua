@@ -16,7 +16,7 @@ function M.setup()
 
   -- Main code
   vim.keymap.set({ 'n', 't', 'v', 'i' }, '<C-M-j>', function()
-    vim.cmd('stopinsert')
+    vim.cmd 'stopinsert'
     windows.open_window 'code'
   end, { desc = 'Open code window' })
   -- Claude code
@@ -41,7 +41,7 @@ function M.setup()
     buffers.hide_buffer 'testing'
   end, { desc = 'Hide testing' })
   -- IPython
-  vim.keymap.set({ 'n', 't', 'v', 'i' }, '<C-M-i>', function()
+  vim.keymap.set({ 'n', 't', 'v', 'i' }, '<C-M-u>', function()
     buffers.open_buffer 'ipython'
   end, { desc = 'Open ipython' })
   -- Free terminal
@@ -101,6 +101,11 @@ function M.setup()
   vim.keymap.set({ 'n', 'v', 'i' }, '<C-M-S-v>', function()
     buffers.send_to_active_tui '\x16\\\r'
   end, { desc = 'Claude TUI paste clipboard image (Meh+v)' })
+
+  -- Focus active TUI window in normal mode (for yanking from Claude output)
+  vim.keymap.set({ 'n', 't', 'v', 'i' }, '<C-M-i>', function()
+    buffers.focus_active_tui()
+  end, { desc = 'Focus active Claude TUI in normal mode (C-M-i)' })
 
   vim.api.nvim_create_user_command('WorkspaceReloadCodeBuffer', function(input)
     utils.reload_code_buffer_if_updated(input.args)

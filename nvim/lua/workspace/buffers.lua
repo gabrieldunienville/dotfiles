@@ -129,6 +129,15 @@ function M.scroll_active_tui(direction)
   M.scroll_tui(active, direction)
 end
 
+function M.focus_active_tui()
+  local win = state.get_window 'tools'
+  if not win or not win.win or not vim.api.nvim_win_is_valid(win.win) then
+    return
+  end
+  vim.api.nvim_set_current_win(win.win)
+  vim.cmd 'stopinsert'
+end
+
 function M.send_to_active_tui(text)
   local active = state.get_active_buffer 'tools'
   if not active then
