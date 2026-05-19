@@ -6,17 +6,6 @@ local windows = require 'workspace.windows'
 
 function M.initialize() end
 
-local startinsert_cmd = vim.api.nvim_replace_termcodes('<Cmd>startinsert<CR>', true, false, true)
-
-local function enter_insert_after_cursor()
-  local pos = vim.api.nvim_win_get_cursor(0)
-  local line = vim.api.nvim_get_current_line()
-  if pos[2] < #line then
-    vim.api.nvim_win_set_cursor(0, { pos[1], pos[2] + 1 })
-  end
-  vim.api.nvim_feedkeys(startinsert_cmd, 'n', false)
-end
-
 local function setup_compose_keymaps(compose_buf, buf_name)
   local opts = { buffer = compose_buf, noremap = true, silent = true }
 
@@ -45,7 +34,6 @@ function M.show_compose(buf_name)
 
   if compose and compose.win_id and vim.api.nvim_win_is_valid(compose.win_id) then
     vim.api.nvim_set_current_win(compose.win_id)
-    enter_insert_after_cursor()
     return
   end
 
@@ -60,7 +48,6 @@ function M.show_compose(buf_name)
   vim.wo[compose_win].signcolumn = 'no'
   vim.wo[compose_win].wrap = true
   state.set_compose_win(buf_name, compose_win)
-  enter_insert_after_cursor()
 end
 
 function M.close_active_compose()
@@ -99,7 +86,6 @@ function M.send_compose(buf_name)
   end
 
   vim.api.nvim_buf_set_lines(compose.buf_id, 0, -1, false, { '' })
-  vim.cmd 'startinsert'
 end
 
 function M.scroll_tui(buf_name, direction)
@@ -186,7 +172,6 @@ function M.open_buffer(buf_name)
     local compose = state.get_compose(buf_name)
     if compose and compose.win_id and vim.api.nvim_win_is_valid(compose.win_id) then
       vim.api.nvim_set_current_win(compose.win_id)
-      enter_insert_after_cursor()
       return
     end
   end
