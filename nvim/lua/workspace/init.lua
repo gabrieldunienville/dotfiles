@@ -96,6 +96,11 @@ function M.setup()
     buffers.send_to_active_tui '\27[Z'
   end, { desc = 'Claude TUI cycle mode (Meh+Tab)' })
 
+  -- Esc: interrupt Claude's current action
+  vim.keymap.set({ 'n', 'v', 'i' }, '<C-M-S-e>', function()
+    buffers.send_to_active_tui '\x1b'
+  end, { desc = 'Claude TUI send Esc / interrupt (Meh+e)' })
+
   -- Paste image: forward Ctrl-V to Claude so it reads the system clipboard,
   -- then (deferred) backslash+Enter to drop to a new line after the image lands
   vim.keymap.set({ 'n', 'v', 'i' }, '<C-M-S-v>', function()
