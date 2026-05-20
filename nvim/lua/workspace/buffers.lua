@@ -34,6 +34,7 @@ function M.show_compose(buf_name)
 
   if compose and compose.win_id and vim.api.nvim_win_is_valid(compose.win_id) then
     vim.api.nvim_set_current_win(compose.win_id)
+    vim.cmd 'stopinsert'
     return
   end
 
@@ -48,6 +49,7 @@ function M.show_compose(buf_name)
   vim.wo[compose_win].signcolumn = 'no'
   vim.wo[compose_win].wrap = true
   state.set_compose_win(buf_name, compose_win)
+  vim.cmd 'stopinsert'
 end
 
 function M.close_active_compose()
@@ -179,6 +181,7 @@ function M.open_buffer(buf_name)
     local compose = state.get_compose(buf_name)
     if compose and compose.win_id and vim.api.nvim_win_is_valid(compose.win_id) then
       vim.api.nvim_set_current_win(compose.win_id)
+      vim.cmd 'stopinsert'
       return
     end
   end
