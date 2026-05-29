@@ -61,6 +61,7 @@
     "skill-creator@claude-plugins-official": true,
     "code-simplifier@claude-plugins-official": true
   },
+  "effortLevel": "medium",
   "feedbackSurveyState": {
     "lastShownTime": 1754076378141
   }

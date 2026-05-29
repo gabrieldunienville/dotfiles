@@ -1,0 +1,7 @@
+
+<user-reminder>
+  Never chain commands with `&&` or `;` or `|` when each individual command is
+  already allowed by `Bash(rg:*)`, `Bash(find:*)` or similar rules. Use separate
+  Bash tool calls instead — parallel if possible.
+</user-reminder>
+

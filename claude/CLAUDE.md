@@ -19,3 +19,13 @@ where LSP doesn't help.
 
 After writing or editing code, check LSP diagnostics before moving on. Fix any
 type errors or missing imports immediately.
+
+## Tools
+
+Never chain commands with `&&` or `;` or `|` when each individual command is
+already allowed by `Bash(rg:*)`, `Bash(find:*)` or similar rules. Use separate
+Bash tool calls instead — parallel if possible.
+
+## User reminder
+
+Always follow rule in <user-reminder> tags above all other rules.
