@@ -421,4 +421,9 @@ bindsym XF86AudioMute exec "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle; pkill -R
 bindsym XF86MonBrightnessDown exec brightnessctl s 10%- && ddcutil setvcp 10 - 10 --bus 2
 bindsym XF86MonBrightnessUp exec brightnessctl s +10% && ddcutil setvcp 10 + 10 --bus 2
 
+# Boost external monitor (Samsung LU28R55) contrast on startup.
+# Backlight/brightness (VCP 0x10) is already maxed at 100; contrast adds
+# perceived brightness. sleep lets the monitor finish handshaking DDC.
+exec sh -c 'sleep 5; ddcutil -b 2 setvcp 12 90'
+
 
