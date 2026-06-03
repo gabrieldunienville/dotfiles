@@ -61,6 +61,19 @@ function M.close_active_compose()
   end
 end
 
+local function get_user_reminder()
+  local path = vim.fn.stdpath 'config' .. '/lua/workspace/user_reminder.xml'
+  local ok, lines = pcall(vim.fn.readfile, path)
+  if not ok or not lines then
+    return nil
+  end
+  local content = vim.trim(table.concat(lines, '\n'))
+  if content == '' then
+    return nil
+  end
+  return content
+end
+
 function M.send_compose(buf_name)
   local compose = state.get_compose(buf_name)
   if not compose or not compose.buf_id or not vim.api.nvim_buf_is_valid(compose.buf_id) then
@@ -75,12 +88,18 @@ function M.send_compose(buf_name)
 
   vim.fn.setreg('c', text)
 
+  local payload = text
+  local reminder = get_user_reminder()
+  if reminder then
+    payload = text .. '\n\n' .. reminder
+  end
+
   local buf_config = config.get_buf_config(buf_name)
   local tui_buf = state.get_buffer(buf_name, buf_config.win_name)
   if tui_buf and vim.api.nvim_buf_is_valid(tui_buf) then
     local ok, job_id = pcall(vim.api.nvim_buf_get_var, tui_buf, 'terminal_job_id')
     if ok and job_id and job_id ~= 0 then
-      vim.fn.chansend(job_id, text)
+      vim.fn.chansend(job_id, payload)
       vim.defer_fn(function()
         vim.fn.chansend(job_id, '\r')
       end, 100)
