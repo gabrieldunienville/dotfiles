@@ -96,7 +96,7 @@ swaymsg "mark --add $MARK_RIGHT"
 swaymsg "splitv"
 before=$(count_windows "$WEZTERM_APP_ID")
 wezterm --config "font_size=$TERM_FONT_SIZE" start --cwd "$DIR" -- sh -c \
-    "direnv exec '$DIR' turbo dev; exec ${SHELL:-zsh}" &
+    "direnv exec '$DIR' turbo dev --concurrency 15; exec ${SHELL:-zsh}" &
 wait_new_window "$WEZTERM_APP_ID" "$before"
 swaymsg "mark --add $MARK_MID"
 

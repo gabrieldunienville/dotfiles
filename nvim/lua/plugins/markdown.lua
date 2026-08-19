@@ -40,7 +40,7 @@ return {
       code = {
         width = 'block',
         min_width = 60,
-        left_pad = 2,
+        -- left_pad = 2,
         right_pad = 4,
         language_pad = 2,
       },

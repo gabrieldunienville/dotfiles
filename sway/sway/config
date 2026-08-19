@@ -424,6 +424,6 @@ bindsym XF86MonBrightnessUp exec brightnessctl s +10% && ddcutil setvcp 10 + 10 
 # Boost external monitor (Samsung LU28R55) contrast on startup.
 # Backlight/brightness (VCP 0x10) is already maxed at 100; contrast adds
 # perceived brightness. sleep lets the monitor finish handshaking DDC.
-exec sh -c 'sleep 5; ddcutil -b 2 setvcp 12 90'
+exec sh -c 'sleep 5; ddcutil -b 2 setvcp 12 80'
 
 

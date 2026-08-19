@@ -1,14 +1,31 @@
 -- https://neovim.io/doc/user/lsp.html#vim.lsp.Config
 -- https://neovim.io/doc/user/lsp.html#vim.lsp.ClientConfig
 
--- npm install @typescript/native-preview
+-- TypeScript 7 (native, Go) language server. Since 7.0 GA (July 2026) it
+-- ships in the standard package as `tsc --lsp`; `@typescript/native-preview`
+-- (`tsgo`) is frozen at 7.0.0-dev.20260707 — nightlies are `typescript@next`.
 --
--- Upgrade:
--- npm install -g @typescript/native-preview@latest
+--   npm install -g typescript@latest     (or typescript@next for nightlies)
+--
+-- The native server does NOT watch the filesystem itself on Linux: it
+-- registers `workspace/didChangeWatchedFiles` watchers and relies on the
+-- editor to deliver them. Neovim disables that capability on Linux by
+-- default, so files edited outside a buffer (generated .gen.ts, AI edits,
+-- git) went stale until re-opened. Advertise it explicitly below; Neovim
+-- then runs `inotifywait` (install inotify-tools — without it Neovim falls
+-- back to a slow per-directory poller).
 
 ---@type vim.lsp.Config
 return {
-  cmd = { 'tsgo', '--lsp', '-stdio' },
+  cmd = { 'tsc', '--lsp', '--stdio' },
+  capabilities = {
+    workspace = {
+      didChangeWatchedFiles = {
+        dynamicRegistration = true,
+        relativePatternSupport = true,
+      },
+    },
+  },
   filetypes = {
     'typescript',
     'typescriptreact',
@@ -20,11 +37,6 @@ return {
     '.git',
     'package.json',
   },
-  -- capabilities = {
-  --   textDocument = {
-  --     semanticTokens = nil,
-  --   },
-  -- },
   init_options = {
     -- https://github.com/typescript-language-server/typescript-language-server/blob/master/docs/configuration.md#initializationoptions
     hostInfo = {
@@ -40,6 +52,10 @@ return {
     -- user for a file path) and therefore requires custom implementation in the client.
     --  I've implemented this in neveom via custom user command :MoveToFile
     supportsMoveToFileCodeAction = true,
+    -- NOTE: this `tsserver` block is typescript-language-server configuration
+    -- (kept from the ts_ls days); the native server ignores it — in
+    -- particular `watchOptions` has no effect here, see the file watching
+    -- note at the top.
     tsserver = {
       -- Spawn both a full server and a lighter weight server dedicated to syntax operations.
       -- The syntax server is used to speed up syntax operations and provide IntelliSense

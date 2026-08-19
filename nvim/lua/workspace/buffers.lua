@@ -89,10 +89,10 @@ function M.send_compose(buf_name)
   vim.fn.setreg('c', text)
 
   local payload = text
-  local reminder = get_user_reminder()
-  if reminder then
-    payload = text .. '\n\n' .. reminder
-  end
+  -- local reminder = get_user_reminder()
+  -- if reminder then
+  --   payload = text .. '\n\n' .. reminder
+  -- end
 
   local buf_config = config.get_buf_config(buf_name)
   local tui_buf = state.get_buffer(buf_name, buf_config.win_name)

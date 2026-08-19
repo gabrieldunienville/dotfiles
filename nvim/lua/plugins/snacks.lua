@@ -47,6 +47,7 @@ return {
             '.gitignore',
             '.prettierrc',
             '.claude',
+            'prompts',
           },
         },
         lsp_symbols = {
@@ -138,6 +139,13 @@ return {
         Snacks.picker.grep()
       end,
       desc = 'Grep',
+    },
+    {
+      '<leader>sc',
+      function()
+        Snacks.picker.grep { ft = { 'typescript', 'tsx', 'javascript', 'jsx', 'python' } }
+      end,
+      desc = 'Grep code',
     },
     {
       '<leader>s.',

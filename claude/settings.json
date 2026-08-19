@@ -6,7 +6,7 @@
       "Bash(psql -d fastapi_db:*)"
     ]
   },
-  "model": "opus",
+  "model": "claude-fable-5[1m]",
   "hooks": {
     "Notification": [
       {
@@ -61,7 +61,8 @@
     "skill-creator@claude-plugins-official": true,
     "code-simplifier@claude-plugins-official": true
   },
-  "effortLevel": "medium",
+  "effortLevel": "high",
+  "agentPushNotifEnabled": true,
   "feedbackSurveyState": {
     "lastShownTime": 1754076378141
   }
