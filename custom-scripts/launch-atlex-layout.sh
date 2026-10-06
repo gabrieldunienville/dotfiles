@@ -48,7 +48,7 @@ if [[ -f "$DIR/.envrc.local" ]]; then
     LOOPBACK="$(source "$DIR/.envrc.local" && echo "$LOOPBACK")"
 fi
 
-LEFT_URL="http://${LOOPBACK}:5173/practice"
+LEFT_URL="http://${LOOPBACK}:5173"
 RIGHT_URL="http://${LOOPBACK}:5176"
 
 # Smaller than the default 16pt so both right-side terminals fit comfortably.

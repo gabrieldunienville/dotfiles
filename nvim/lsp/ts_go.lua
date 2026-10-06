@@ -7,6 +7,8 @@
 --
 --   npm install -g typescript@latest     (or typescript@next for nightlies)
 --
+--   sudo apt install inotify-tools
+--
 -- The native server does NOT watch the filesystem itself on Linux: it
 -- registers `workspace/didChangeWatchedFiles` watchers and relies on the
 -- editor to deliver them. Neovim disables that capability on Linux by
@@ -14,6 +16,16 @@
 -- git) went stale until re-opened. Advertise it explicitly below; Neovim
 -- then runs `inotifywait` (install inotify-tools — without it Neovim falls
 -- back to a slow per-directory poller).
+--
+-- Even with inotify working, files that are open as Neovim buffers have a
+-- second problem: the server uses the buffer content (via didChange) not
+-- disk, so an external edit to a buffered file goes unnoticed. And even
+-- after the buffer is reloaded (checktime + autoread), the server doesn't
+-- send `workspace/diagnostic/refresh` after didChange — it only sends it
+-- after didChangeWatchedFiles. Fix: on_attach sets up a per-buffer
+-- FileChangedShellPost autocmd that re-pulls diagnostics for all attached
+-- buffers after an external-edit reload. The user's init still needs a
+-- checktime trigger (FocusGained/CursorHold) to drive the reload itself.
 
 ---@type vim.lsp.Config
 return {
@@ -24,7 +36,33 @@ return {
         dynamicRegistration = true,
         relativePatternSupport = true,
       },
+      -- The server uses PULL diagnostics (`textDocument/diagnostic`). Neovim
+      -- re-pulls only on didOpen/didChange of the buffer itself, so when a
+      -- dependency changes on disk (a regenerated .gen.ts) the red squiggles
+      -- stay stale until you type. The server asks for a re-pull with
+      -- `workspace/diagnostic/refresh` IF the client advertises support —
+      -- Neovim 0.11 advertises it for inlay hints and semantic tokens but
+      -- not for diagnostics, and ships no handler; both added here.
+      diagnostics = { refreshSupport = true },
     },
+  },
+  handlers = {
+    ['workspace/diagnostic/refresh'] = function(_, _, ctx)
+      local client = vim.lsp.get_client_by_id(ctx.client_id)
+      if not client then
+        return vim.NIL
+      end
+      for bufnr in pairs(client.attached_buffers) do
+        if vim.api.nvim_buf_is_loaded(bufnr) then
+          -- Same request Neovim's own pull path issues; the default
+          -- `textDocument/diagnostic` handler publishes the result.
+          client:request('textDocument/diagnostic', {
+            textDocument = vim.lsp.util.make_text_document_params(bufnr),
+          }, nil, bufnr)
+        end
+      end
+      return vim.NIL
+    end,
   },
   filetypes = {
     'typescript',
@@ -96,6 +134,29 @@ return {
     -- vim.lsp.semantic_tokens.stop(bufnr, client.id)
 
     client.server_capabilities.semanticTokensProvider = nil
+
+    -- When an external tool (AI agent, build script) edits this file and
+    -- autoread + checktime reloads the buffer, re-pull diagnostics for all
+    -- attached buffers. ts_go sends diagnostic/refresh after
+    -- didChangeWatchedFiles but not after didChange, so dependent buffers
+    -- go stale without this.
+    vim.api.nvim_create_autocmd('FileChangedShellPost', {
+      buffer = bufnr,
+      callback = function()
+        vim.defer_fn(function()
+          if client:is_stopped() then
+            return
+          end
+          for b in pairs(client.attached_buffers) do
+            if vim.api.nvim_buf_is_loaded(b) then
+              client:request('textDocument/diagnostic', {
+                textDocument = vim.lsp.util.make_text_document_params(b),
+              }, nil, b)
+            end
+          end
+        end, 100)
+      end,
+    })
 
     -- TODO: add these to normal code actions at `gra` or make key binding
     -- ts_ls provides `source.*` code actions that apply to the whole file. These only appear in

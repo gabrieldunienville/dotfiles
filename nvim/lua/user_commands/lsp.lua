@@ -1,3 +1,4 @@
+--
 -- Restart all LSP clients for current buffer
 local function restart_lsp_all()
   local bufnr = vim.api.nvim_get_current_buf()
@@ -18,38 +19,54 @@ local function restart_lsp_all()
   end, 500)
 end
 
+-- -- Restart specific LSP by name
+-- local function restart_lsp_by_name(name)
+--   local bufnr = vim.api.nvim_get_current_buf()
+--   local clients = vim.lsp.get_clients { name = name, bufnr = bufnr }
+--   local config = nil
+--
+--   -- Store the first matching client's config
+--   for _, client in pairs(clients) do
+--     config = client.config
+--     vim.lsp.stop_client(client.id)
+--     break
+--   end
+--
+--   if not config then
+--     -- Try to get config from global LSP config if client wasn't attached to current buffer
+--     local all_clients = vim.lsp.get_clients { name = name }
+--     for _, client in pairs(all_clients) do
+--       config = client.config
+--       vim.lsp.stop_client(client.id)
+--       break
+--     end
+--   end
+--
+--   vim.defer_fn(function()
+--     if config then
+--       vim.lsp.start(config)
+--     else
+--       -- Fallback to enable if no config found
+--       vim.lsp.enable(name)
+--       -- Force buffer to be re-evaluated
+--       vim.cmd 'edit'
+--     end
+--   end, 500)
+-- end
+
 -- Restart specific LSP by name
 local function restart_lsp_by_name(name)
   local bufnr = vim.api.nvim_get_current_buf()
   local clients = vim.lsp.get_clients { name = name, bufnr = bufnr }
-  local config = nil
 
   -- Store the first matching client's config
   for _, client in pairs(clients) do
-    config = client.config
     vim.lsp.stop_client(client.id)
     break
   end
 
-  if not config then
-    -- Try to get config from global LSP config if client wasn't attached to current buffer
-    local all_clients = vim.lsp.get_clients { name = name }
-    for _, client in pairs(all_clients) do
-      config = client.config
-      vim.lsp.stop_client(client.id)
-      break
-    end
-  end
-
   vim.defer_fn(function()
-    if config then
-      vim.lsp.start(config)
-    else
-      -- Fallback to enable if no config found
-      vim.lsp.enable(name)
-      -- Force buffer to be re-evaluated
-      vim.cmd 'edit'
-    end
+    vim.lsp.enable(name)
   end, 500)
 end
 

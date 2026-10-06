@@ -132,3 +132,19 @@ vim.opt.foldminlines = 1
 -- Helps with buffer switching and navigation
 vim.opt.foldenable = true
 vim.opt.foldlevelstart = 99
+
+-- Detect external file changes (AI agents, build scripts, other editors).
+-- Bare `:checktime` from an autocommand only checks the CURRENT buffer,
+-- so we iterate all loaded file-backed buffers explicitly.
+vim.api.nvim_create_autocmd({ 'FocusGained', 'BufEnter', 'CursorHold', 'CursorHoldI' }, {
+  callback = function()
+    if vim.fn.getcmdwintype() ~= '' then
+      return
+    end
+    for _, buf in ipairs(vim.api.nvim_list_bufs()) do
+      if vim.api.nvim_buf_is_loaded(buf) and vim.bo[buf].buftype == '' then
+        vim.cmd.checktime(buf)
+      end
+    end
+  end,
+})

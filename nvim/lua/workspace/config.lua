@@ -21,7 +21,8 @@ M.layout = {
             compose = true,
             launch = function()
               -- vim.cmd 'terminal claude'
-              vim.cmd 'terminal claude --model claude-opus-4-6'
+              -- vim.cmd 'terminal claude --model claude-opus-4-6'
+              vim.cmd 'terminal claude --model claude-opus-5-5'
             end,
           },
           testing = {
