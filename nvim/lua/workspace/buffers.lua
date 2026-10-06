@@ -109,9 +109,8 @@ function M.send_compose(buf_name)
   vim.api.nvim_buf_set_lines(compose.buf_id, 0, -1, false, { '' })
 end
 
-function M.scroll_tui(buf_name, direction)
-  local buf_config = config.get_buf_config(buf_name)
-  local win = state.get_window(buf_config.win_name)
+function M.scroll_window(win_name, direction)
+  local win = state.get_window(win_name)
   if not win or not win.win or not vim.api.nvim_win_is_valid(win.win) then
     return
   end
@@ -125,15 +124,7 @@ function M.scroll_tui(buf_name, direction)
 end
 
 function M.scroll_active_tui(direction)
-  local active = state.get_active_buffer 'tools'
-  if not active then
-    return
-  end
-  local buf_config = config.get_buf_config(active)
-  if not buf_config or not buf_config.compose then
-    return
-  end
-  M.scroll_tui(active, direction)
+  M.scroll_window('tools', direction)
 end
 
 function M.focus_active_tui()
